@@ -210,7 +210,7 @@ export class CourseService {
     }
 
     let downgraded = false;
-    if (!isAdmin && course.status === CourseStatus.published) {
+    if (!isAdmin && (course.status === CourseStatus.published || course.status === CourseStatus.archived)) {
       (courseData as any).status = CourseStatus.pending_approval;
       downgraded = true;
     }
@@ -331,7 +331,7 @@ export class CourseService {
     return this.prisma.$transaction(async (tx) => {
       const updatedCourse = await tx.course.update({
         where: { id: courseId },
-        data: { status: CourseStatus.draft },
+        data: { status: CourseStatus.published },
       });
 
       await this.auditService.log({
@@ -340,7 +340,7 @@ export class CourseService {
         entityType: 'Course',
         entityId: courseId,
         ipAddress,
-        metadata: { newStatus: CourseStatus.draft },
+        metadata: { newStatus: CourseStatus.published },
         prisma: tx,
       });
 
@@ -451,7 +451,7 @@ export class CourseService {
     const course = await this._requireCourse(courseId);
     await this._assertCourseOwner(trainerUserId, course);
 
-    const isPublished = course.status === CourseStatus.published;
+    const requiresReview = course.status === CourseStatus.published || course.status === CourseStatus.archived;
 
     return this.prisma.$transaction(async (tx) => {
       const module = await tx.courseModule.create({
@@ -464,7 +464,7 @@ export class CourseService {
         },
       });
 
-      if (isPublished) {
+      if (requiresReview) {
         await tx.course.update({
           where: { id: courseId },
           data: { status: CourseStatus.pending_approval },
@@ -493,7 +493,7 @@ export class CourseService {
     const course = await this._requireCourse(courseId);
     await this._assertCourseOwner(trainerUserId, course);
 
-    const isPublished = course.status === CourseStatus.published;
+    const requiresReview = course.status === CourseStatus.published || course.status === CourseStatus.archived;
 
     return this.prisma.$transaction(async (tx) => {
       const mod = await tx.courseModule.findFirst({
@@ -506,7 +506,7 @@ export class CourseService {
         data: dto,
       });
 
-      if (isPublished) {
+      if (requiresReview) {
         await tx.course.update({
           where: { id: courseId },
           data: { status: CourseStatus.pending_approval },
@@ -534,7 +534,7 @@ export class CourseService {
     const course = await this._requireCourse(courseId);
     await this._assertCourseOwner(trainerUserId, course);
 
-    const isPublished = course.status === CourseStatus.published;
+    const requiresReview = course.status === CourseStatus.published || course.status === CourseStatus.archived;
 
     return this.prisma.$transaction(async (tx) => {
       const mod = await tx.courseModule.findFirst({
@@ -544,7 +544,7 @@ export class CourseService {
 
       const deletedModule = await tx.courseModule.delete({ where: { id: moduleId } });
 
-      if (isPublished) {
+      if (requiresReview) {
         await tx.course.update({
           where: { id: courseId },
           data: { status: CourseStatus.pending_approval },

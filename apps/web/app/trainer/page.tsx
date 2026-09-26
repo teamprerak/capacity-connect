@@ -243,7 +243,7 @@ export default function TrainerDashboard() {
   const handleUnarchive = async (courseId: string) => {
     try {
       await api.patch(`/courses/${courseId}/unarchive`);
-      toast.success('Course unarchived successfully. It is now a draft.');
+      toast.success('Course unarchived successfully. It is now published.');
       fetchData();
     } catch (err: any) {
       toast.error(err.message || 'Unarchive failed. Please try again.');

@@ -26,19 +26,15 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       if (isRegister) {
         await register(email, password, role);
         toast.success('Registration successful! Signing you in...');
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        // BUG-19: Close modal before login() calls router.push() to avoid
-        // calling onClose() on an already-unmounted component
-        onClose();
         await login(email, password);
+        onClose();
       } else {
-        onClose(); // Close before navigation so modal doesn't update state after unmount
         await login(email, password);
         toast.success('Signed in successfully');
+        onClose();
       }
     } catch (err: any) {
       toast.error(err.message || 'Authentication failed');
-    } finally {
       setIsSubmitting(false);
     }
   };

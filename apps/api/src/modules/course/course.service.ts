@@ -54,7 +54,7 @@ export class CourseService {
    * H-7: Accepts optional trainerId to scope results to a single trainer's courses.
    */
   async listCourses(filters: {
-    status?: CourseStatus;
+    status?: CourseStatus | 'all' | any;
     categoryId?: string;
     difficulty?: string;
     search?: string;
@@ -71,9 +71,11 @@ export class CourseService {
     // H-7: If scoped to a trainer, show all their statuses; otherwise default to published.
     if (filters.trainerId) {
       where.trainerId = filters.trainerId;
-      if (filters.status) where.status = filters.status;
+      if (filters.status && filters.status !== 'all') where.status = filters.status;
     } else {
-      where.status = filters.status ?? CourseStatus.published;
+      if (filters.status !== 'all') {
+        where.status = filters.status ?? CourseStatus.published;
+      }
     }
 
     if (filters.categoryId) where.categoryId = filters.categoryId;

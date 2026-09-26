@@ -24,7 +24,7 @@ export default function AdminCourseModerationPage() {
   const fetchCourses = () => {
     setIsLoading(true);
     api
-      .get('/courses')
+      .get('/courses?status=all')
       .then((res) => setCourses(res.data || []))
       .catch(() => setCourses([]))
       .finally(() => setIsLoading(false));

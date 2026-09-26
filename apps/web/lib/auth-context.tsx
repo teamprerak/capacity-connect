@@ -48,6 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const handleSessionExpired = useCallback(() => {
     setUser(null);
     sessionStorage.removeItem('user_session');
+    sessionStorage.removeItem('access_token');
     router.push('/?auth=true');
   }, [router]);
 
@@ -57,8 +58,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [handleSessionExpired]);
 
   const login = async (email: string, password: string) => {
-    // The API sets httpOnly access_token + refresh_token cookies on the response.
-    // We never touch those cookies from JS — they are invisible to XSS.
     const res = await api.post('/auth/login', { email, password });
 
     const roles = res.roles || ['trainee'];
@@ -68,8 +67,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       roles,
     };
 
+    if (res.accessToken) {
+      sessionStorage.setItem('access_token', res.accessToken);
+    }
+
     setUser(session);
-    // Store only non-sensitive session identity (no token!) in sessionStorage.
     sessionStorage.setItem('user_session', JSON.stringify(session));
 
     // Role-based redirect
@@ -96,6 +98,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setUser(null);
       sessionStorage.removeItem('user_session');
+      sessionStorage.removeItem('access_token');
       setIsLoggingOut(false);
       router.push('/');
     }

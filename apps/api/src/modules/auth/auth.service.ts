@@ -188,7 +188,7 @@ export class AuthService {
     });
 
     this.tokenService.setTokenCookies(res, newAccessToken, newRefreshToken);
-    return { message: 'Token refreshed' };
+    return { message: 'Token refreshed', accessToken: newAccessToken };
   }
 
   async logout(userId: string, jti: string, res: any, ipAddress: string | null = null) {

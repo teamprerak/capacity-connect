@@ -27,10 +27,23 @@ async function attemptRefresh(): Promise<boolean> {
 
   isRefreshing = true;
   try {
+    const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
     const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       credentials: 'include',
     });
+    if (res.ok) {
+      try {
+        const data = await res.json();
+        if (data.accessToken && typeof window !== 'undefined') {
+          sessionStorage.setItem('access_token', data.accessToken);
+        }
+      } catch {}
+    }
     const ok = res.ok;
     onRefreshComplete(ok);
     return ok;
@@ -47,10 +60,10 @@ export async function apiRequest<T = any>(
   options: RequestInit = {},
   _isRetry = false,
 ): Promise<T> {
-  // Tokens are transported exclusively via httpOnly cookies.
-  // Never read from localStorage — that would expose tokens to XSS.
+  const token = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options.headers as Record<string, string>),
   };
 

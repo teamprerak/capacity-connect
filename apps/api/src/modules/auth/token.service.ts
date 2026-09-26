@@ -38,22 +38,30 @@ export class TokenService {
     refreshToken: string,
   ): void {
     const isProd = process.env.NODE_ENV === 'production';
+    // For cross-site deployments (e.g. Frontend on Vercel, Backend on Render),
+    // cookies MUST use sameSite: 'none' and secure: true.
+    const sameSite = isProd ? 'none' : 'lax';
+    const secure = isProd;
+
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? 'strict' : 'lax',
+      secure,
+      sameSite,
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? 'strict' : 'lax',
+      secure,
+      sameSite,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
   }
 
   clearTokenCookies(res: any): void {
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
+    const isProd = process.env.NODE_ENV === 'production';
+    const sameSite = isProd ? 'none' : 'lax';
+    const secure = isProd;
+    res.clearCookie('access_token', { httpOnly: true, secure, sameSite });
+    res.clearCookie('refresh_token', { httpOnly: true, secure, sameSite });
   }
 }

@@ -299,6 +299,24 @@ async function main() {
     },
   });
 
+  const module3 = await prisma.courseModule.create({
+    data: {
+      courseId: course2.id,
+      title: 'Module 1: Introduction to Zero-Trust Architecture',
+      sequenceOrder: 1,
+      videoUrl: 'https://www.youtube.com/watch?v=1oW_m1o1wEI',
+    },
+  });
+
+  const module4 = await prisma.courseModule.create({
+    data: {
+      courseId: course3.id,
+      title: 'Module 1: Pandas DataFrames & Time-Series Analysis',
+      sequenceOrder: 1,
+      videoUrl: 'https://www.youtube.com/watch?v=3c-iZaI7f-0',
+    },
+  });
+
   // 9. Assessments & MCQs
   console.log('📝 Seeding Assessment Question Banks...');
   const assessment1 = await prisma.assessment.create({

@@ -13,6 +13,7 @@ export default function CoursePlayerPage() {
   const id = params.id as string;
   const [course, setCourse] = useState<any>(null);
   const [activeModule, setActiveModule] = useState<any>(null);
+  const [completedModules, setCompletedModules] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -27,6 +28,17 @@ export default function CoursePlayerPage() {
         })
         .catch(() => toast.error('Failed to load course player'))
         .finally(() => setIsLoading(false));
+        
+      // Fetch user's enrollments to get progress
+      api.get('/enrollments/me').then((enrollments) => {
+        const enr = enrollments.find((e: any) => e.courseId === id);
+        if (enr && enr.progress) {
+          const completed = enr.progress
+            .filter((p: any) => p.status === 'completed' || p.progressPct === 100)
+            .map((p: any) => p.moduleId);
+          setCompletedModules(completed);
+        }
+      }).catch(() => {});
     }
   }, [id]);
 
@@ -42,6 +54,7 @@ export default function CoursePlayerPage() {
           progressPct: 100,
         });
         toast.success('Module marked as completed!');
+        setCompletedModules((prev) => [...prev, moduleId]);
       } else {
         // BUG-07: Silently failing when not enrolled — show clear error
         toast.error('You are not enrolled in this course. Please enrol first.');
@@ -124,9 +137,15 @@ export default function CoursePlayerPage() {
             <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-800">
               <button
                 onClick={() => activeModule && handleMarkComplete(activeModule.id)}
-                className="px-5 py-2.5 rounded-xl bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 font-bold text-xs hover:bg-emerald-600/30 transition-all flex items-center gap-2"
+                disabled={activeModule && completedModules.includes(activeModule.id)}
+                className={`px-5 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 ${
+                  activeModule && completedModules.includes(activeModule.id)
+                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                    : 'bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30'
+                }`}
               >
-                <CheckCircle className="w-4 h-4" /> Mark Module Complete
+                <CheckCircle className="w-4 h-4" /> 
+                {activeModule && completedModules.includes(activeModule.id) ? 'Completed' : 'Mark Module Complete'}
               </button>
 
               {course?.assessments?.length > 0 && (

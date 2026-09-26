@@ -42,9 +42,12 @@ export default function CoursePlayerPage() {
           progressPct: 100,
         });
         toast.success('Module marked as completed!');
+      } else {
+        // BUG-07: Silently failing when not enrolled — show clear error
+        toast.error('You are not enrolled in this course. Please enrol first.');
       }
     } catch (err: any) {
-      toast.error('Failed to update module progress');
+      toast.error(err.message || 'Failed to update module progress');
     }
   };
 

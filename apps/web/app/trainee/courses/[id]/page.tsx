@@ -32,7 +32,8 @@ export default function CourseDetailPage() {
       toast.success('Successfully enrolled in course!');
       router.push(`/trainee/courses/${id}/learn`);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || err.message || 'Enrollment failed');
+      // BUG-08: ApiError has .data not .response?.data (that's an Axios convention, not fetch)
+      toast.error(err.data?.message || err.message || 'Enrollment failed');
     } finally {
       setIsEnrolling(false);
     }

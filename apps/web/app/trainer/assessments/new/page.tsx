@@ -29,7 +29,8 @@ export default function AssessmentAuthoringPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    api.get('/courses?limit=50').then((res) => {
+    // BUG-10: Must only show trainer's own courses, not all published courses
+    api.get('/courses?mine=true&limit=50').then((res) => {
       const list = res?.data || res || [];
       setCourses(list);
       if (list.length > 0) setCourseId(list[0].id);

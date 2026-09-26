@@ -14,13 +14,18 @@ async function bootstrap() {
     ? process.env.FRONTEND_URL.split(',').map((url) => url.trim())
     : ['http://localhost:3000'];
 
+  // BUG-20: Only allow specific vercel project subdomain, not all *.vercel.app (any attacker can get one)
+  const vercelProjectPattern = process.env.VERCEL_PROJECT_NAME
+    ? new RegExp(`^https://${process.env.VERCEL_PROJECT_NAME}(-[a-z0-9]+)?\.vercel\.app$`)
+    : null;
+
   app.enableCors({
     origin: (origin, callback) => {
       if (
         !origin ||
         allowedOrigins.includes('*') ||
         allowedOrigins.includes(origin) ||
-        origin.endsWith('.vercel.app')
+        (vercelProjectPattern && vercelProjectPattern.test(origin))
       ) {
         return callback(null, true);
       }

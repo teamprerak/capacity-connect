@@ -500,7 +500,11 @@ export class AssessmentService {
   private async _assertAssessmentOwner(
     userId: string,
     assessment: any,
+    userRoles?: any[],
   ): Promise<void> {
+    // BUG-03: Admins must be able to manage all assessments
+    const isAdmin = userRoles?.some((r: any) => r.name === 'admin');
+    if (isAdmin) return;
     if (assessment.createdById !== userId) {
       throw new ForbiddenException('You do not own this assessment');
     }

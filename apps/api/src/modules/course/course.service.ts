@@ -429,6 +429,13 @@ export class CourseService {
     const course = await this._requireCourse(courseId);
     await this._assertCourseOwner(trainerUserId, course);
 
+    // BUG-17: Adding modules to published/archived courses breaks progress tracking for existing enrollments
+    if (course.status === 'published' || course.status === 'archived') {
+      throw new BadRequestException(
+        `Cannot add modules to a ${course.status} course. Archive and recreate to restructure.`,
+      );
+    }
+
     return this.prisma.courseModule.create({
       data: {
         courseId,

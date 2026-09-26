@@ -171,6 +171,12 @@ export class AuthService {
       throw new UnauthorizedException('Refresh token reuse detected. Please log in again.');
     }
 
+    // BUG-02: Check DB-level expiry (separate from JWT expiry) before accepting
+    if (stored.expiresAt < new Date()) {
+      await this.prisma.refreshToken.update({ where: { id: jti }, data: { revoked: true } });
+      throw new UnauthorizedException('Refresh token expired. Please log in again.');
+    }
+
     const tokenValid = await argon2.verify(stored.tokenHash, rawRefreshToken);
     if (!tokenValid) throw new UnauthorizedException('Invalid refresh token');
 

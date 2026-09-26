@@ -57,8 +57,9 @@ export class CertificateService {
     const certificateNumber = `CC-${dateStr}-${hexSuffix}`;
 
     const verificationToken = uuidv4();
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    const verificationUrl = `${frontendUrl}/verify/${verificationToken}`;
+    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:3000').split(',')[0].trim();
+    // BUG-04: URL must match the actual Next.js route at /certificates/verify/[token]
+    const verificationUrl = `${frontendUrl}/certificates/verify/${verificationToken}`;
 
     const qrDataUrl = await QRCode.toDataURL(verificationUrl, {
       errorCorrectionLevel: 'H',

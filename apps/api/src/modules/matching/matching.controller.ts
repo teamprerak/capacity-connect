@@ -23,7 +23,8 @@ export class MatchingController {
 
   /** Recompute trainer matches for the authenticated trainee */
   @Post('me/match-trainers')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('trainee')
   @HttpCode(HttpStatus.OK)
   computeMyMatches(
     @CurrentUser('id') userId: string,

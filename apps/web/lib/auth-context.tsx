@@ -61,8 +61,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const res = await api.post('/auth/login', { email, password });
 
     const roles = res.roles || ['trainee'];
+    // BUG-06: Never fabricate a user ID — throw if backend didn't return one
+    if (!res.userId) {
+      throw new Error('Login failed: server did not return a user ID. Please try again.');
+    }
     const session: UserSession = {
-      id: res.userId || 'user-' + Date.now(),
+      id: res.userId,
       email,
       roles,
     };

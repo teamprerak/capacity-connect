@@ -31,8 +31,7 @@ export function RouteGuard({ children, allowedRoles }: RouteGuardProps) {
 
   const hasRole =
     !allowedRoles ||
-    allowedRoles.some((role) => user?.roles.includes(role)) ||
-    user?.roles.includes('admin');
+    allowedRoles.some((role) => user?.roles.includes(role));
 
   useEffect(() => {
     if (isLoading) return;

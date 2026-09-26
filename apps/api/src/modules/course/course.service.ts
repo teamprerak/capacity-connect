@@ -428,6 +428,8 @@ export class CourseService {
         courseId,
         title: dto.title,
         sequenceOrder: dto.sequenceOrder,
+        videoUrl: dto.videoUrl || null,
+        documentUrl: dto.documentUrl || null,
       },
     });
   }

@@ -70,17 +70,8 @@ export interface CourseModuleDto {
   title: string;
   description: string | null;
   sequenceOrder: number;
-  contentUrl: string | null;
-  resources: CourseResourceDto[];
-}
-
-export interface CourseResourceDto {
-  id: string;
-  title: string;
-  type: string;
-  mimeType: string | null;
-  sizeBytes: number | null;
-  createdAt: Date;
+  videoUrl: string | null;
+  documentUrl: string | null;
 }
 
 // ─── Enrollment ────────────────────────────────────────────────────────────────

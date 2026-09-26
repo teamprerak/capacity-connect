@@ -126,19 +126,7 @@ export class CourseService {
         },
         modules: {
           orderBy: { sequenceOrder: 'asc' },
-          include: {
-            resources: {
-              where: { deletedAt: null },
-              select: {
-                id: true,
-                title: true,
-                type: true,
-                mimeType: true,
-                sizeBytes: true,
-                createdAt: true,
-              },
-            },
-          },
+
         },
         assessments: {
           select: {

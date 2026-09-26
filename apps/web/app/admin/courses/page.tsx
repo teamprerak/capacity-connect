@@ -4,11 +4,18 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
-import { CheckCircle, XCircle, BookOpen } from 'lucide-react';
+import { CheckCircle, XCircle, RotateCcw, Trash2 } from 'lucide-react';
+import { RejectCourseModal } from '@/components/RejectCourseModal';
 
 export default function AdminCourseModerationPage() {
   const [courses, setCourses] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const [rejectModalState, setRejectModalState] = useState<{ isOpen: boolean; courseId: string; courseTitle: string }>({
+    isOpen: false,
+    courseId: '',
+    courseTitle: ''
+  });
 
   useEffect(() => {
     fetchCourses();
@@ -17,7 +24,7 @@ export default function AdminCourseModerationPage() {
   const fetchCourses = () => {
     setIsLoading(true);
     api
-      .get('/courses?status=pending_approval')
+      .get('/courses')
       .then((res) => setCourses(res.data || []))
       .catch(() => setCourses([]))
       .finally(() => setIsLoading(false));
@@ -33,13 +40,23 @@ export default function AdminCourseModerationPage() {
     }
   };
 
-  const handleReject = async (courseId: string) => {
-    try {
-      await api.post(`/courses/${courseId}/reject`);
-      toast.success('Course rejected and reverted to draft.');
-      fetchCourses();
-    } catch (err: any) {
-      toast.error(err.message || 'Rejection failed');
+  const handleRejectClick = (courseId: string, courseTitle: string) => {
+    setRejectModalState({ isOpen: true, courseId, courseTitle });
+  };
+
+  const handleRollbackClick = (courseId: string, courseTitle: string) => {
+    setRejectModalState({ isOpen: true, courseId, courseTitle });
+  };
+
+  const handleDelete = async (courseId: string) => {
+    if (window.confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
+      try {
+        await api.delete(`/courses/${courseId}`);
+        toast.success('Course deleted successfully');
+        fetchCourses();
+      } catch (err: any) {
+        toast.error(err.message || 'Deletion failed');
+      }
     }
   };
 
@@ -51,6 +68,14 @@ export default function AdminCourseModerationPage() {
           <span className="font-bold text-white block">{course.title}</span>
           <span className="text-[10px] text-slate-500 font-mono">Slug: {course.slug}</span>
         </div>
+      ),
+    },
+    {
+      header: 'Status',
+      accessor: (course: any) => (
+        <span className="text-xs font-bold uppercase px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">
+          {course.status}
+        </span>
       ),
     },
     {
@@ -76,17 +101,38 @@ export default function AdminCourseModerationPage() {
       header: 'Moderation Actions',
       accessor: (course: any) => (
         <div className="flex items-center gap-2">
+          {course.status === 'pending_approval' && (
+            <>
+              <button
+                onClick={() => handleApprove(course.id)}
+                className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5"
+              >
+                <CheckCircle className="w-3.5 h-3.5" /> Approve
+              </button>
+              <button
+                onClick={() => handleRejectClick(course.id, course.title)}
+                className="px-3 py-1.5 rounded-lg text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-all flex items-center gap-1.5"
+              >
+                <XCircle className="w-3.5 h-3.5" /> Reject
+              </button>
+            </>
+          )}
+
+          {course.status === 'published' && (
+            <button
+              onClick={() => handleRollbackClick(course.id, course.title)}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-all flex items-center gap-1.5"
+            >
+              <RotateCcw className="w-3.5 h-3.5" /> Rollback
+            </button>
+          )}
+
           <button
-            onClick={() => handleApprove(course.id)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5"
+            onClick={() => handleDelete(course.id)}
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500/20 transition-all flex items-center gap-1.5"
+            title="Delete Course"
           >
-            <CheckCircle className="w-3.5 h-3.5" /> Approve & Publish
-          </button>
-          <button
-            onClick={() => handleReject(course.id)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all flex items-center gap-1.5"
-          >
-            <XCircle className="w-3.5 h-3.5" /> Reject to Draft
+            <Trash2 className="w-3.5 h-3.5" /> Delete
           </button>
         </div>
       ),
@@ -100,7 +146,7 @@ export default function AdminCourseModerationPage() {
           Course Moderation Queue
         </h1>
         <p className="text-sm text-slate-400 mt-1">
-          Review courses submitted by trainers before publishing them to the enterprise catalog.
+          Review courses submitted by trainers before publishing them to the enterprise catalog. Manage existing courses.
         </p>
       </div>
 
@@ -108,7 +154,15 @@ export default function AdminCourseModerationPage() {
         columns={columns}
         data={courses}
         isLoading={isLoading}
-        emptyMessage="No pending course approval requests at this time."
+        emptyMessage="No courses found."
+      />
+
+      <RejectCourseModal
+        courseId={rejectModalState.courseId}
+        courseTitle={rejectModalState.courseTitle}
+        isOpen={rejectModalState.isOpen}
+        onClose={() => setRejectModalState(prev => ({ ...prev, isOpen: false }))}
+        onSuccess={fetchCourses}
       />
     </div>
   );

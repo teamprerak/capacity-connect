@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { StatCard } from '@/components/StatCard';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { AddModuleModal } from '@/components/AddModuleModal';
+import { EditCourseModal } from '@/components/EditCourseModal';
 import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
 import {
@@ -70,79 +71,83 @@ interface CourseActionsProps {
   onAddModule: (course: any) => void;
   onSubmit: (courseId: string, moduleCount: number) => void;
   onArchive: (courseId: string) => void;
+  onEdit: (course: any) => void;
+  onDelete: (courseId: string) => void;
 }
 
-function CourseActions({ course, onAddModule, onSubmit, onArchive }: CourseActionsProps) {
+function CourseActions({ course, onAddModule, onSubmit, onArchive, onEdit, onDelete }: CourseActionsProps) {
   const moduleCount: number = course._count?.modules ?? 0;
 
-  if (course.status === 'draft') {
-    return (
+  return (
+    <div className="flex flex-col gap-2 items-end">
       <div className="flex items-center gap-2 flex-wrap justify-end">
-        {/* Add Module */}
-        <button
-          onClick={() => onAddModule(course)}
-          className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all flex items-center gap-1.5"
-        >
-          <Layers className="w-3.5 h-3.5" />
-          Add Module
-        </button>
-
-        {/* Submit for Approval */}
-        <div className="relative group">
+        {course.status !== 'archived' && (
           <button
-            onClick={() => onSubmit(course.id, moduleCount)}
-            disabled={moduleCount === 0}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+            onClick={() => onEdit(course)}
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-500/10 text-slate-300 border border-slate-500/20 hover:bg-slate-500/20 transition-all flex items-center gap-1.5"
           >
-            <SendHorizonal className="w-3.5 h-3.5" />
-            Submit for Review
+            Edit Course
           </button>
+        )}
 
-          {/* Tooltip when modules are missing */}
-          {moduleCount === 0 && (
-            <div className="absolute bottom-full right-0 mb-2 w-52 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-[11px] text-amber-400 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-              <div className="flex items-start gap-1.5">
-                <BadgeAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-                Add at least 1 module before submitting for review.
-              </div>
+        {course.status === 'draft' && (
+          <>
+            <button
+              onClick={() => onAddModule(course)}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all flex items-center gap-1.5"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              Add Module
+            </button>
+
+            <div className="relative group">
+              <button
+                onClick={() => onSubmit(course.id, moduleCount)}
+                disabled={moduleCount === 0}
+                className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <SendHorizonal className="w-3.5 h-3.5" />
+                Submit
+              </button>
+
+              {moduleCount === 0 && (
+                <div className="absolute bottom-full right-0 mb-2 w-52 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-[11px] text-amber-400 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                  <div className="flex items-start gap-1.5">
+                    <BadgeAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                    Add at least 1 module before submitting.
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </>
+        )}
+
+        {course.status === 'published' && (
+          <button
+            onClick={() => onArchive(course.id)}
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all flex items-center gap-1.5"
+          >
+            <Archive className="w-3.5 h-3.5" />
+            Archive
+          </button>
+        )}
+
+        <button
+          onClick={() => onDelete(course.id)}
+          className="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all flex items-center gap-1.5"
+        >
+          Delete
+        </button>
+      </div>
+      
+      {course.status === 'pending_approval' && (
+        <div className="flex items-center gap-1.5 text-amber-400 text-xs font-semibold mt-1">
+          <Clock className="w-4 h-4 animate-pulse" />
+          Under Review
         </div>
-      </div>
-    );
-  }
-
-  if (course.status === 'pending_approval') {
-    return (
-      <div className="flex items-center gap-1.5 text-amber-400 text-xs font-semibold">
-        <Clock className="w-4 h-4 animate-pulse" />
-        Under Administrative Review
-      </div>
-    );
-  }
-
-  if (course.status === 'published') {
-    return (
-      <button
-        onClick={() => onArchive(course.id)}
-        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all flex items-center gap-1.5"
-      >
-        <Archive className="w-3.5 h-3.5" />
-        Archive Course
-      </button>
-    );
-  }
-
-  if (course.status === 'archived') {
-    return (
-      <div className="flex items-center gap-1.5 text-rose-400 text-xs font-semibold">
-        <Archive className="w-4 h-4" />
-        Archived
-      </div>
-    );
-  }
-
-  return null;
+      )}
+    </div>
+  );
 }
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
@@ -154,6 +159,7 @@ export default function TrainerDashboard() {
 
   // Modal state
   const [addModuleCourse, setAddModuleCourse] = useState<any | null>(null);
+  const [editCourse, setEditCourse] = useState<any | null>(null);
 
   const fetchData = useCallback(() => {
     setIsLoading(true);
@@ -178,6 +184,21 @@ export default function TrainerDashboard() {
 
   const handleOpenAddModule = (course: any) => {
     setAddModuleCourse(course);
+  };
+
+  const handleEditCourse = (course: any) => {
+    setEditCourse(course);
+  };
+
+  const handleDeleteCourse = async (courseId: string) => {
+    if (!window.confirm('Are you sure you want to delete this course? This action is permanent and cannot be undone.')) return;
+    try {
+      await api.delete(`/courses/${courseId}`);
+      toast.success('Course deleted successfully.');
+      fetchData();
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to delete course');
+    }
   };
 
   const handleSubmitForReview = async (courseId: string, moduleCount: number) => {
@@ -342,6 +363,8 @@ export default function TrainerDashboard() {
                     onAddModule={handleOpenAddModule}
                     onSubmit={handleSubmitForReview}
                     onArchive={handleArchive}
+                    onEdit={handleEditCourse}
+                    onDelete={handleDeleteCourse}
                   />
                 </div>
               </div>
@@ -365,6 +388,16 @@ export default function TrainerDashboard() {
           courseTitle={addModuleCourse.title}
           isOpen={!!addModuleCourse}
           onClose={() => setAddModuleCourse(null)}
+          onSuccess={fetchData}
+        />
+      )}
+
+      {/* ── Edit Course Modal ── */}
+      {editCourse && (
+        <EditCourseModal
+          course={editCourse}
+          isOpen={!!editCourse}
+          onClose={() => setEditCourse(null)}
           onSuccess={fetchData}
         />
       )}

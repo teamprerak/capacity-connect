@@ -209,16 +209,6 @@ export class CourseService {
     if (!isAdmin) {
       await this._assertCourseOwner(trainerUserId, course);
     }
-    if (
-      !isAdmin &&
-      course.status !== CourseStatus.draft &&
-      course.status !== CourseStatus.pending_approval
-    ) {
-      throw new ForbiddenException(
-        'Cannot edit a published or archived course. Archive it first.',
-      );
-    }
-
     const { skillIds, ...courseData } = dto;
 
     // M-2: Reject any attempt to change status through the general update endpoint.
@@ -227,6 +217,12 @@ export class CourseService {
       throw new BadRequestException(
         'Cannot set status via this endpoint. Use /courses/:id/submit, /approve, /reject, or /archive for status transitions.',
       );
+    }
+
+    let downgraded = false;
+    if (!isAdmin && course.status === CourseStatus.published) {
+      (courseData as any).status = CourseStatus.pending_approval;
+      downgraded = true;
     }
 
     return this.prisma.$transaction(async (tx) => {
@@ -255,7 +251,10 @@ export class CourseService {
         entityType: 'Course',
         entityId: courseId,
         ipAddress,
-        metadata: { fieldsUpdated: Object.keys(dto) },
+        metadata: {
+          fieldsUpdated: Object.keys(dto),
+          ...(downgraded ? { revertedToPending: true } : {}),
+        },
         prisma: tx,
       });
 

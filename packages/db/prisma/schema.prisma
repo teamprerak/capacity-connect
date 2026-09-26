@@ -30,7 +30,6 @@ model User {
   trainerProfile         TrainerProfile?
   refreshTokens          RefreshToken[]
   auditLogs              AuditLog[]       @relation("ActorAuditLogs")
-  uploadedResources      CourseResource[]
   createdAssessments     Assessment[]
   createdCourses         Course[]
   notifications          Notification[]
@@ -489,46 +488,16 @@ model CourseModule {
   courseId       String
   title          String
   sequenceOrder  Int
+  videoUrl       String?
+  documentUrl    String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   course    Course          @relation(fields: [courseId], references: [id])
-  resources CourseResource[]
   progress  CourseProgress[]
 
   @@index([courseId])
   @@map("course_modules")
-}
-
-model CourseResource {
-  id          String       @id @default(uuid())
-  moduleId    String
-  type        ResourceType
-  title       String
-  storageKey  String
-  mimeType    String
-  sizeBytes   BigInt       @default(0)
-  uploadedById String
-  deletedAt   DateTime?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-
-  module     CourseModule @relation(fields: [moduleId], references: [id])
-  uploadedBy User         @relation(fields: [uploadedById], references: [id])
-
-  @@index([moduleId])
-  @@map("course_resources")
-}
-
-enum ResourceType {
-  pdf
-  ppt
-  pptx
-  doc
-  docx
-  video
-  audio
-  image
 }
 
 model Enrollment {

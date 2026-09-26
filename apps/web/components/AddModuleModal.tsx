@@ -23,6 +23,8 @@ export function AddModuleModal({
 }: AddModuleModalProps) {
   const [title, setTitle] = useState('');
   const [sequenceOrder, setSequenceOrder] = useState(1);
+  const [videoUrl, setVideoUrl] = useState('');
+  const [documentUrl, setDocumentUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,10 +39,14 @@ export function AddModuleModal({
       await api.post(`/courses/${courseId}/modules`, {
         title: title.trim(),
         sequenceOrder: Number(sequenceOrder),
+        ...(videoUrl.trim() ? { videoUrl: videoUrl.trim() } : {}),
+        ...(documentUrl.trim() ? { documentUrl: documentUrl.trim() } : {}),
       });
       toast.success(`Module "${title}" added successfully!`);
       setTitle('');
       setSequenceOrder(1);
+      setVideoUrl('');
+      setDocumentUrl('');
       onSuccess();
       onClose();
     } catch (err: any) {
@@ -91,6 +97,34 @@ export function AddModuleModal({
           <p className="text-[11px] text-slate-500 mt-1">
             Determines the order this module appears in the course syllabus.
           </p>
+        </div>
+
+        {/* Video URL */}
+        <div>
+          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-1.5">
+            YouTube Video URL <span className="text-slate-500 font-normal ml-1">(Optional)</span>
+          </label>
+          <input
+            type="url"
+            value={videoUrl}
+            onChange={(e) => setVideoUrl(e.target.value)}
+            placeholder="https://www.youtube.com/watch?v=..."
+            className="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+          />
+        </div>
+
+        {/* Document URL */}
+        <div>
+          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-1.5">
+            Document Link (Google Drive / PDF) <span className="text-slate-500 font-normal ml-1">(Optional)</span>
+          </label>
+          <input
+            type="url"
+            value={documentUrl}
+            onChange={(e) => setDocumentUrl(e.target.value)}
+            placeholder="https://docs.google.com/..."
+            className="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+          />
         </div>
 
         {/* Actions */}

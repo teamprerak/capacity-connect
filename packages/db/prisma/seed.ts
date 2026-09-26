@@ -2,7 +2,7 @@ if (!process.env.DATABASE_URL) {
   process.env.DATABASE_URL = 'postgresql://ccuser:ccpassword@localhost:5433/capacityconnect';
 }
 
-import { PrismaClient, UserStatus, VerificationStatus, CourseStatus, Difficulty, ResourceType, EnrollmentStatus, ProgressStatus, AssessmentType, QuestionType, GapClassification } from '../generated/client/index.js';
+import { PrismaClient, UserStatus, VerificationStatus, CourseStatus, Difficulty, EnrollmentStatus, ProgressStatus, AssessmentType, QuestionType, GapClassification } from '../generated/client/index.js';
 import * as argon2 from 'argon2';
 import { v4 as uuidv4 } from 'uuid';
 import * as QRCode from 'qrcode';
@@ -24,7 +24,6 @@ async function main() {
   await prisma.assessment.deleteMany();
   await prisma.courseProgress.deleteMany();
   await prisma.enrollment.deleteMany();
-  await prisma.courseResource.deleteMany();
   await prisma.courseModule.deleteMany();
   await prisma.coursePrerequisite.deleteMany();
   await prisma.courseSkill.deleteMany();
@@ -280,12 +279,14 @@ async function main() {
     },
   });
 
-  // Modules & Resources
+  // Modules
   const module1 = await prisma.courseModule.create({
     data: {
       courseId: course1.id,
       title: 'Module 1: Microservices Fundamentals & Domain-Driven Design',
       sequenceOrder: 1,
+      videoUrl: 'https://www.youtube.com/watch?v=1oW_m1o1wEI',
+      documentUrl: 'https://docs.google.com/document/d/example-doc',
     },
   });
 
@@ -294,18 +295,7 @@ async function main() {
       courseId: course1.id,
       title: 'Module 2: Containerization with Docker & Multi-stage Builds',
       sequenceOrder: 2,
-    },
-  });
-
-  await prisma.courseResource.create({
-    data: {
-      moduleId: module1.id,
-      type: ResourceType.pdf,
-      title: 'Architecture Blueprint PDF',
-      storageKey: 'resources/microservices-blueprint.pdf',
-      mimeType: 'application/pdf',
-      sizeBytes: BigInt(2450000),
-      uploadedById: trainers[0].user.id,
+      videoUrl: 'https://www.youtube.com/watch?v=3c-iZaI7f-0',
     },
   });
 

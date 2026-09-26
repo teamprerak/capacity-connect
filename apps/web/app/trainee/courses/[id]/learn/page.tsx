@@ -79,17 +79,47 @@ export default function CoursePlayerPage() {
               Capacity Building Module Player & Resource Desk
             </p>
 
-            <div className="aspect-video w-full rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center p-8 text-center relative overflow-hidden">
-              <div className="space-y-3">
-                <div className="w-16 h-16 rounded-full bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center mx-auto shadow-lg shadow-blue-500/20">
-                  <Play className="w-8 h-8 ml-1" />
+            <div className="aspect-video w-full rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-center relative overflow-hidden">
+              {activeModule?.videoUrl ? (
+                <iframe
+                  src={activeModule.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
+                  title="Course Video Player"
+                  className="w-full h-full border-0 absolute inset-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              ) : (
+                <div className="space-y-3 p-8">
+                  <div className="w-16 h-16 rounded-full bg-slate-800 text-slate-500 border border-slate-700 flex items-center justify-center mx-auto">
+                    <FileText className="w-8 h-8" />
+                  </div>
+                  <h4 className="text-base font-bold text-white">No Video Available</h4>
+                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                    {activeModule ? activeModule.title : 'Module ready.'}
+                  </p>
                 </div>
-                <h4 className="text-base font-bold text-white">Interactive Video Lecture Stream</h4>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                  {activeModule ? activeModule.title : 'Module streaming ready.'}
-                </p>
-              </div>
+              )}
             </div>
+
+            {activeModule?.documentUrl && (
+              <div className="mt-4 p-4 rounded-xl bg-blue-900/20 border border-blue-800/30 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <FileText className="text-blue-400 w-5 h-5" />
+                  <div>
+                    <h4 className="text-sm font-bold text-white">Module Resource</h4>
+                    <p className="text-xs text-slate-400">Supporting document or slides</p>
+                  </div>
+                </div>
+                <a
+                  href={activeModule.documentUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors"
+                >
+                  View Resource
+                </a>
+              </div>
+            )}
 
             <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-800">
               <button

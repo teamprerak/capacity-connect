@@ -92,10 +92,13 @@ export default function CoursePlayerPage() {
               Capacity Building Module Player & Resource Desk
             </p>
 
-            <div className="aspect-video w-full rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-center relative overflow-hidden">
+            <div className="aspect-video w-full rounded-3xl bg-slate-900 border border-slate-700/50 shadow-2xl flex items-center justify-center text-center relative overflow-hidden ring-1 ring-white/10">
               {activeModule?.videoUrl ? (
                 <iframe
-                  src={activeModule.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
+                  src={(() => {
+                    let url = activeModule.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/');
+                    return url.includes('?') ? url + '&rel=0' : url + '?rel=0';
+                  })()}
                   title="Course Video Player"
                   className="w-full h-full border-0 absolute inset-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -161,27 +164,38 @@ export default function CoursePlayerPage() {
         </div>
 
         {/* Sidebar Module List */}
-        <div className="w-full lg:w-80 glass-card rounded-3xl p-5 border border-slate-800 space-y-4">
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider text-slate-400">
-            Course Modules ({course?.modules?.length || 0})
-          </h3>
+        <div className="w-full lg:w-80 glass-card rounded-3xl p-5 border border-slate-700/50 shadow-xl space-y-4">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider text-slate-400">
+              Modules
+            </h3>
+            <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded-md text-[10px] font-bold">
+              {completedModules.length} / {course?.modules?.length || 0}
+            </span>
+          </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 overflow-y-auto max-h-[600px] pr-1 custom-scrollbar">
             {course?.modules?.map((mod: any, idx: number) => (
               <button
                 key={mod.id}
                 onClick={() => setActiveModule(mod)}
-                className={`w-full text-left p-3.5 rounded-xl border text-xs font-semibold transition-all flex items-center justify-between ${
+                className={`w-full text-left p-3.5 rounded-xl border text-xs font-semibold transition-all flex items-center justify-between group ${
                   activeModule?.id === mod.id
                     ? 'bg-blue-600/20 text-blue-300 border-blue-500/40 shadow-lg shadow-blue-500/10'
-                    : 'bg-slate-900/60 text-slate-400 border-slate-800 hover:text-white'
+                    : 'bg-slate-900/40 text-slate-400 border-slate-800/60 hover:bg-slate-800/60 hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-[10px] font-bold">
-                    {idx + 1}
+                  <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-bold transition-colors ${
+                    completedModules.includes(mod.id)
+                      ? 'bg-emerald-500/20 text-emerald-400'
+                      : activeModule?.id === mod.id
+                      ? 'bg-blue-500/20 text-blue-400'
+                      : 'bg-slate-800 text-slate-400 group-hover:bg-slate-700'
+                  }`}>
+                    {completedModules.includes(mod.id) ? <CheckCircle className="w-3 h-3" /> : idx + 1}
                   </span>
-                  <span className="line-clamp-1">{mod.title}</span>
+                  <span className="line-clamp-2">{mod.title}</span>
                 </div>
               </button>
             ))}

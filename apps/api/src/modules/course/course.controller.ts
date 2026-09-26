@@ -183,6 +183,20 @@ export class CourseController {
     return this.courseService.archiveCourse(userId, id, isAdmin, extractIp(req));
   }
 
+  @Patch('courses/:id/unarchive')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('trainer')
+  @HttpCode(HttpStatus.OK)
+  unarchiveCourse(
+    @CurrentUser('id') userId: string,
+    @CurrentUser() user: any,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Req() req: Request,
+  ): Promise<any> {
+    const isAdmin = user?.roles?.some((r: any) => r.name === 'admin');
+    return this.courseService.unarchiveCourse(userId, id, isAdmin, extractIp(req));
+  }
+
   // ─── Course Modules ───────────────────────────────────────────────────────────
 
   @Post('courses/:courseId/modules')

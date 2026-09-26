@@ -315,6 +315,39 @@ export class CourseService {
     });
   }
 
+  async unarchiveCourse(
+    userId: string,
+    courseId: string,
+    isAdmin = false,
+    ipAddress: string | null = null,
+  ): Promise<any> {
+    const course = await this._requireCourse(courseId);
+    if (!isAdmin) {
+      await this._assertCourseOwner(userId, course);
+    }
+    if (course.status !== CourseStatus.archived) {
+      throw new BadRequestException('Only archived courses can be unarchived');
+    }
+    return this.prisma.$transaction(async (tx) => {
+      const updatedCourse = await tx.course.update({
+        where: { id: courseId },
+        data: { status: CourseStatus.draft },
+      });
+
+      await this.auditService.log({
+        actorUserId: userId,
+        action: 'course.unarchived',
+        entityType: 'Course',
+        entityId: courseId,
+        ipAddress,
+        metadata: { newStatus: CourseStatus.draft },
+        prisma: tx,
+      });
+
+      return updatedCourse;
+    });
+  }
+
   async submitForApproval(trainerUserId: string, courseId: string, ipAddress: string | null = null): Promise<any> {
     const course = await this._requireCourse(courseId);
     await this._assertCourseOwner(trainerUserId, course);
@@ -418,21 +451,36 @@ export class CourseService {
     const course = await this._requireCourse(courseId);
     await this._assertCourseOwner(trainerUserId, course);
 
-    // BUG-17: Adding modules to published/archived courses breaks progress tracking for existing enrollments
-    if (course.status === 'published' || course.status === 'archived') {
-      throw new BadRequestException(
-        `Cannot add modules to a ${course.status} course. Archive and recreate to restructure.`,
-      );
-    }
+    const isPublished = course.status === CourseStatus.published;
 
-    return this.prisma.courseModule.create({
-      data: {
-        courseId,
-        title: dto.title,
-        sequenceOrder: dto.sequenceOrder,
-        videoUrl: dto.videoUrl || null,
-        documentUrl: dto.documentUrl || null,
-      },
+    return this.prisma.$transaction(async (tx) => {
+      const module = await tx.courseModule.create({
+        data: {
+          courseId,
+          title: dto.title,
+          sequenceOrder: dto.sequenceOrder,
+          videoUrl: dto.videoUrl || null,
+          documentUrl: dto.documentUrl || null,
+        },
+      });
+
+      if (isPublished) {
+        await tx.course.update({
+          where: { id: courseId },
+          data: { status: CourseStatus.pending_approval },
+        });
+        await this.auditService.log({
+          actorUserId: trainerUserId,
+          action: 'course.status_changed',
+          entityType: 'Course',
+          entityId: courseId,
+          ipAddress: null,
+          metadata: { newStatus: CourseStatus.pending_approval, reason: 'Module added' },
+          prisma: tx,
+        });
+      }
+
+      return module;
     });
   }
 
@@ -445,14 +493,36 @@ export class CourseService {
     const course = await this._requireCourse(courseId);
     await this._assertCourseOwner(trainerUserId, course);
 
-    const mod = await this.prisma.courseModule.findFirst({
-      where: { id: moduleId, courseId },
-    });
-    if (!mod) throw new NotFoundException('Module not found');
+    const isPublished = course.status === CourseStatus.published;
 
-    return this.prisma.courseModule.update({
-      where: { id: moduleId },
-      data: dto,
+    return this.prisma.$transaction(async (tx) => {
+      const mod = await tx.courseModule.findFirst({
+        where: { id: moduleId, courseId },
+      });
+      if (!mod) throw new NotFoundException('Module not found');
+
+      const updatedModule = await tx.courseModule.update({
+        where: { id: moduleId },
+        data: dto,
+      });
+
+      if (isPublished) {
+        await tx.course.update({
+          where: { id: courseId },
+          data: { status: CourseStatus.pending_approval },
+        });
+        await this.auditService.log({
+          actorUserId: trainerUserId,
+          action: 'course.status_changed',
+          entityType: 'Course',
+          entityId: courseId,
+          ipAddress: null,
+          metadata: { newStatus: CourseStatus.pending_approval, reason: 'Module updated' },
+          prisma: tx,
+        });
+      }
+
+      return updatedModule;
     });
   }
 
@@ -464,12 +534,34 @@ export class CourseService {
     const course = await this._requireCourse(courseId);
     await this._assertCourseOwner(trainerUserId, course);
 
-    const mod = await this.prisma.courseModule.findFirst({
-      where: { id: moduleId, courseId },
-    });
-    if (!mod) throw new NotFoundException('Module not found');
+    const isPublished = course.status === CourseStatus.published;
 
-    return this.prisma.courseModule.delete({ where: { id: moduleId } });
+    return this.prisma.$transaction(async (tx) => {
+      const mod = await tx.courseModule.findFirst({
+        where: { id: moduleId, courseId },
+      });
+      if (!mod) throw new NotFoundException('Module not found');
+
+      const deletedModule = await tx.courseModule.delete({ where: { id: moduleId } });
+
+      if (isPublished) {
+        await tx.course.update({
+          where: { id: courseId },
+          data: { status: CourseStatus.pending_approval },
+        });
+        await this.auditService.log({
+          actorUserId: trainerUserId,
+          action: 'course.status_changed',
+          entityType: 'Course',
+          entityId: courseId,
+          ipAddress: null,
+          metadata: { newStatus: CourseStatus.pending_approval, reason: 'Module deleted' },
+          prisma: tx,
+        });
+      }
+
+      return deletedModule;
+    });
   }
 
   // ─── Enrollment & Progress ────────────────────────────────────────────────────

@@ -21,6 +21,8 @@ import {
   CheckCircle2,
   XCircle,
   BadgeAlert,
+  RotateCcw,
+  Trash2,
 } from 'lucide-react';
 
 // ─── Status Badge ─────────────────────────────────────────────────────────────
@@ -71,11 +73,12 @@ interface CourseActionsProps {
   onAddModule: (course: any) => void;
   onSubmit: (courseId: string, moduleCount: number) => void;
   onArchive: (courseId: string) => void;
+  onUnarchive: (courseId: string) => void;
   onEdit: (course: any) => void;
   onDelete: (courseId: string) => void;
 }
 
-function CourseActions({ course, onAddModule, onSubmit, onArchive, onEdit, onDelete }: CourseActionsProps) {
+function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, onEdit, onDelete }: CourseActionsProps) {
   const moduleCount: number = course._count?.modules ?? 0;
 
   return (
@@ -90,36 +93,36 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onEdit, onDel
           </button>
         )}
 
+        {course.status !== 'archived' && (
+          <button
+            onClick={() => onAddModule(course)}
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all flex items-center gap-1.5"
+          >
+            <Layers className="w-3.5 h-3.5" />
+            Add Module
+          </button>
+        )}
+
         {course.status === 'draft' && (
-          <>
+          <div className="relative group">
             <button
-              onClick={() => onAddModule(course)}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all flex items-center gap-1.5"
+              onClick={() => onSubmit(course.id, moduleCount)}
+              disabled={moduleCount === 0}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <Layers className="w-3.5 h-3.5" />
-              Add Module
+              <SendHorizonal className="w-3.5 h-3.5" />
+              Submit
             </button>
 
-            <div className="relative group">
-              <button
-                onClick={() => onSubmit(course.id, moduleCount)}
-                disabled={moduleCount === 0}
-                className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <SendHorizonal className="w-3.5 h-3.5" />
-                Submit
-              </button>
-
-              {moduleCount === 0 && (
-                <div className="absolute bottom-full right-0 mb-2 w-52 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-[11px] text-amber-400 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                  <div className="flex items-start gap-1.5">
-                    <BadgeAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-                    Add at least 1 module before submitting.
-                  </div>
+            {moduleCount === 0 && (
+              <div className="absolute bottom-full right-0 mb-2 w-52 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-[11px] text-amber-400 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                <div className="flex items-start gap-1.5">
+                  <BadgeAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                  Add at least 1 module before submitting.
                 </div>
-              )}
-            </div>
-          </>
+              </div>
+            )}
+          </div>
         )}
 
         {course.status === 'published' && (
@@ -132,10 +135,21 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onEdit, onDel
           </button>
         )}
 
+        {course.status === 'archived' && (
+          <button
+            onClick={() => onUnarchive(course.id)}
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all flex items-center gap-1.5"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Unarchive
+          </button>
+        )}
+
         <button
           onClick={() => onDelete(course.id)}
           className="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all flex items-center gap-1.5"
         >
+          <Trash2 className="w-3.5 h-3.5" />
           Delete
         </button>
       </div>
@@ -223,6 +237,16 @@ export default function TrainerDashboard() {
       fetchData();
     } catch (err: any) {
       toast.error(err.message || 'Archive failed. Please try again.');
+    }
+  };
+
+  const handleUnarchive = async (courseId: string) => {
+    try {
+      await api.patch(`/courses/${courseId}/unarchive`);
+      toast.success('Course unarchived successfully. It is now a draft.');
+      fetchData();
+    } catch (err: any) {
+      toast.error(err.message || 'Unarchive failed. Please try again.');
     }
   };
 
@@ -363,6 +387,7 @@ export default function TrainerDashboard() {
                     onAddModule={handleOpenAddModule}
                     onSubmit={handleSubmitForReview}
                     onArchive={handleArchive}
+                    onUnarchive={handleUnarchive}
                     onEdit={handleEditCourse}
                     onDelete={handleDeleteCourse}
                   />

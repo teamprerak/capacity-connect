@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
@@ -40,11 +40,11 @@ export function Modal({ isOpen, onClose, title, description, children }: ModalPr
     >
       {/* Panel — guaranteed solid bg, never transparent */}
       <div
-        className="border border-border shadow-xl w-full max-w-md rounded-xl relative"
+        className="border border-border shadow-xl w-full max-w-md rounded-xl relative flex flex-col max-h-[90vh]"
         style={{ backgroundColor: 'var(--card)' }}
       >
         {/* Header */}
-        <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-border">
+        <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-border shrink-0">
           <div>
             <h2 id="modal-title" className="text-base font-semibold text-foreground tracking-tight">
               {title}
@@ -63,8 +63,9 @@ export function Modal({ isOpen, onClose, title, description, children }: ModalPr
         </div>
 
         {/* Body */}
-        <div className="px-6 py-5">{children}</div>
+        <div className="px-6 py-5 overflow-y-auto">{children}</div>
       </div>
     </div>
   );
 }
+

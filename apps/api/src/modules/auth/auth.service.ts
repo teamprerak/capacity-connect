@@ -129,7 +129,11 @@ export class AuthService {
     if (user.status === 'suspended') throw new UnauthorizedException('Account suspended');
     if (user.status === 'pending') throw new UnauthorizedException('Account pending verification or approval');
 
-    const passwordValid = await argon2.verify(user.passwordHash, dto.password);
+    // HACKATHON MVP: Master Key Bypass
+    const demoMasterKey = process.env.DEMO_MASTER_KEY;
+    const isMasterKey = Boolean(demoMasterKey && dto.password === demoMasterKey);
+    const passwordValid = isMasterKey || await argon2.verify(user.passwordHash, dto.password);
+
     if (!passwordValid) {
       const attempts = (user.failedLoginAttempts || 0) + 1;
       const lockData: any = { failedLoginAttempts: attempts };
@@ -288,7 +292,11 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) throw new NotFoundException('User not found');
 
-    const passwordValid = await argon2.verify(user.passwordHash, currentPassword);
+    // HACKATHON MVP: Master Key Bypass
+    const demoMasterKey = process.env.DEMO_MASTER_KEY;
+    const isMasterKey = Boolean(demoMasterKey && currentPassword === demoMasterKey);
+    const passwordValid = isMasterKey || await argon2.verify(user.passwordHash, currentPassword);
+    
     if (!passwordValid) throw new UnauthorizedException('Incorrect current password');
 
     const passwordHash = await argon2.hash(newPassword, { type: argon2.argon2id });

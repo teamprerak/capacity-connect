@@ -127,6 +127,14 @@
   .icon-on-primary * {
     color: #ffffff !important;
   }
+
+  /* Logo tile: dark in light mode (readable on white header), primary blue in dark mode */
+  .logo-tile {
+    background-color: #1e293b;  /* slate-800 — visible on white bg */
+  }
+  [data-theme="dark"] .logo-tile {
+    background-color: var(--primary);
+  }
 }
 
 /* ─── Utility classes ───────────────────────────────────────────────────── */

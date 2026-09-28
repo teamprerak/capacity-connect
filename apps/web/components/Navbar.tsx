@@ -50,8 +50,8 @@ export function Navbar() {
 
           {/* Logo — visible in both themes */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-            {/* Blue tile — icon-on-primary ensures white icon in both themes */}
-            <div className="icon-on-primary w-8 h-8 rounded-md bg-primary flex items-center justify-center shadow-sm transition-all group-hover:opacity-90 group-hover:scale-[1.04]">
+            {/* logo-tile: slate-800 in light mode, primary blue in dark — both show white icon */}
+            <div className="logo-tile icon-on-primary w-8 h-8 rounded-md flex items-center justify-center shadow-sm transition-all group-hover:opacity-90 group-hover:scale-[1.04]">
               <Layers className="w-4 h-4" strokeWidth={2.5} />
             </div>
             <div className="flex flex-col leading-tight">

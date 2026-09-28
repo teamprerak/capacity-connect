@@ -38,8 +38,11 @@ export function Modal({ isOpen, onClose, title, description, children }: ModalPr
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      {/* Panel — solid card background, never transparent */}
-      <div className="bg-card border border-border shadow-lg w-full max-w-md rounded-xl relative">
+      {/* Panel — guaranteed solid bg, never transparent */}
+      <div
+        className="border border-border shadow-xl w-full max-w-md rounded-xl relative"
+        style={{ backgroundColor: 'var(--card)' }}
+      >
         {/* Header */}
         <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-border">
           <div>

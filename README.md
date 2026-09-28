@@ -137,8 +137,8 @@ The database seeder automatically provisions the following accounts:
 | Role | Email | Password |
 |---|---|---|
 | **Admin** | `admin@capacityconnect.org` | `Password123!` |
-| **Trainer** | `alice.trainer@capacityconnect.org` | `Password123!` |
-| **Trainee** | `john.trainee@capacityconnect.org` | `Password123!` |
+| **Trainer** | `trainer.devops@capacityconnect.org` | `Password123!` |
+| **Trainee** | `trainee1@capacityconnect.org` | `Password123!` |
 
 ---
 

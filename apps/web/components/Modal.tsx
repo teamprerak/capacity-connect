@@ -29,17 +29,17 @@ export function Modal({ isOpen, onClose, title, description, children }: ModalPr
   if (!isOpen) return null;
 
   return (
-    /* Backdrop — semi-opaque, subtle blur */
+    /* Backdrop — dark overlay, no theme leaking through */
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+      style={{ backdropFilter: 'blur(3px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      {/* Panel */}
-      <div className="bg-card border border-border shadow-md w-full max-w-md rounded-lg relative">
+      {/* Panel — solid card background, never transparent */}
+      <div className="bg-card border border-border shadow-lg w-full max-w-md rounded-xl relative">
         {/* Header */}
         <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-border">
           <div>

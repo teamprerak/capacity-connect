@@ -154,14 +154,14 @@ export default function AdminDashboardPage() {
       {/* Critical Gap Intervention Feed & Difficult Quizzes Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Critical Gap Urgent Feed */}
-        <div className="bg-card border border-border shadow-sm rounded-md p-6 border border-rose-500/30 space-y-4">
+        <div className="surface-card p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-rose-400">
-              <AlertTriangle className="w-5 h-5" />
-              <h3 className="text-lg font-bold text-foreground">Critical Gap Urgent Feed</h3>
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-error" />
+              <h3 className="text-base font-semibold text-foreground">Critical Gap Urgent Feed</h3>
             </div>
-            <span className="text-xs font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/20">
-              $\ge 3$ Level Gaps
+            <span className="badge-error text-xs font-semibold px-2 py-0.5 rounded">
+              ≥3 Level Gaps
             </span>
           </div>
 
@@ -173,10 +173,10 @@ export default function AdminDashboardPage() {
                   className="p-3.5 rounded-lg bg-background border border-border text-xs flex items-center justify-between"
                 >
                   <div>
-                    <span className="font-bold text-foreground block">{item.trainee?.user?.email}</span>
+                    <span className="font-semibold text-foreground block">{item.trainee?.user?.email}</span>
                     <span className="text-muted-foreground">{item.traineeCompetency?.competency?.name}</span>
                   </div>
-                  <span className="font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-1 rounded">
+                  <span className="font-mono font-semibold text-error bg-error/10 px-2 py-1 rounded border border-error/20">
                     Gap: -{item.gapValue}
                   </span>
                 </div>
@@ -190,13 +190,13 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Difficult Assessment Detector */}
-        <div className="bg-card border border-border shadow-sm rounded-md p-6 border border-amber-500/30 space-y-4">
+        <div className="surface-card p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-amber-400">
-              <FileText className="w-5 h-5" />
-              <h3 className="text-lg font-bold text-foreground">Low Pass-Rate Assessments</h3>
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-warning" />
+              <h3 className="text-base font-semibold text-foreground">Low Pass-Rate Assessments</h3>
             </div>
-            <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
+            <span className="badge-warning text-xs font-semibold px-2 py-0.5 rounded">
               Pass Rate &lt; 50%
             </span>
           </div>
@@ -209,10 +209,10 @@ export default function AdminDashboardPage() {
                   className="p-3.5 rounded-lg bg-background border border-border text-xs flex items-center justify-between"
                 >
                   <div>
-                    <span className="font-bold text-foreground block">{quiz.subject}</span>
+                    <span className="font-semibold text-foreground block">{quiz.subject}</span>
                     <span className="text-muted-foreground">{quiz.course?.title}</span>
                   </div>
-                  <span className="font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded">
+                  <span className="font-mono font-semibold text-warning bg-warning/10 px-2 py-1 rounded border border-warning/20">
                     {quiz.passRatePct}% Pass Rate
                   </span>
                 </div>

@@ -32,9 +32,9 @@ export default function TraineeDashboard() {
   const reqLvl = stats?.competencyStats?.avgRequiredLevel?.toFixed(1) || '0.0';
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">
           Trainee Learning Workspace
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -68,20 +68,20 @@ export default function TraineeDashboard() {
         />
       </div>
 
-      {/* Skill Gap Analysis & AI Assistance Banner */}
-      <div className="bg-card border border-border shadow-sm rounded-md p-6 border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-indigo-950/20 to-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
+      {/* Skill Gap / Target Assessment Banner — neutral surface, no gradient */}
+      <div className="surface-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-500/30">
-            <BrainCircuit className="w-4 h-4" /> Skill Gap Target
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
+            <BrainCircuit className="w-3.5 h-3.5" /> Skill Gap Target
           </div>
-          <h3 className="text-xl font-bold text-foreground">Target Assessment</h3>
-          <p className="text-xs text-muted-foreground max-w-xl leading-relaxed">
+          <h3 className="text-lg font-semibold text-foreground">Target Assessment</h3>
+          <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
             Your current baseline is Level {currentLvl}. Completing recommended courses will bridge your overall gap to Level {reqLvl}.
           </p>
         </div>
         <Link
           href="/trainee/courses"
-          className="px-5 py-3 rounded-lg bg-primary hover:bg-blue-500 text-foreground font-bold text-xs shadow-sm shadow-blue-500/20 flex items-center gap-2 whitespace-nowrap"
+          className="btn-primary text-xs px-5 py-2.5 shrink-0 flex items-center gap-2"
         >
           View Recommendations <ArrowRight className="w-4 h-4" />
         </Link>

@@ -50,16 +50,15 @@ export function Navbar() {
 
           {/* Logo — visible in both themes */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-            {/* Blue tile — always visible */}
-            <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shadow-sm transition-all group-hover:opacity-90 group-hover:scale-[1.04]">
-              <Layers className="w-4 h-4 text-white" strokeWidth={2} />
+            {/* Blue tile — icon-on-primary ensures white icon in both themes */}
+            <div className="icon-on-primary w-8 h-8 rounded-md bg-primary flex items-center justify-center shadow-sm transition-all group-hover:opacity-90 group-hover:scale-[1.04]">
+              <Layers className="w-4 h-4" strokeWidth={2.5} />
             </div>
             <div className="flex flex-col leading-tight">
-              {/* Explicit dark/light text to ensure visibility in both themes */}
               <span className="text-sm font-semibold tracking-tight text-foreground">
                 Capacity Connect
               </span>
-              <span className="text-[10px] tracking-widest uppercase font-medium text-primary/70 -mt-0.5">
+              <span className="text-[10px] tracking-widest uppercase font-semibold text-primary -mt-0.5">
                 Enterprise LMS
               </span>
             </div>

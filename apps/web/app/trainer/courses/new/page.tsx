@@ -18,6 +18,8 @@ export default function CourseBuilderPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isAiDrafting, setIsAiDrafting] = useState(false);
 
+  const [newCategoryName, setNewCategoryName] = useState('');
+
   useEffect(() => {
     api.get('/courses/categories')
       .then((res) => {
@@ -56,12 +58,17 @@ export default function CourseBuilderPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (categoryId === 'other' && !newCategoryName.trim()) {
+      toast.error('Please specify the new category name.');
+      return;
+    }
     setIsSubmitting(true);
     try {
       await api.post('/courses', {
         title,
         description,
-        categoryId,
+        categoryId: categoryId === 'other' ? undefined : categoryId,
+        newCategoryName: categoryId === 'other' ? newCategoryName : undefined,
         difficulty,
         durationMinutes: Number(durationMinutes),
       });
@@ -120,21 +127,36 @@ export default function CourseBuilderPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-              Category Domain
-            </label>
-            <select
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            >
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
+                Category Domain
+              </label>
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+                <option value="other">Other (Specify)</option>
+              </select>
+            </div>
+            {categoryId === 'other' && (
+              <div>
+                <input
+                  type="text"
+                  required
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="New Category Name"
+                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+            )}
           </div>
 
           <div>

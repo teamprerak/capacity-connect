@@ -31,9 +31,14 @@ export class CreateCourseDto {
   @Transform(({ value }) => sanitizeString(value))
   description: string;
 
-  @IsUUID()
-  @IsNotEmpty()
-  categoryId: string;
+  @IsString()
+  @IsOptional()
+  categoryId?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  newCategoryName?: string;
 
   @IsEnum(Difficulty)
   @IsOptional()

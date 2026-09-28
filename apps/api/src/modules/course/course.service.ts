@@ -160,12 +160,27 @@ export class CourseService {
   ): Promise<any> {
     const trainerProfile = await this._requireTrainerProfile(trainerUserId);
     const slug = this._slugify(dto.title) + '-' + Date.now();
-    const { skillIds, ...courseData } = dto;
+    const { skillIds, newCategoryName, ...courseData } = dto;
+
+    let finalCategoryId = courseData.categoryId;
+    if (finalCategoryId === 'other' || (!finalCategoryId && newCategoryName)) {
+      if (!newCategoryName) {
+        throw new BadRequestException('newCategoryName is required when creating a custom category');
+      }
+      let category = await this.prisma.category.findFirst({
+        where: { name: { equals: newCategoryName, mode: 'insensitive' } },
+      });
+      if (!category) {
+        category = await this.prisma.category.create({ data: { name: newCategoryName } });
+      }
+      finalCategoryId = category.id;
+    }
 
     return this.prisma.$transaction(async (tx) => {
       const course = await tx.course.create({
         data: {
           ...courseData,
+          categoryId: finalCategoryId,
           slug,
           trainerId: trainerProfile.id,
           status: CourseStatus.draft,
@@ -205,7 +220,20 @@ export class CourseService {
     if (!isAdmin) {
       await this._assertCourseOwner(trainerUserId, course);
     }
-    const { skillIds, ...courseData } = dto;
+    const { skillIds, newCategoryName, ...courseData } = dto;
+
+    if (courseData.categoryId === 'other' || newCategoryName) {
+      if (!newCategoryName) {
+        throw new BadRequestException('newCategoryName is required when creating a custom category');
+      }
+      let category = await this.prisma.category.findFirst({
+        where: { name: { equals: newCategoryName, mode: 'insensitive' } },
+      });
+      if (!category) {
+        category = await this.prisma.category.create({ data: { name: newCategoryName } });
+      }
+      courseData.categoryId = category.id;
+    }
 
     // M-2: Reject any attempt to change status through the general update endpoint.
     // Status transitions have dedicated endpoints: /submit, /approve, /reject, /archive.

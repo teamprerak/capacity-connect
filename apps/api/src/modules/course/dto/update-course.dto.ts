@@ -30,9 +30,14 @@ export class UpdateCourseDto {
   @Transform(({ value }) => sanitizeString(value))
   description?: string;
 
-  @IsUUID()
+  @IsString()
   @IsOptional()
   categoryId?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(100)
+  newCategoryName?: string;
 
   @IsEnum(Difficulty)
   @IsOptional()

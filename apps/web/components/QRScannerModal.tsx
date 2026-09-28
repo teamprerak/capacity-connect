@@ -96,12 +96,12 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Verify Digital Certificate Token">
-      <div className="flex bg-slate-900/50 p-1 rounded-lg mb-6 border border-border">
+      <div className="flex bg-accent/50 p-1 rounded-lg mb-6 border border-border">
         <button
           type="button"
           onClick={() => setScanMode('manual')}
           className={`flex-1 py-2 text-sm font-medium rounded-md flex items-center justify-center gap-2 transition-colors ${
-            scanMode === 'manual' ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+            scanMode === 'manual' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
           }`}
         >
           <Keyboard className="w-4 h-4" />
@@ -111,7 +111,7 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
           type="button"
           onClick={() => setScanMode('camera')}
           className={`flex-1 py-2 text-sm font-medium rounded-md flex items-center justify-center gap-2 transition-colors ${
-            scanMode === 'camera' ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+            scanMode === 'camera' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
           }`}
         >
           <Camera className="w-4 h-4" />
@@ -121,7 +121,7 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
 
       {scanMode === 'camera' ? (
         <div className="space-y-4">
-          <div className="rounded-lg overflow-hidden border border-border bg-black">
+          <div className="rounded-lg overflow-hidden border border-border bg-background">
             <div id="reader" className="w-full"></div>
           </div>
           <p className="text-xs text-center text-muted-foreground">

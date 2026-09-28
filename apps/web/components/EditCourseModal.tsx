@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from './Modal';
 import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
-import { Edit3, Sparkles, Trash2 } from 'lucide-react';
+import { Edit3, Sparkles, Trash2, List } from 'lucide-react';
 import { EditModuleModal } from './EditModuleModal';
 
 interface EditCourseModalProps {
@@ -21,6 +21,8 @@ export function EditCourseModal({
   onSuccess,
 }: EditCourseModalProps) {
   const [categories, setCategories] = useState<any[]>([]);
+  const [fullCourse, setFullCourse] = useState<any>(null);
+  
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
@@ -30,6 +32,18 @@ export function EditCourseModal({
   
   const [isAiDrafting, setIsAiDrafting] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
+  
+  const [editingModule, setEditingModule] = useState<any>(null);
+  const [isDeletingModule, setIsDeletingModule] = useState<string | null>(null);
+
+  const fetchFullCourse = async () => {
+    try {
+      const res = await api.get(`/courses/${course.id}`);
+      setFullCourse(res.data || res);
+    } catch (err) {
+      console.error('Failed to fetch full course', err);
+    }
+  };
 
   useEffect(() => {
     if (course) {
@@ -39,7 +53,11 @@ export function EditCourseModal({
       setDifficulty(course.difficulty);
       setDurationMinutes(course.durationMinutes);
     }
-  }, [course]);
+    
+    if (isOpen && course?.id) {
+      fetchFullCourse();
+    }
+  }, [course, isOpen]);
 
   useEffect(() => {
     if (isOpen && categories.length === 0) {
@@ -73,6 +91,20 @@ export function EditCourseModal({
       setIsAiDrafting(false);
     }
   };
+  
+  const handleDeleteModule = async (moduleId: string) => {
+    if (!confirm('Are you sure you want to delete this module? This cannot be undone.')) return;
+    setIsDeletingModule(moduleId);
+    try {
+      await api.delete(`/courses/${course.id}/modules/${moduleId}`);
+      toast.success('Module deleted successfully');
+      fetchFullCourse();
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to delete module');
+    } finally {
+      setIsDeletingModule(null);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,125 +135,185 @@ export function EditCourseModal({
   if (!course) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Course Details">
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="flex items-center justify-between">
-          <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-            Course Title
-          </label>
-          <button
-            type="button"
-            onClick={handleAiDraft}
-            disabled={isAiDrafting}
-            className="btn-secondary text-xs flex items-center gap-1.5 px-2 py-1"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            {isAiDrafting ? 'Drafting...' : 'AI Enhance'}
-          </button>
-        </div>
-        <input
-          type="text"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-        />
+    <>
+      <Modal isOpen={isOpen} onClose={onClose} title="Edit Course Details">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="flex items-center justify-between">
+            <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              Course Title
+            </label>
+            <button
+              type="button"
+              onClick={handleAiDraft}
+              disabled={isAiDrafting}
+              className="btn-secondary text-xs flex items-center gap-1.5 px-2 py-1"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              {isAiDrafting ? 'Drafting...' : 'AI Enhance'}
+            </button>
+          </div>
+          <input
+            type="text"
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          />
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
+                  Category
+                </label>
+                <select
+                  value={categoryId}
+                  onChange={(e) => setCategoryId(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                >
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                  <option value="other">Other (Specify)</option>
+                </select>
+              </div>
+              {categoryId === 'other' && (
+                <div>
+                  <input
+                    type="text"
+                    required
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    placeholder="New Category"
+                    className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  />
+                </div>
+              )}
+            </div>
             <div>
               <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-                Category
+                Difficulty
               </label>
               <select
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
+                value={difficulty}
+                onChange={(e) => setDifficulty(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               >
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-                <option value="other">Other (Specify)</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
               </select>
             </div>
-            {categoryId === 'other' && (
-              <div>
-                <input
-                  type="text"
-                  required
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="New Category"
-                  className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
-            )}
+            <div>
+              <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
+                Duration (Min)
+              </label>
+              <input
+                type="number"
+                required
+                min={30}
+                value={durationMinutes}
+                onChange={(e) => setDurationMinutes(Number(e.target.value))}
+                className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
           </div>
+
           <div>
             <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-              Difficulty
+              Description
             </label>
-            <select
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            >
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-              Duration (Min)
-            </label>
-            <input
-              type="number"
+            <textarea
               required
-              min={30}
-              value={durationMinutes}
-              onChange={(e) => setDurationMinutes(Number(e.target.value))}
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
+            ></textarea>
           </div>
-        </div>
 
-        <div>
-          <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-            Description
-          </label>
-          <textarea
-            required
-            rows={4}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          ></textarea>
-        </div>
+          {/* Modules List */}
+          {fullCourse?.modules && fullCourse.modules.length > 0 && (
+            <div className="space-y-3 pt-4 border-t border-border mt-4">
+              <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Course Modules
+              </label>
+              <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2">
+                {fullCourse.modules.map((mod: any, idx: number) => (
+                  <div key={mod.id} className="flex items-center justify-between p-3 rounded-md bg-card border border-border">
+                    <div className="flex items-center gap-3">
+                      <div className="p-1.5 bg-primary/10 text-primary rounded-md">
+                        <List className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">
+                          {idx + 1}. {mod.title}
+                        </p>
+                        <p className="text-xs text-muted-foreground line-clamp-1 max-w-[300px]">
+                          {mod.description || 'No description'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setEditingModule(mod)}
+                        className="p-1.5 text-muted-foreground hover:text-primary transition-colors bg-accent/50 rounded-md"
+                        title="Edit Module"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteModule(mod.id)}
+                        disabled={isDeletingModule === mod.id}
+                        className="p-1.5 text-muted-foreground hover:text-red-500 transition-colors bg-accent/50 rounded-md"
+                        title="Delete Module"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-        <div className="flex gap-3 pt-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 py-2.5 rounded-md text-sm font-semibold text-muted-foreground border border-border hover:bg-card transition"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex-1 py-2.5 rounded-md text-sm font-bold bg-primary hover:bg-blue-500 text-foreground transition flex items-center justify-center gap-2"
-          >
-            <Edit3 className="w-4 h-4" />
-            {isSubmitting ? 'Saving...' : 'Save Changes'}
-          </button>
-        </div>
-      </form>
-    </Modal>
+          <div className="flex gap-3 pt-4 border-t border-border">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2.5 rounded-md text-sm font-semibold text-muted-foreground border border-border hover:bg-card transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 py-2.5 rounded-md text-sm font-bold bg-primary hover:bg-blue-500 text-foreground transition flex items-center justify-center gap-2"
+            >
+              <Edit3 className="w-4 h-4" />
+              {isSubmitting ? 'Saving...' : 'Save Changes'}
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {editingModule && (
+        <EditModuleModal
+          module={editingModule}
+          courseId={course.id}
+          isOpen={!!editingModule}
+          onClose={() => setEditingModule(null)}
+          onSuccess={() => {
+            setEditingModule(null);
+            fetchFullCourse();
+            onSuccess();
+          }}
+        />
+      )}
+    </>
   );
 }
-
-
-

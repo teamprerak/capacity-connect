@@ -97,9 +97,9 @@ export default function CourseBuilderPage() {
           type="button"
           onClick={handleAiDraft}
           disabled={isAiDrafting}
-          className="px-4 py-2.5 rounded-md bg-purple-600/20 border border-purple-500/30 text-purple-300 text-xs font-bold hover:bg-purple-600/30 transition-all flex items-center gap-2"
+          className="btn-secondary text-xs flex items-center gap-2 px-3 py-1.5"
         >
-          <Sparkles className="w-4 h-4 text-purple-400" />
+          <Sparkles className="w-4 h-4 text-primary" />
           {isAiDrafting ? 'AI Drafting...' : 'AI One-Click Outline'}
         </button>
       </div>
@@ -184,7 +184,7 @@ export default function CourseBuilderPage() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3.5 rounded-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-foreground shadow-xl shadow-blue-500/25 hover:opacity-90 transition-all flex items-center justify-center gap-2"
+          className="btn-primary w-full py-3 flex items-center justify-center gap-2"
         >
           <PlusCircle className="w-5 h-5" />
           {isSubmitting ? 'Saving Course Draft...' : 'Create Course Module (Save Draft)'}

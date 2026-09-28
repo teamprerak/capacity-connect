@@ -22,6 +22,6 @@ export default registerAs('ai', () => {
     // Free tier allows 15 req/min (4000ms minimum spacing).
     geminiDelayMs: parseInt(process.env.GEMINI_DELAY_MS || '4000', 10),
     // Use Google's official stable flash alias as default
-    geminiModel: process.env.GEMINI_MODEL || 'gemini-1.5-flash',
+    geminiModel: process.env.GEMINI_MODEL || 'gemini-3.6-flash',
   };
 });

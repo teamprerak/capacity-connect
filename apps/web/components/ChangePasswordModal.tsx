@@ -66,7 +66,7 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Change Password" maxWidth="max-w-md">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Change Password">
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div className="flex items-center gap-3 text-muted-foreground mb-2">
           <KeyRound className="w-5 h-5 text-primary" />

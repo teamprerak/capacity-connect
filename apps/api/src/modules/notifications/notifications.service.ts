@@ -4,7 +4,21 @@ import { Subject, Observable, filter } from 'rxjs';
 export interface AppNotification {
   id: string;
   userId: string;
-  type: 'enrollment' | 'course_approved' | 'course_rejected' | 'assessment_passed' | 'assessment_failed' | 'certificate_issued' | 'new_enrollment' | 'course_submitted';
+  type:
+    | 'enrollment'
+    | 'course_approved'
+    | 'course_rejected'
+    | 'assessment_passed'
+    | 'assessment_failed'
+    | 'certificate_issued'
+    | 'new_enrollment'
+    | 'course_submitted'
+    | 'account_activated'
+    | 'account_deactivated'
+    | 'user_registered'
+    | 'competency_target_updated'
+    | 'critical_gap_alert'
+    | 'course_completed';
   title: string;
   message: string;
   link?: string;

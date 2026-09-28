@@ -75,8 +75,12 @@ export class CourseService {
       where.trainerId = filters.trainerId;
       if (filters.status && filters.status !== 'all') where.status = filters.status;
     } else {
-      if (filters.status !== 'all') {
-        where.status = filters.status ?? CourseStatus.published;
+      if (filters.status === 'all') {
+        where.status = { not: CourseStatus.draft };
+      } else if (filters.status) {
+        where.status = filters.status;
+      } else {
+        where.status = CourseStatus.published;
       }
     }
 
@@ -263,6 +267,16 @@ export class CourseService {
     const course = await this._requireCourse(courseId);
     if (!isAdmin) {
       await this._assertCourseOwner(userId, course);
+    } else if (course.status === CourseStatus.draft) {
+      // Admins cannot delete trainers' drafts (unless they happen to be the trainer who owns it)
+      const profile = await this.prisma.trainerProfile.findUnique({
+        where: { userId },
+      }).catch(() => null);
+      if (!profile || profile.id !== course.trainerId) {
+        throw new ForbiddenException(
+          'Administrators cannot delete draft courses belonging to trainers.',
+        );
+      }
     }
     return this.prisma.$transaction(async (tx) => {
       const deletedCourse = await tx.course.update({

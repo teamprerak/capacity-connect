@@ -54,6 +54,7 @@
 
   /* ─── Dark theme (soft slate, not near-black with neon) ─────────────── */
   [data-theme="dark"] {
+    color-scheme: dark;
     --background:        #0f172a;
     --foreground:        #f1f5f9;
     --card:              #1e293b;
@@ -111,6 +112,11 @@
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
     transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  option {
+    background-color: var(--card);
+    color: var(--foreground);
   }
 
   /* Minimum 12px everywhere */

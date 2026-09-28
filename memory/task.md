@@ -8,7 +8,7 @@
 ## Phase 2: Database Schema & Docker Setup
 - [x] Scaffold `packages/db` with Prisma
 - [x] Define full 40+ table Prisma schema based on specs
-- [x] Create monorepo `docker-compose.yml` (Postgres, Redis, MinIO)
+- [x] Create monorepo `docker-compose.yml` (Postgres)
 - [x] Generate Prisma client and migrate dev database
 
 ## Phase 3: Core API Auth & RBAC

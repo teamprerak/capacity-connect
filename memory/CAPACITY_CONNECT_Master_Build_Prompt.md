@@ -16,8 +16,8 @@ Since the brief explicitly asks for sensible enterprise decisions instead of cla
 | Backend | Node.js (NestJS, TypeScript) | Modular, DI-based, mirrors "service separation" requirement natively via Modules |
 | Database | PostgreSQL 15+ | Relational integrity, JSONB for flexible metadata, mature RBAC patterns |
 | ORM | Prisma | Type-safe schema, migrations, good fit for the large ER model below |
-| Cache/Queue | Redis + BullMQ | Session cache, rate limiting, background jobs (certificate generation, analytics recompute, notifications) |
-| Object Storage | S3-compatible abstraction (local disk adapter in dev, MinIO/AWS S3 in prod) | Satisfies "migration from local to cloud storage" requirement |
+| Background Processing | Simplified async processing | Zero-cost scalability without Redis/BullMQ |
+| Object Storage | Cloud/URL-based abstraction (e.g., YouTube links) | Satisfies zero-cost scalability requirement |
 | Auth | JWT (access + refresh) + httpOnly cookies, bcrypt/argon2 password hashing | Stateless scaling, server-verified roles only |
 | AI Layer | Provider-agnostic `AIService` interface (pluggable: OpenAI/Anthropic/local model) | Assistive only, never mutates permissions, always returns reasoning |
 | Search | PostgreSQL full-text search (tsvector) now, interface designed for pluggable vector search later (pgvector/Elasticsearch) | Matches "architecture should allow future semantic search" |
@@ -52,7 +52,7 @@ Certificate verification, competency scoring, and trainer matching are all deter
                                  │
 ┌───────────────────────────────▼───────────────────────────────────────┐
 │                          DATA & INFRA LAYER                          │
-│  PostgreSQL (primary) │ Redis (cache/queue) │ Object Storage (S3)    │
+│  PostgreSQL (primary) │ Cloud/URL Storage   │                        │
 │  Background Workers (BullMQ) │ AI Provider Adapter │ Email Service   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -251,7 +251,7 @@ Phases 1–16 as defined in the official brief are preserved verbatim as the exe
 
 ## 11. DEPLOYMENT STRATEGY
 
-- `docker-compose.yml` for dev: `web`, `api`, `postgres`, `redis`, `minio`, `worker`.
+- `docker-compose.yml` for dev: `postgres`.
 - CI pipeline: lint → typecheck → unit tests → integration tests → build → (optional) E2E → deploy.
 - Migrations run automatically on deploy (`prisma migrate deploy`), seed script gated behind `NODE_ENV=development|staging`.
 - Kubernetes manifests (Deployment/Service/Ingress/HPA) provided as a stretch target for enterprise deployment, with readiness/liveness probes on `/health`.
@@ -290,11 +290,9 @@ LOCKED TECHNICAL STACK (do not deviate without strong justification)
   Tailwind CSS, shadcn/ui), apps/api (NestJS, TypeScript), packages/shared-types,
   packages/ui.
 - Database: PostgreSQL 15+ with Prisma ORM. Normalized relational schema.
-- Cache/Queue: Redis + BullMQ for background jobs (certificate generation,
-  analytics recompute, notification dispatch, trainer-match recompute).
-- Object storage: storage abstraction interface with a LocalDiskAdapter
-  (dev) and S3Adapter (prod/MinIO-compatible) implementing the same
-  interface, so switching is a config change only.
+- Background Processing: Simplified async processing without external queues.
+- Object storage: Cloud/URL-based abstraction (e.g. YouTube links) implementing
+  the same interface, for zero-cost scalability.
 - Auth: JWT access (15 min) + rotating refresh token, httpOnly Secure
   SameSite=strict cookies, argon2id password hashing.
 - AI: a single AIService interface with a pluggable provider adapter.

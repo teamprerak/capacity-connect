@@ -9,7 +9,7 @@ Here is the essential context you need to seamlessly resume "vibe coding":
 - **Frontend**: Next.js 14 App Router (`apps/web`).
 - **Backend**: NestJS (`apps/api`).
 - **Database**: PostgreSQL 15 via Prisma (`packages/db`).
-- **Cache / Storage**: Redis and MinIO.
+- **Storage**: Cloud/URL based storage (e.g. YouTube).
 
 ## 2. Where We Are
 - **ALL Phases 1 through 15 are COMPLETELY FINISHED.**

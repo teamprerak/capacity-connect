@@ -9,7 +9,7 @@ We are building a scalable, enterprise-grade learning and capacity-building plat
 **Phases 1 through 16 have been FULLY completed.**
 
 - **Phase 1 (Architecture):** Turborepo configured with Next.js (`apps/web`), NestJS (`apps/api`), Prisma (`packages/db`), and shared UI packages.
-- **Phase 2 (Database):** Full 40+ table Prisma schema implemented. Docker Compose setup running Postgres on port `5433` (or `5432`), Redis, and MinIO.
+- **Phase 2 (Database):** Full 40+ table Prisma schema implemented. Docker Compose setup running Postgres on port `5433` (or `5432`).
 - **Phase 3 (Auth):** JWT (HttpOnly cookie) authentication with Argon2id hashing, and Role-Based Access Control (RBAC) configured globally in NestJS.
 - **Phase 4 (Trainee Module):** Profile CRUD, Interests, Work History, Qualifications tracking APIs implemented.
 - **Phase 5 (Trainer Module):** Profile CRUD, Availability schedules, and Expertise setting APIs implemented.
@@ -61,7 +61,7 @@ We are building a scalable, enterprise-grade learning and capacity-building plat
 - **E2E Tests:** Require a running PostgreSQL instance. All test data uses unique timestamp-suffixed emails to prevent collision.
 
 ## How to Resume
-1. Run `docker compose up -d postgres redis minio` to ensure infrastructure is running.
+1. Run `docker compose up -d postgres` to ensure infrastructure is running.
 2. Run `npx prisma db seed` in `packages/db` to populate test data.
 3. Run `npm run dev` to start dev servers for both API and Web apps.
 4. All phases 1-16 are complete. The project is production-ready.

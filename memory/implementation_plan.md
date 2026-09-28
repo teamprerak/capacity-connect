@@ -4,7 +4,7 @@ This implementation plan details the setup and execution of the Capacity Connect
 
 ## User Review Required
 
-- **Stack confirmation:** Ensure that the locked technical stack (Turborepo, Next.js 14+, NestJS, Prisma, PostgreSQL 15+, Redis, BullMQ) is acceptable for your environment.
+- **Stack confirmation:** Ensure that the locked technical stack (Turborepo, Next.js 14+, NestJS, Prisma, PostgreSQL 15+) is acceptable for your environment.
 
 ## Open Questions
 
@@ -15,7 +15,7 @@ This implementation plan details the setup and execution of the Capacity Connect
 ### 1. Architecture Definition & Monorepo Setup (Phases 1-2)
 - Set up Turborepo with `apps/web` (Next.js), `apps/api` (NestJS), `packages/shared-types`, `packages/ui`, and `packages/db` (for Prisma schema and client).
 - Initialize Prisma with the complete relational schema described in the spec.
-- **Files to be created:** `package.json`, `turbo.json`, `.env.example`, `apps/api/src/...`, `apps/web/src/...`, `packages/db/prisma/schema.prisma`, `docker-compose.yml` (services: postgres, redis, minio).
+- **Files to be created:** `package.json`, `turbo.json`, `.env.example`, `apps/api/src/...`, `apps/web/src/...`, `packages/db/prisma/schema.prisma`, `docker-compose.yml` (services: postgres).
 
 ### 2. Authentication & RBAC (Phase 3)
 - Implement JWT based auth with refresh tokens, Argon2id hashing, and Role-Based Access Control (RBAC).
@@ -51,4 +51,4 @@ This implementation plan details the setup and execution of the Capacity Connect
 - Log in with generated demo accounts and verify that dashboards populate with seeded data.
 - Run axe-core accessibility checks on the UI.
 - **Audit Logs:** Verify that sensitive admin actions (approval, role change, certificate issuance) correctly produce `audit_logs` rows.
-- **Storage Abstraction:** Verify that switching the storage adapter (local disk → S3/MinIO) requires only a config/env change, not code changes.
+- **Storage Abstraction:** Ensure Cloud/URL based storage is fully integrated without reliance on local/MinIO systems.

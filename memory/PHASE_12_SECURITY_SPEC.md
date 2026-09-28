@@ -348,7 +348,7 @@ if (!detected || !ALLOWED_MIMES_FOR_TYPE[resourceType].includes(detected.mime)) 
 - Base path: `uploads/{userId}/{courseId}/{moduleId}/{filename}`
 - Filenames: replace original filename with `{uuid}.{detected-extension}` to prevent path traversal and name collisions
 - Directory must NOT be served with execute permissions
-- If using MinIO (as per docker-compose), use a dedicated bucket `cc-resources` with private ACL
+- If using Cloud storage (like S3), use a dedicated bucket `cc-resources` with private ACL
 
 ### 4.4 Rejected File Handling
 

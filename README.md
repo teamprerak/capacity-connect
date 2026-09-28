@@ -18,8 +18,6 @@ The project uses [Turborepo](https://turbo.build/) to manage a full-stack monore
 
 ### Infrastructure
 - **PostgreSQL**: Primary relational data store.
-- **Redis**: Rate-limiting and session token caching.
-- **MinIO**: S3-compatible blob storage for course resources.
 - **Docker**: Containerization for local development and production deployment.
 
 ---
@@ -43,9 +41,9 @@ cp .env.example .env
 ```
 Fill in the required values (see `PRODUCTION_READINESS.md` for details).
 
-### 4. Start Infrastructure (Database, Redis, Storage)
+### 4. Start Infrastructure (Database)
 ```bash
-docker compose up -d postgres redis minio
+docker compose up -d postgres
 ```
 
 ### 5. Database Setup & Seeding
@@ -71,7 +69,7 @@ npm run dev
 
 ## 🐳 Full Stack Docker Deployment
 
-If you prefer to run the entire stack (Database, Redis, MinIO, API, and Web App) within Docker containers without installing Node.js locally:
+If you prefer to run the entire stack (Database, API, and Web App) within Docker containers without installing Node.js locally:
 
 ### 1. Environment Variables
 Copy `.env.example` to `.env` in the root directory:
@@ -83,7 +81,7 @@ cp .env.example .env
 ```bash
 docker compose up --build -d
 ```
-*Note: This will spin up `cc_postgres`, `cc_redis`, `cc_minio`, `cc_api`, and `cc_web`.*
+*Note: This will spin up `cc_postgres`, `cc_api`, and `cc_web`.*
 
 ### 3. Database Setup & Seeding (First Time Only)
 Run the migration and seed scripts locally using npm:
@@ -98,7 +96,6 @@ cd ../..
 ### 4. Access the Applications
 - **Web App**: http://localhost:3000
 - **API**: http://localhost:4000/api/v1
-- **MinIO Console**: http://localhost:9001 (Credentials: `minioadmin` / `minioadmin`)
 
 ---
 
@@ -129,7 +126,7 @@ Key enterprise features include:
 - **Audit Logging**: All mutating state actions synchronously write to an immutable `audit_logs` table.
 - **Brute Force Protection**: 15-minute account lockouts after 5 failed login attempts and Throttler-based rate limiting across all endpoints.
 
-For full deployment instructions, health checks, and a production checklist, see **[PRODUCTION_READINESS.md](./PRODUCTION_READINESS.md)**.
+For full deployment instructions, health checks, and a production checklist, see **[PRODUCTION_READINESS.md](./docs/PRODUCTION_READINESS.md)**.
 
 ---
 

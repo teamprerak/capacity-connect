@@ -36,12 +36,6 @@ cp .env.example .env
 | `JWT_EXPIRES_IN` | Access token TTL | `15m` |
 | `JWT_REFRESH_SECRET` | Refresh token secret | Generate with `openssl rand -hex 64` |
 | `JWT_REFRESH_EXPIRES_IN` | Refresh token TTL | `7d` |
-| `REDIS_URL` | Redis connection string | `redis://localhost:6379` |
-| `MINIO_ENDPOINT` | MinIO host | `localhost` |
-| `MINIO_PORT` | MinIO port | `9000` |
-| `MINIO_ACCESS_KEY` | MinIO access key | `minioadmin` |
-| `MINIO_SECRET_KEY` | MinIO secret key | `minioadmin` |
-| `MINIO_BUCKET_NAME` | S3 bucket for uploads | `capacity-connect` |
 | `API_BASE_URL` | Public API URL (used in QR codes) | `http://localhost:4000` |
 | `NEXT_PUBLIC_API_URL` | Web app's API base URL | `http://localhost:4000` |
 
@@ -55,18 +49,18 @@ cp .env.example .env
 
 ## 2. Docker Compose Startup
 
-The full Capacity Connect stack (API, Web, PostgreSQL, Redis, MinIO) is managed via Docker Compose.
+The full Capacity Connect stack (API, Web, PostgreSQL) is managed via Docker Compose.
 
 ### Prerequisites
 
 - Docker Desktop ≥ 24 (or Docker Engine + Compose Plugin)
-- Ports available: `4000` (API), `3000` (Web), `5433` (Postgres), `6379` (Redis), `9000/9001` (MinIO)
+- Ports available: `4000` (API), `3000` (Web), `5433` (Postgres)
 
 ### Start All Services
 
 ```bash
 # Start infrastructure services first
-docker compose up -d postgres redis minio
+docker compose up -d postgres
 
 # Wait for postgres to be healthy (~10 seconds)
 docker compose ps
@@ -82,7 +76,7 @@ docker compose up -d
 ```
 
 > [!NOTE]
-> The `api` service depends on `postgres` and `redis` health checks. If they're not healthy, the API will not start.
+> The `api` service depends on `postgres` health checks. If it's not healthy, the API will not start.
 
 ### Verify Services
 
@@ -264,7 +258,7 @@ npx turbo type-check test
 |---|---|---|
 | Email Sending | 🔴 Not Implemented | Email verification and password reset generate tokens but don't send emails. Add an SMTP provider (SendGrid, Resend, SES) by implementing the `TODO` comments in `auth.service.ts` |
 | Real AI Model | 🟡 Simulated | `AiService` uses deterministic logic + `setTimeout` to simulate AI. Replace with OpenAI/Gemini SDK calls behind the same interface. |
-| File Storage (MinIO) | 🟡 Key Abstraction | Resource file upload endpoints store `storageKey` but MinIO presigned URL generation is not fully integrated. |
+| File Storage | ✅ Cloud/URL Based | Replaced MinIO storage with YouTube/URL links for zero-cost scalability. |
 | Real-time Notifications | 🔴 Not Implemented | Notification service schema and service exist (Phase 8) but WebSocket/SSE is not yet wired up. |
 | Production SSL/TLS | 🔴 Not Configured | Add an nginx reverse proxy or configure `app.enableCors()` with HTTPS origins for production. |
 | Multi-tenant Isolation | 🔴 Out of Scope | The platform currently supports single-tenant deployment. |
@@ -292,10 +286,10 @@ npx turbo type-check test
 ## Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                  Capacity Connect Stack                 │
-├─────────────┬─────────────┬────────────┬───────────────┤
-│  Next.js    │  NestJS API │ PostgreSQL │  Redis/MinIO  │
+┌───────────────────────────────────────────┐
+│           Capacity Connect Stack          │
+├─────────────┬─────────────┬───────────────┤
+│  Next.js    │  NestJS API │  PostgreSQL   │
 │  Web App    │  (Port 4000)│ (Port 5433)│               │
 │  Port 3000  │             │            │               │
 └─────────────┴─────────────┴────────────┴───────────────┘

@@ -10,7 +10,7 @@
 | Check | Result |
 |---|---|
 | Hardcoded passwords/secrets/apiKeys in `.ts` source | **✅ PASS** — 0 matches |
-| `.env.example` values | **⚠️ ADVISORY** — Contains example credentials (`ccpassword`, `minioadmin`, `CHANGE_ME_...`). These are clearly labeled placeholders, not real production secrets. Acceptable for `.env.example`. |
+| `.env.example` values | **⚠️ ADVISORY** — Contains example credentials (`ccpassword`, `CHANGE_ME_...`). These are clearly labeled placeholders, not real production secrets. Acceptable for `.env.example`. |
 | `.env` in `.gitignore` | **✅ PASS** — `.env` is gitignored |
 
 **Verdict: ✅ PASS**
@@ -151,7 +151,6 @@
 | Variable | Value | Assessment |
 |---|---|---|
 | `POSTGRES_PASSWORD` | `ccpassword` | ✅ Dev placeholder |
-| `MINIO_ROOT_PASSWORD` | `minioadmin` | ✅ Default MinIO dev credential |
 | `JWT_SECRET` | `CHANGE_ME_USE_A_LONG_RANDOM_STRING_IN_PRODUCTION` | ✅ Self-documenting placeholder |
 | `JWT_REFRESH_SECRET` | `CHANGE_ME_ANOTHER_LONG_RANDOM_STRING` | ✅ Self-documenting placeholder |
 | `OPENAI_API_KEY` | `` (empty) | ✅ Empty placeholder |

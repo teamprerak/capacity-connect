@@ -93,7 +93,7 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
                 type={showCurrent ? 'text' : 'password'}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="input-field pr-10"
+                className="form-input pr-10"
                 required
                 disabled={isLoading}
               />
@@ -114,7 +114,7 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
                 type={showNew ? 'text' : 'password'}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="input-field pr-10"
+                className="form-input pr-10"
                 required
                 disabled={isLoading}
               />
@@ -135,7 +135,7 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
                 type={showConfirm ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="input-field pr-10"
+                className="form-input pr-10"
                 required
                 disabled={isLoading}
               />

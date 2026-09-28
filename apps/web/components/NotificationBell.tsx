@@ -73,12 +73,16 @@ export function NotificationBell() {
       {/* Dropdown panel */}
       {open && (
         <div
-          className="absolute right-0 top-[calc(100%+8px)] w-80 bg-card border border-border rounded-xl shadow-lg z-[200] overflow-hidden"
+          className="absolute right-0 top-[calc(100%+8px)] w-80 border border-border rounded-xl shadow-xl z-[200] overflow-hidden"
+          style={{ backgroundColor: 'var(--card)' }}
           role="dialog"
           aria-label="Notifications"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+          <div
+            className="flex items-center justify-between px-4 py-3 border-b border-border"
+            style={{ backgroundColor: 'var(--card)' }}
+          >
             <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
             <div className="flex items-center gap-1">
               {notifications.length > 0 && (

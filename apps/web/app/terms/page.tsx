@@ -171,7 +171,7 @@ export default function TermsOfServicePage() {
             </p>
             <div className="mt-3 p-4 rounded-md bg-accent/40 border border-border text-foreground font-mono text-xs">
               <p>Team Prerak Legal &amp; Governance</p>
-              <p>Email: legal@teamprerak.org / legal@capacityconnect.org</p>
+              <p>Email: team.prerak075@gmail.com</p>
               <p>Project URL: github.com/teamprerak/capacity-connect</p>
             </div>
           </section>

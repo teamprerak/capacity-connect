@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Layers, Shield, FileText, Lock, Heart, Award, ArrowUpRight } from 'lucide-react';
+import { QRScannerModal } from './QRScannerModal';
 
 export function Footer() {
+  const [isQROpen, setIsQROpen] = useState(false);
   return (
     <footer className="mt-auto border-t border-border bg-card/50 backdrop-blur-xs">
       {/* Upper Footer: Branding & Categorized Links */}
@@ -76,9 +78,13 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs text-muted-foreground">
               <li>
-                <Link href="/certificates/verify/demo" className="hover:text-foreground transition-colors flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setIsQROpen(true)}
+                  className="hover:text-foreground transition-colors flex items-center gap-1 cursor-pointer"
+                >
                   <Award className="w-3.5 h-3.5 text-primary" /> Certificate Verification
-                </Link>
+                </button>
               </li>
               <li>
                 <Link href="/security" className="hover:text-foreground transition-colors flex items-center gap-1">
@@ -146,6 +152,8 @@ export function Footer() {
           </div>
         </div>
       </div>
+
+      <QRScannerModal isOpen={isQROpen} onClose={() => setIsQROpen(false)} />
     </footer>
   );
 }

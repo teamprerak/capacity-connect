@@ -67,7 +67,7 @@ export default function AboutPage() {
             In Sanskrit and Hindi, <strong>Prerak (प्रेरक)</strong> signifies a catalyst, a driving force, or an inspiring entity that sets progress in motion. We are a specialized software engineering and design collective dedicated to solving hard operational bottlenecks in organizational education, capability building, and institutional governance.
           </p>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Founded and spearheaded by engineers <strong>Harshil Parmar</strong> and <strong>Kush Thacker</strong>, Team Prerak conceived Capacity Connect to bridge the systemic divide between corporate training programs, measurable employee competency, and tamper-proof verification.
+            Engineered by a collaborative collective of six dedicated developers, designers, and systems architects, Team Prerak conceived Capacity Connect to bridge the systemic divide between corporate training programs, measurable employee competency, and tamper-proof verification.
           </p>
         </section>
 
@@ -161,48 +161,46 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Section 4: The Team Behind the System */}
-        <section className="mb-12">
-          <div className="mb-6">
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary block mb-1">
-              The Builders
-            </span>
-            <h2 className="text-2xl font-semibold text-foreground">Meet Team Prerak</h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div className="surface-card p-6 flex flex-col justify-between">
-              <div>
-                <div className="w-12 h-12 rounded-full bg-accent border border-border flex items-center justify-center font-bold text-foreground mb-4">
-                  HP
-                </div>
-                <h3 className="text-base font-semibold text-foreground">Harshil Parmar</h3>
-                <p className="text-xs text-primary font-medium mb-3">Core Engineer &amp; Systems Architect</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Focused on secure backend services, database schema design, RBAC guard enforcement, real-time notifications, and automated CI/CD deployment pipelines.
-                </p>
-              </div>
-              <div className="mt-4 pt-4 border-t border-border flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="badge-neutral">System Architecture</span>
-                <span className="badge-neutral">NestJS &bull; PostgreSQL</span>
-              </div>
+        {/* Section 4: Our Collective */}
+        <section className="surface-card p-6 sm:p-8 mb-12">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary block mb-1">
+                The Collective
+              </span>
+              <h2 className="text-xl font-semibold text-foreground">A Unified Team of Six</h2>
             </div>
-
-            <div className="surface-card p-6 flex flex-col justify-between">
-              <div>
-                <div className="w-12 h-12 rounded-full bg-accent border border-border flex items-center justify-center font-bold text-foreground mb-4">
-                  KT
-                </div>
-                <h3 className="text-base font-semibold text-foreground">Kush Thacker</h3>
-                <p className="text-xs text-primary font-medium mb-3">Core Engineer &amp; Frontend Architect</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Specialized in Next.js App Router performance, responsive UI design systems, interactive assessment interfaces, and credential verification UX.
-                </p>
-              </div>
-              <div className="mt-4 pt-4 border-t border-border flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="badge-neutral">Frontend UI/UX</span>
-                <span className="badge-neutral">Next.js &bull; Tailwind</span>
-              </div>
+            <div className="px-3 py-1 rounded-md bg-accent border border-border text-xs font-semibold text-foreground">
+              6 Core Contributors
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            Team Prerak is comprised of six dedicated engineers, designers, and systems architects working collaboratively across full-stack API development, relational data integrity, security hardening, and responsive user experience. We operate as a unified, merit-first team where every architectural decision and interface refinement reflects our combined commitment to elevating organizational capacity.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs text-muted-foreground">
+            <div className="p-3.5 rounded-md bg-accent/40 border border-border">
+              <span className="font-semibold text-foreground block mb-1">Full-Stack Backend</span>
+              NestJS &bull; REST API &bull; DTOs
+            </div>
+            <div className="p-3.5 rounded-md bg-accent/40 border border-border">
+              <span className="font-semibold text-foreground block mb-1">Modern Web UI</span>
+              Next.js 14 &bull; Tailwind &bull; Framer
+            </div>
+            <div className="p-3.5 rounded-md bg-accent/40 border border-border">
+              <span className="font-semibold text-foreground block mb-1">Database &amp; ORM</span>
+              PostgreSQL &bull; Prisma Schema
+            </div>
+            <div className="p-3.5 rounded-md bg-accent/40 border border-border">
+              <span className="font-semibold text-foreground block mb-1">Security &amp; RBAC</span>
+              Argon2id &bull; Dual-JWT &bull; Audit
+            </div>
+            <div className="p-3.5 rounded-md bg-accent/40 border border-border">
+              <span className="font-semibold text-foreground block mb-1">Competency Engine</span>
+              Skill Matrices &bull; AI Diagnostics
+            </div>
+            <div className="p-3.5 rounded-md bg-accent/40 border border-border">
+              <span className="font-semibold text-foreground block mb-1">Credential Systems</span>
+              Cryptographic QR &bull; Public Tokens
             </div>
           </div>
         </section>

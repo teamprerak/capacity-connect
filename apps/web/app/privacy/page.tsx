@@ -196,7 +196,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="mt-3 p-4 rounded-md bg-accent/40 border border-border text-foreground font-mono text-xs">
               <p>Team Prerak Security &amp; Data Protection</p>
-              <p>Email: security@teamprerak.org / support@capacityconnect.org</p>
+              <p>Email: team.prerak075@gmail.com</p>
               <p>Repository: github.com/teamprerak/capacity-connect</p>
             </div>
           </section>

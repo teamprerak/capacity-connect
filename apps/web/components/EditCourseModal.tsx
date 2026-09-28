@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from './Modal';
 import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
-import { Edit3, Sparkles } from 'lucide-react';
+import { Edit3, Sparkles, Trash2 } from 'lucide-react';
+import { EditModuleModal } from './EditModuleModal';
 
 interface EditCourseModalProps {
   course: any;
@@ -221,3 +222,6 @@ export function EditCourseModal({
     </Modal>
   );
 }
+
+
+

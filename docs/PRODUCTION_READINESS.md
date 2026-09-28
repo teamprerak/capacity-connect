@@ -291,17 +291,4 @@ npx turbo type-check test
 
 ## Architecture Overview
 
-```
-┌───────────────────────────────────────────┐
-│           Capacity Connect Stack          │
-├─────────────┬─────────────┬───────────────┤
-│  Next.js    │  NestJS API │  PostgreSQL   │
-│  Web App    │  (Port 4000)│ (Port 5433)│               │
-│  Port 3000  │             │            │               │
-└─────────────┴─────────────┴────────────┴───────────────┘
-      │               │             │
-      └───────────────┤             │
-             JWT HttpOnly Cookies   │
-                      │             │
-                 Prisma ORM ────────┘
-```
+![Capacity Connect Architecture](../architecture-diagram.svg)

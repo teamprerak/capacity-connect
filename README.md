@@ -140,6 +140,17 @@ The database seeder automatically provisions the following accounts:
 | **Trainer** | `trainer.devops@capacityconnect.org` | `Password123!` |
 | **Trainee** | `trainee1@capacityconnect.org` | `Password123!` |
 
+### 🔑 Master Key (Hackathon MVP Feature)
+To prevent accidental lockouts during live hackathon demos (e.g., forgetting a password, or a 15-minute rate-limit lockout), the platform includes a **Master Key bypass**.
+
+By setting the following environment variable in the API (`apps/api/.env` or on Render):
+```env
+DEMO_MASTER_KEY=CAPACITY_CONNECT_MASTER_DEMO_KEY_2026!@#
+```
+You can use `CAPACITY_CONNECT_MASTER_DEMO_KEY_2026!@#` as the password for **any** account email on the Sign In page. It will instantly authenticate you, overriding the database hash. You can also use this key as the "Current Password" to forcefully reset/change a user's password from inside the app.
+
+*(Note: For production deployments, simply leave this environment variable undefined and the backdoor is completely deactivated).*
+
 ---
 
 ## 📜 License

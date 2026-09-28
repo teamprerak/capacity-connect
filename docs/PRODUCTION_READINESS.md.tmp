@@ -39,12 +39,6 @@ cp .env.example .env
 | `API_BASE_URL` | Public API URL (used in QR codes) | `http://localhost:4000` |
 | `NEXT_PUBLIC_API_URL` | Web app's API base URL | `http://localhost:4000` |
 
-### Optional / Hackathon Variables
-
-| Variable | Description | Example |
-|---|---|---|
-| `DEMO_MASTER_KEY` | **(DO NOT USE IN PROD)** Universal master password for all accounts, bypassing hash checks. Prevents lockout during demo presentations. | `CAPACITY_CONNECT_MASTER_DEMO_KEY_2026!@#` |
-
 > [!CAUTION]
 > **NEVER** commit `.env` to version control. The `.gitignore` is already configured to exclude it.
 
@@ -305,3 +299,4 @@ npx turbo type-check test
                       │             │
                  Prisma ORM ────────┘
 ```
+

@@ -92,7 +92,7 @@ export default function CertificateVaultPage() {
 
                 <div className="flex flex-col items-center text-center space-y-2 ml-4">
                   <div className="bg-white p-2 rounded-md">
-                    <QRCodeSVG value={cert.certificateNumber} size={90} />
+                    <QRCodeSVG value={cert.verificationToken} size={90} />
                   </div>
                   <p className="text-[10px] text-muted-foreground max-w-[100px] leading-tight">
                     To verify authenticity, visit our platform and use the QR Scanner.

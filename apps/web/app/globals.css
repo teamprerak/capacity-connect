@@ -288,3 +288,8 @@
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
+
+/* Hide html5-qrcode attribution */
+#reader a {
+  display: none !important;
+}

@@ -82,7 +82,7 @@ export class AiService {
     this.provider = this.config.get<string>('ai.provider') ?? 'stub';
     this.geminiApiKey = this.config.get<string>('ai.geminiApiKey') ?? '';
     this.geminiDelayMs = this.config.get<number>('ai.geminiDelayMs') ?? 4500;
-    this.geminiModel = this.config.get<string>('ai.geminiModel') ?? 'gemini-2.0-flash';
+    this.geminiModel = this.config.get<string>('ai.geminiModel') ?? 'gemini-1.5-flash';
     this.geminiBaseUrl = 'https://generativelanguage.googleapis.com/v1beta/models';
 
     this.logger.log(`AI Provider: ${this.provider} | Model: ${this.geminiModel}`);
@@ -121,6 +121,9 @@ export class AiService {
     this.logger.debug(`Calling Gemini [${currentModel}] — prompt length: ${prompt.length}`);
 
     let response: Response;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
+
     try {
       response = await fetch(url, {
         method: 'POST',
@@ -129,21 +132,23 @@ export class AiService {
           'X-goog-api-key': this.geminiApiKey,
         },
         body: JSON.stringify(requestBody),
-        signal: AbortSignal.timeout(12000),
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
     } catch (err: any) {
+      clearTimeout(timeoutId);
       this.logger.warn(`Network error with Gemini [${currentModel}]: ${err?.message}`);
-      if (currentModel !== 'gemini-flash-latest') {
-        this.logger.log(`Attempting fallback model 'gemini-flash-latest'...`);
-        return this.callGemini<T>(prompt, 1, 'gemini-flash-latest');
+      if (currentModel !== 'gemini-1.5-flash') {
+        this.logger.log(`Attempting fallback model 'gemini-1.5-flash'...`);
+        return this.callGemini<T>(prompt, 1, 'gemini-1.5-flash');
       }
       throw new InternalServerErrorException('Failed to reach the Gemini API. Check network connectivity.');
     }
 
     // 503 (overloaded) or 404 (model deprecated/unavailable) → try fallback model or retry
-    if ((response.status === 503 || response.status === 404) && currentModel !== 'gemini-flash-latest') {
-      this.logger.warn(`Gemini [${currentModel}] returned ${response.status}. Switching to fallback model 'gemini-flash-latest'...`);
-      return this.callGemini<T>(prompt, 1, 'gemini-flash-latest');
+    if ((response.status === 503 || response.status === 404) && currentModel !== 'gemini-1.5-flash') {
+      this.logger.warn(`Gemini [${currentModel}] returned ${response.status}. Switching to fallback model 'gemini-1.5-flash'...`);
+      return this.callGemini<T>(prompt, 1, 'gemini-1.5-flash');
     }
 
     // 503 retry with exponential backoff on current model
@@ -165,7 +170,12 @@ export class AiService {
     const raw = await response.json() as any;
 
     // Extract the text content from Gemini's response envelope
-    const textContent: string = raw?.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
+    let textContent: string = raw?.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
+
+    // Strip markdown formatting if the model accidentally includes it
+    if (textContent.startsWith('```')) {
+      textContent = textContent.replace(/^```(json)?\n?/, '').replace(/```\n?$/, '').trim();
+    }
 
     try {
       return JSON.parse(textContent) as T;

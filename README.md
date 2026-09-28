@@ -153,6 +153,4 @@ You can use `CAPACITY_CONNECT_MASTER_DEMO_KEY_2026!@#` as the password for **any
 
 ---
 
-## 📜 License
 
-Internal Proprietary / MIT License

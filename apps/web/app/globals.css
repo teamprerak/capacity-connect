@@ -1,86 +1,233 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
+/* ─── Design Tokens ──────────────────────────────────────────────────────────
+   ONE accent: deep blue (#2563eb light / #3b82f6 dark)
+   Semantic only: rose=error, emerald=success, amber=warning (desaturated)
+   No gradients. No glow. No blur beyond 1px header border.
+─────────────────────────────────────────────────────────────────────────── */
+
 @theme {
-  --color-background: var(--bg-background);
-  --color-foreground: var(--text-foreground);
-  --color-card: var(--bg-card);
-  --color-border: var(--border-color);
-  --color-accent: var(--bg-accent);
-  --color-muted-foreground: var(--text-muted);
-  --color-primary: var(--primary-color);
-  
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  
+  /* Spacing grid: 4/8px */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Radius scale: 6-10px max */
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
   --radius-xl: 10px;
-  
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+
+  /* Shadows: very soft, no colored glows */
+  --shadow-xs:  0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-sm:  0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
 }
 
+/* ─── Light theme (default) ─────────────────────────────────────────────── */
 @layer base {
-  :root, [data-theme="light"] {
-    --bg-background: #f8fafc;
-    --text-foreground: #0f172a;
-    --bg-card: #ffffff;
-    --border-color: #e2e8f0;
-    --bg-accent: #f1f5f9;
-    --text-muted: #475569;
-    
-    /* Muted deep blue accent */
-    --primary-color: #2563eb; 
-    
-    --scrollbar-track: #f1f5f9;
-    --scrollbar-thumb: #cbd5e1;
+  :root,
+  [data-theme="light"] {
+    --background:        #f8fafc;
+    --foreground:        #0f172a;
+    --card:              #ffffff;
+    --card-foreground:   #0f172a;
+    --border:            #e2e8f0;
+    --input:             #e2e8f0;
+    --muted:             #f1f5f9;
+    --muted-foreground:  #64748b;
+    --accent:            #f1f5f9;
+    --accent-foreground: #0f172a;
+
+    /* Single primary accent */
+    --primary:           #2563eb;
+    --primary-foreground:#ffffff;
+
+    /* Semantic status — desaturated */
+    --success:           #16a34a;
+    --warning:           #b45309;
+    --error:             #dc2626;
+
+    --scrollbar-track:       #f1f5f9;
+    --scrollbar-thumb:       #cbd5e1;
     --scrollbar-thumb-hover: #94a3b8;
   }
 
+  /* ─── Dark theme (soft slate, not near-black with neon) ─────────────── */
   [data-theme="dark"] {
-    --bg-background: #09090b;
-    --text-foreground: #fafafa;
-    --bg-card: #18181b;
-    --border-color: #27272a;
-    --bg-accent: #27272a;
-    --text-muted: #a1a1aa;
-    
-    --primary-color: #3b82f6; 
-    
-    --scrollbar-track: #09090b;
-    --scrollbar-thumb: #27272a;
-    --scrollbar-thumb-hover: #3f3f46;
+    --background:        #0f172a;
+    --foreground:        #f1f5f9;
+    --card:              #1e293b;
+    --card-foreground:   #f1f5f9;
+    --border:            #334155;
+    --input:             #334155;
+    --muted:             #1e293b;
+    --muted-foreground:  #94a3b8;
+    --accent:            #1e293b;
+    --accent-foreground: #f1f5f9;
+
+    --primary:           #3b82f6;
+    --primary-foreground:#ffffff;
+
+    --success:           #22c55e;
+    --warning:           #f59e0b;
+    --error:             #ef4444;
+
+    --scrollbar-track:       #1e293b;
+    --scrollbar-thumb:       #334155;
+    --scrollbar-thumb-hover: #475569;
   }
 
+  /* ─── Tailwind v4 color mapping ─────────────────────────────────────── */
+  :root {
+    --color-background:        var(--background);
+    --color-foreground:        var(--foreground);
+    --color-card:              var(--card);
+    --color-card-foreground:   var(--card-foreground);
+    --color-border:            var(--border);
+    --color-input:             var(--input);
+    --color-muted:             var(--muted);
+    --color-muted-foreground:  var(--muted-foreground);
+    --color-accent:            var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-primary:           var(--primary);
+    --color-primary-foreground:var(--primary-foreground);
+  }
+
+  /* ─── Base resets ────────────────────────────────────────────────────── */
   body {
-    background-color: var(--bg-background);
-    color: var(--text-foreground);
-    font-family: var(--font-sans);
+    background-color: var(--background);
+    color:            var(--foreground);
+    font-family:      var(--font-sans);
+    font-size:        14px;          /* minimum 12px; body at 14 */
+    line-height:      1.6;
+    -webkit-font-smoothing: antialiased;
     min-height: 100vh;
-    /* Subtle 150ms motion */
     transition: background-color 150ms ease, color 150ms ease;
   }
+
+  /* Minimum 12px everywhere */
+  * { min-font-size: 12px; }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+  }
 }
 
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* ─── Utility classes ───────────────────────────────────────────────────── */
+
+/* Primary solid button */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: opacity 150ms ease;
 }
-::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:active { opacity: 0.78; }
+
+/* Secondary outlined */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 150ms ease;
 }
-::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 9999px;
+.btn-secondary:hover { background-color: var(--muted); }
+
+/* Ghost */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 150ms ease, color 150ms ease;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
+.btn-ghost:hover {
+  background-color: var(--accent);
+  color: var(--foreground);
 }
 
-/* Accessibility Focus Ring */
+/* Card */
+.surface-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Neutral badge — use for all non-status labels */
+.badge-neutral {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--accent);
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Status badges — semantic only */
+.badge-success { background-color: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+.badge-warning { background-color: #fef9c3; color: #92400e; border-color: #fde68a; }
+.badge-error   { background-color: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+
+[data-theme="dark"] .badge-success { background-color: #052e16; color: #4ade80; border-color: #14532d; }
+[data-theme="dark"] .badge-warning { background-color: #1c1500; color: #fbbf24; border-color: #422006; }
+[data-theme="dark"] .badge-error   { background-color: #1a0000; color: #f87171; border-color: #450a0a; }
+
+/* Input */
+.form-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.form-input::placeholder { color: var(--muted-foreground); }
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+/* ─── Scrollbars ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 5px; height: 5px; }
+::-webkit-scrollbar-track    { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb    { background: var(--scrollbar-thumb); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+/* ─── Focus ring — WCAG AA ──────────────────────────────────────────────── */
 *:focus-visible {
-  outline: 2px solid var(--primary-color);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }

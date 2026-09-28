@@ -31,52 +31,49 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-md bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              <Layers className="w-5 h-5 text-foreground" />
+      {/* Solid header — no backdrop-blur, 1px bottom border only */}
+      <header className="sticky top-0 z-40 bg-background border-b border-border w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            {/* Solid primary tile — no gradient, no glow */}
+            <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center transition-opacity group-hover:opacity-85">
+              <Layers className="w-4 h-4 text-white" />
             </div>
-            <div className="flex flex-col">
-              {/* L-5: Brand title colour follows theme */}
-              <span className={`text-lg font-bold tracking-tight bg-clip-text text-transparent text-primary font-bold tracking-tight bg-gradient-to-r ${
-                isDark
-                  ? 'from-white via-slate-200 to-slate-400'
-                  : 'from-slate-900 via-slate-700 to-slate-500'
-              }`}>
+            <div className="flex flex-col leading-tight">
+              {/* Solid text — no gradient */}
+              <span className="text-sm font-semibold text-foreground tracking-tight">
                 Capacity Connect
               </span>
-              <span className="text-[10px] tracking-wider uppercase font-semibold text-primary -mt-1">
+              <span className="text-[11px] tracking-wider uppercase font-medium text-muted-foreground -mt-0.5">
                 Enterprise LMS
               </span>
             </div>
           </Link>
 
-          {/* L-5: Nav link colours adapt to theme */}
-          <nav className={`hidden md:flex items-center gap-6 text-sm font-medium ${
-            isDark ? 'text-muted-foreground' : 'text-slate-600'
-          }`}>
-            <Link href="/" className={`transition-colors ${ isDark ? 'hover:text-primary' : 'hover:text-blue-600' }`}>
+          {/* Nav links — one hover style */}
+          <nav className="hidden md:flex items-center gap-5 text-sm font-medium text-muted-foreground">
+            <Link href="/" className="hover:text-foreground transition-colors duration-150">
               Overview
             </Link>
-            <Link href="/trainee/courses" className={`transition-colors flex items-center gap-1.5 ${ isDark ? 'hover:text-primary' : 'hover:text-blue-600' }`}>
+            <Link href="/trainee/courses" className="hover:text-foreground transition-colors duration-150 flex items-center gap-1.5">
               <BookOpen className="w-4 h-4" /> Courses
             </Link>
             <button
               onClick={() => setIsQROpen(true)}
-              className={`transition-colors flex items-center gap-1.5 ${ isDark ? 'hover:text-primary' : 'hover:text-blue-600' }`}
+              className="hover:text-foreground transition-colors duration-150 flex items-center gap-1.5"
             >
-              <QrCode className="w-4 h-4 text-emerald-400" /> Verify Cert
+              <QrCode className="w-4 h-4" /> Verify Cert
             </button>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {user ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                {/* Neutral role badges — no colored translucency */}
                 {user.roles.includes('admin') && (
                   <Link
                     href="/admin/dashboard"
-                    className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-all flex items-center gap-1.5"
+                    className="btn-ghost text-xs px-2.5 py-1.5 flex items-center gap-1.5"
                   >
                     <ShieldCheck className="w-3.5 h-3.5" /> Admin Console
                   </Link>
@@ -84,48 +81,40 @@ export function Navbar() {
                 {user.roles.includes('trainer') && (
                   <Link
                     href="/trainer"
-                    className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20 hover:bg-purple-500/20 transition-all flex items-center gap-1.5"
+                    className="btn-ghost text-xs px-2.5 py-1.5 flex items-center gap-1.5"
                   >
                     <LayoutDashboard className="w-3.5 h-3.5" /> Trainer Studio
                   </Link>
                 )}
                 <Link
                   href="/trainee"
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-primary/10 text-primary border border-primary/20 hover:bg-blue-500/20 transition-all flex items-center gap-1.5"
+                  className="btn-ghost text-xs px-2.5 py-1.5 flex items-center gap-1.5"
                 >
                   <User className="w-3.5 h-3.5" /> Portal
                 </Link>
                 {isPortal && (
                   <button
                     onClick={toggleTheme}
-                    className={`p-2 rounded-lg transition-colors ${
-                      isDark
-                        ? 'text-muted-foreground hover:text-primary hover:bg-primary/10'
-                        : 'text-muted-foreground hover:text-blue-600 hover:bg-blue-100'
-                    }`}
+                    className="btn-ghost p-2"
                     title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
                   >
                     {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                   </button>
                 )}
-                {/* L-5: Logout button also adapts */}
                 <button
                   onClick={() => setIsLogoutOpen(true)}
                   disabled={isLoggingOut}
-                  className={`p-2 rounded-lg transition-colors disabled:opacity-50 ${
-                    isDark
-                      ? 'text-muted-foreground hover:text-rose-400 hover:bg-rose-500/10'
-                      : 'text-muted-foreground hover:text-rose-600 hover:bg-rose-100'
-                  }`}
+                  className="btn-ghost p-2 disabled:opacity-50"
                   title="Log Out"
                 >
                   {isLoggingOut ? <Loader2 className="w-4 h-4 animate-spin" /> : <LogOut className="w-4 h-4" />}
                 </button>
               </div>
             ) : (
+              /* Solid primary button — no gradient */
               <button
                 onClick={() => setIsAuthOpen(true)}
-                className="px-4 py-2 rounded-md text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-foreground shadow-sm shadow-blue-500/25 hover:opacity-90 hover:scale-[1.02] active:scale-95 transition-all"
+                className="btn-primary text-sm px-4 py-2"
               >
                 Sign In
               </button>

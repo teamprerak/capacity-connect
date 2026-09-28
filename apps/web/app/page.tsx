@@ -22,167 +22,144 @@ export default function LandingPage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0b0f19] text-foreground">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full flex flex-col items-center text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
-          <Sparkles className="w-4 h-4 text-primary" />
-          <span>Industrial Capacity Building & LMS Platform</span>
-        </div>
-
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.1] mb-6 text-foreground">
-          Automate Competency Growth with{' '}
-          <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-            AI-Driven Learning
-          </span>
-        </h1>
-
-        <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mb-10 leading-relaxed font-normal">
-          Bridge workforce skill gaps automatically. Match trainees with expert trainers, author
-          interactive assessments, and issue cryptographically verifiable QR certificates.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
-          <button
-            onClick={() => setIsAuthOpen(true)}
-            className="px-8 py-4 rounded-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-foreground shadow-xl shadow-blue-500/25 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 text-base"
-          >
-            Launch Platform Portal <ArrowRight className="w-5 h-5" />
-          </button>
-          <Link
-            href="/trainee/courses"
-            className="px-8 py-4 rounded-lg font-semibold bg-card border border-border text-foreground hover:bg-card hover:text-foreground transition-all flex items-center justify-center gap-2 text-base"
-          >
-            Explore Catalog
-          </Link>
-        </div>
-
-        {/* Feature Highlights Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-24 w-full text-left">
-          <div className="bg-card border border-border shadow-sm hover:shadow-md transition-all duration-200 p-6 rounded-md border border-border">
-            <div className="p-3 w-fit rounded-lg bg-primary/10 text-primary border border-primary/20 mb-4">
-              <BrainCircuit className="w-6 h-6" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground mb-2">Competency Engine</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Automated skill gap matrix computation comparing target vs actual proficiency levels.
-            </p>
+      {/* Hero Section — left-leaning, restrained scale */}
+      <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div className="max-w-3xl">
+          {/* Neutral label badge — no colored glow */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent border border-border text-muted-foreground text-xs font-medium mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-primary" />
+            <span>Industrial Capacity Building &amp; LMS Platform</span>
           </div>
 
-          <div className="bg-card border border-border shadow-sm hover:shadow-md transition-all duration-200 p-6 rounded-md border border-border">
-            <div className="p-3 w-fit rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20 mb-4">
-              <Users className="w-6 h-6" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground mb-2">Smart Matching</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Algorithmic trainer-to-trainee pairing based on skill gaps, expertise, and schedule.
-            </p>
-          </div>
+          {/* Hero heading — restrained scale, solid text only */}
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.15] mb-5 text-foreground">
+            Automate Competency Growth<br className="hidden sm:block" />
+            {' '}with AI-Driven Learning
+          </h1>
 
-          <div className="bg-card border border-border shadow-sm hover:shadow-md transition-all duration-200 p-6 rounded-md border border-border">
-            <div className="p-3 w-fit rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
-              <TrendingUp className="w-6 h-6" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground mb-2">Pre/Post Test Efficacy</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Server-graded MCQ assessments measuring exact learning score delta improvements.
-            </p>
-          </div>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-8 leading-relaxed font-normal">
+            Bridge workforce skill gaps automatically. Match trainees with expert trainers, author
+            interactive assessments, and issue cryptographically verifiable QR certificates.
+          </p>
 
-          <div className="bg-card border border-border shadow-sm hover:shadow-md transition-all duration-200 p-6 rounded-md border border-border">
-            <div className="p-3 w-fit rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-4">
-              <Award className="w-6 h-6" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground mb-2">Verifiable QR Certs</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Cryptographically signed digital credentials verifiable without authentication.
-            </p>
+          {/* CTA buttons — solid primary, no gradient/glow */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={() => setIsAuthOpen(true)}
+              className="btn-primary px-6 py-2.5 text-sm"
+            >
+              Launch Platform Portal <ArrowRight className="w-4 h-4" />
+            </button>
+            <Link
+              href="/trainee/courses"
+              className="btn-secondary px-6 py-2.5 text-sm"
+            >
+              Explore Catalog
+            </Link>
           </div>
         </div>
 
-        {/* Live Interactive Preview */}
-        <div className="mt-24 w-full bg-card border border-border shadow-sm rounded-md p-8 border border-border text-left">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 mb-6 border-b border-border">
+        {/* Feature Highlights Grid — unified neutral icon style */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-20 w-full">
+          {[
+            { Icon: BrainCircuit, title: 'Competency Engine', desc: 'Automated skill gap matrix computation comparing target vs actual proficiency levels.' },
+            { Icon: Users, title: 'Smart Matching', desc: 'Algorithmic trainer-to-trainee pairing based on skill gaps, expertise, and schedule.' },
+            { Icon: TrendingUp, title: 'Pre/Post Test Efficacy', desc: 'Server-graded MCQ assessments measuring exact learning score delta improvements.' },
+            { Icon: Award, title: 'Verifiable QR Certs', desc: 'Cryptographically signed digital credentials verifiable without authentication.' },
+          ].map(({ Icon, title, desc }) => (
+            <div key={title} className="surface-card p-5 hover:shadow-md transition-shadow duration-150">
+              <div className="p-2.5 w-fit rounded-md bg-accent border border-border mb-4">
+                <Icon className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="text-sm font-semibold text-foreground mb-1.5">{title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Live Analytics Preview */}
+        <div className="mt-20 w-full surface-card p-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-5 mb-5 border-b border-border">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary block mb-1">
                 Live Interactive Intelligence
               </span>
-              <h2 className="text-2xl font-bold text-foreground mt-1">Enterprise Analytics Matrix</h2>
+              <h2 className="text-xl font-semibold text-foreground">Enterprise Analytics Matrix</h2>
             </div>
             <button
               onClick={() => setIsAuthOpen(true)}
-              className="px-4 py-2 rounded-md bg-primary text-xs font-bold text-foreground hover:bg-blue-500 transition-all"
+              className="btn-primary text-xs px-4 py-2 shrink-0"
             >
               Access Full Console
             </button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="p-5 rounded-lg bg-background border border-border">
-              <span className="text-xs font-semibold text-muted-foreground uppercase">Skill Gap Priority Distribution</span>
-              <div className="space-y-3 mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {/* Skill Gap chart — semantic colors for real status */}
+            <div className="p-4 rounded-lg bg-background border border-border">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-4">Skill Gap Priority Distribution</span>
+              <div className="space-y-3">
                 <div>
-                  <div className="flex justify-between text-xs font-bold mb-1">
-                    <span className="text-rose-400">Critical Gap ($\ge 3$ levels)</span>
+                  <div className="flex justify-between text-xs font-medium mb-1.5">
+                    <span className="text-error">Critical Gap (≥3 levels)</span>
                     <span className="text-muted-foreground">18%</span>
                   </div>
-                  <div className="h-2 w-full bg-card rounded-full overflow-hidden">
-                    <div className="h-full bg-rose-500 w-[18%]"></div>
+                  <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
+                    <div className="h-full bg-error/70 w-[18%] rounded-full" />
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between text-xs font-bold mb-1">
-                    <span className="text-amber-400">High Priority (2 levels)</span>
+                  <div className="flex justify-between text-xs font-medium mb-1.5">
+                    <span className="text-warning">High Priority (2 levels)</span>
                     <span className="text-muted-foreground">42%</span>
                   </div>
-                  <div className="h-2 w-full bg-card rounded-full overflow-hidden">
-                    <div className="h-full bg-amber-500 w-[42%]"></div>
+                  <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
+                    <div className="h-full bg-warning/70 w-[42%] rounded-full" />
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between text-xs font-bold mb-1">
-                    <span className="text-emerald-400">On Track / Mastered</span>
+                  <div className="flex justify-between text-xs font-medium mb-1.5">
+                    <span className="text-success">On Track / Mastered</span>
                     <span className="text-muted-foreground">40%</span>
                   </div>
-                  <div className="h-2 w-full bg-card rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-500 w-[40%]"></div>
+                  <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
+                    <div className="h-full bg-success/70 w-[40%] rounded-full" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="p-5 rounded-lg bg-background border border-border">
-              <span className="text-xs font-semibold text-muted-foreground uppercase">Top Matched Competency Units</span>
-              <ul className="space-y-2.5 mt-4 text-xs font-medium">
-                <li className="flex items-center justify-between p-2 rounded-lg bg-card">
-                  <span className="text-foreground">Cloud Microservices Architecture</span>
-                  <span className="px-2 py-0.5 rounded bg-blue-500/20 text-primary font-bold">94.5% Match</span>
-                </li>
-                <li className="flex items-center justify-between p-2 rounded-lg bg-card">
-                  <span className="text-foreground">Financial Risk Predictive Analytics</span>
-                  <span className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 font-bold">91.2% Match</span>
-                </li>
-                <li className="flex items-center justify-between p-2 rounded-lg bg-card">
-                  <span className="text-foreground">Enterprise Cyber Defense Auditing</span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">88.7% Match</span>
-                </li>
+            {/* Match scores — one neutral badge style */}
+            <div className="p-4 rounded-lg bg-background border border-border">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-4">Top Matched Competency Units</span>
+              <ul className="space-y-2">
+                {[
+                  { name: 'Cloud Microservices Architecture', score: '94.5%' },
+                  { name: 'Financial Risk Predictive Analytics', score: '91.2%' },
+                  { name: 'Enterprise Cyber Defense Auditing', score: '88.7%' },
+                ].map(({ name, score }) => (
+                  <li key={name} className="flex items-center justify-between p-2.5 rounded-md bg-card border border-border">
+                    <span className="text-xs font-medium text-foreground">{name}</span>
+                    <span className="badge-neutral ml-2 shrink-0">{score} Match</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            <div className="p-5 rounded-lg bg-background border border-border flex flex-col justify-between">
+            {/* Verification Engine */}
+            <div className="p-4 rounded-lg bg-background border border-border flex flex-col justify-between gap-4">
               <div>
-                <span className="text-xs font-semibold text-muted-foreground uppercase">Verification Engine</span>
-                <p className="text-xs text-muted-foreground mt-2">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-2">Verification Engine</span>
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   Validate any issued certificate using its public cryptographic verification token.
                 </p>
               </div>
-              <div className="p-3 rounded-md bg-card border border-border/60 text-xs font-mono text-emerald-400 flex items-center justify-between">
+              <div className="p-3 rounded-md bg-card border border-border text-xs font-mono text-foreground flex items-center justify-between">
                 <span>CC-20260823-0001</span>
-                <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
-                  VERIFIED
-                </span>
+                <span className="badge-success text-xs font-semibold ml-2">VERIFIED</span>
               </div>
             </div>
           </div>
@@ -190,13 +167,13 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-border py-8 px-4 text-center text-xs text-muted-foreground">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer className="mt-auto border-t border-border py-6 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <span>© 2026 Capacity Connect Platform. All rights reserved.</span>
-          <div className="flex gap-6">
-            <Link href="/" className="hover:text-muted-foreground">Privacy Policy</Link>
-            <Link href="/" className="hover:text-muted-foreground">Terms of Service</Link>
-            <Link href="/" className="hover:text-muted-foreground">Security Architecture</Link>
+          <div className="flex gap-5">
+            <Link href="/" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+            <Link href="/" className="hover:text-foreground transition-colors">Terms of Service</Link>
+            <Link href="/" className="hover:text-foreground transition-colors">Security Architecture</Link>
           </div>
         </div>
       </footer>

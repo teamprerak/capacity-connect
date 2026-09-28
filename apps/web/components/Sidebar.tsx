@@ -49,15 +49,16 @@ export function Sidebar({ role }: SidebarProps) {
 
   return (
     <>
-      <aside className="w-64 bg-card border border-border shadow-sm border-r border-border flex flex-col p-4 shrink-0 min-h-[calc(100vh-4rem)]">
-        <div className="px-3 py-2 mb-4 rounded-lg bg-primary/10 border border-primary/20">
-          <span className="text-[11px] uppercase font-bold tracking-wider text-primary block">
+      <aside className="w-60 bg-card border-r border-border flex flex-col p-3 shrink-0 min-h-[calc(100vh-3.5rem)]">
+        {/* Role label — neutral, no colored translucency */}
+        <div className="px-3 py-2 mb-3 rounded-md bg-accent border border-border">
+          <span className="text-xs uppercase font-semibold tracking-wider text-muted-foreground block">
             {role} portal
           </span>
-          <span className="text-xs text-muted-foreground font-medium">Capacity Connect Workspace</span>
+          <span className="text-xs text-muted-foreground">Capacity Connect</span>
         </div>
 
-        <nav className="flex flex-col gap-1.5 flex-1">
+        <nav className="flex flex-col gap-0.5 flex-1">
           {activeLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -66,37 +67,38 @@ export function Sidebar({ role }: SidebarProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-all ${
+                className={`flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
                   isActive
-                    ? 'bg-primary/20 text-primary border border-blue-500/30 shadow-sm shadow-blue-500/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-card'
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <Icon className={`w-4 h-4 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
                   <span>{link.label}</span>
                 </div>
-                {isActive && <ChevronRight className="w-4 h-4 text-primary" />}
+                {isActive && <ChevronRight className="w-3.5 h-3.5 text-primary" />}
               </Link>
             );
           })}
         </nav>
 
-        <div className="mt-auto space-y-4">
+        <div className="mt-auto space-y-2 pt-3 border-t border-border">
           {role === 'trainer' && (
-            <div className="p-3 rounded-md bg-gradient-to-tr from-purple-900/30 to-indigo-900/30 border border-purple-500/20">
-              <div className="flex items-center gap-2 text-purple-300 text-xs font-semibold mb-1">
-                <Sparkles className="w-4 h-4 text-purple-400" /> AI Assistant Ready
+            /* Neutral AI card — no gradient, no purple glow */
+            <div className="p-3 rounded-md bg-accent border border-border">
+              <div className="flex items-center gap-1.5 text-foreground text-xs font-semibold mb-1">
+                <Sparkles className="w-3.5 h-3.5 text-primary" /> AI Assistant Ready
               </div>
-              <p className="text-[11px] text-muted-foreground">
-                Generate course outlines & assessment drafts instantly with AI.
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Generate course outlines &amp; assessment drafts instantly with AI.
               </p>
             </div>
           )}
 
           <button
             onClick={() => setIsLogoutOpen(true)}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-muted-foreground hover:text-rose-400 hover:bg-rose-500/10 transition-all border border-transparent hover:border-rose-500/20"
+            className="btn-ghost w-full justify-start px-3 py-2 text-sm"
           >
             <LogOut className="w-4 h-4" />
             Sign Out

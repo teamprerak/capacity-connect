@@ -56,79 +56,90 @@ export default function CourseDetailPage() {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
+    <div className="space-y-8">
       <Link
         href="/trainee/courses"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" /> Back to Catalog
+        <ArrowLeft className="w-3.5 h-3.5" /> Back to Catalog
       </Link>
 
-      <div className="bg-card border border-border shadow-sm rounded-md p-8 border border-border space-y-6">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider border border-primary/20">
+      {/* Course header card */}
+      <div className="surface-card p-7 space-y-5">
+        {/* Badges */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-primary bg-primary/8 px-2.5 py-1 rounded border border-primary/15">
             {course.category?.name || 'Technology'}
           </span>
-          <span className="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold uppercase tracking-wider border border-purple-500/20">
+          {/* Difficulty — neutral badge, no purple glow */}
+          <span className="badge-neutral text-[11px] uppercase tracking-wide">
             {course.difficulty}
           </span>
         </div>
 
-        <h1 className="text-3xl font-extrabold text-foreground tracking-tight leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight leading-tight">
           {course.title}
         </h1>
 
         <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">{course.description}</p>
 
-        <div className="flex flex-wrap gap-6 pt-4 border-t border-border text-xs font-medium text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-primary" />
-            <span>Duration: {Math.round(course.durationMinutes / 60)} Hours</span>
+        {/* Meta row */}
+        <div className="flex flex-wrap gap-5 pt-4 border-t border-border text-xs font-medium text-muted-foreground">
+          <div className="flex items-center gap-1.5">
+            <Clock className="w-3.5 h-3.5" />
+            <span>Duration: {Math.round(course.durationMinutes / 60)} hrs</span>
           </div>
-          <div className="flex items-center gap-2">
-            <User className="w-4 h-4 text-purple-400" />
+          <div className="flex items-center gap-1.5">
+            <User className="w-3.5 h-3.5" />
             <span>Trainer: {course.trainer?.user?.email}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-emerald-400" />
-            <span>Modules: {course.modules?.length || 0} Modules</span>
+          <div className="flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5" />
+            <span>Modules: {course.modules?.length || 0}</span>
           </div>
         </div>
 
-        <div className="pt-4">
+        {/* Enroll — solid primary, no gradient */}
+        <div className="pt-2">
           <button
             onClick={handleEnroll}
             disabled={isEnrolling}
-            className="px-8 py-3.5 rounded-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-foreground shadow-xl shadow-blue-500/25 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 text-sm"
+            className="btn-primary px-6 py-2.5 text-sm disabled:opacity-60"
           >
             <BookOpen className="w-4 h-4" />
-            {isEnrolling ? 'Enrolling...' : 'Enroll in Course Now'}
+            {isEnrolling ? 'Enrolling…' : 'Enroll in Course Now'}
           </button>
         </div>
       </div>
 
-      {/* Modules Syllabus */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold text-foreground">Course Syllabus & Curriculum</h2>
-        <div className="space-y-3">
-          {course.modules?.map((mod: any, idx: number) => (
-            <div
-              key={mod.id}
-              className="bg-card border border-border shadow-sm rounded-lg p-5 border border-border flex items-center justify-between"
-            >
-              <div className="flex items-center gap-4">
-                <span className="w-8 h-8 rounded-md bg-card text-primary font-bold text-xs flex items-center justify-center border border-border">
-                  {idx + 1}
-                </span>
-                <div>
-                  <h4 className="text-sm font-bold text-foreground">{mod.title}</h4>
-                  <span className="text-xs text-muted-foreground">{mod.resources?.length || 0} Learning Resources</span>
+      {/* Syllabus */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-semibold text-foreground">Course Syllabus &amp; Curriculum</h2>
+        {course.modules?.length > 0 ? (
+          <div className="space-y-2">
+            {course.modules.map((mod: any, idx: number) => (
+              <div
+                key={mod.id}
+                className="surface-card px-5 py-4 flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="w-7 h-7 rounded bg-accent text-primary font-semibold text-xs flex items-center justify-center border border-border shrink-0">
+                    {idx + 1}
+                  </span>
+                  <div>
+                    <h4 className="text-sm font-medium text-foreground">{mod.title}</h4>
+                    <span className="text-xs text-muted-foreground">{mod.resources?.length || 0} resources</span>
+                  </div>
                 </div>
+                <span className="text-xs text-muted-foreground">Module {mod.sequenceOrder}</span>
               </div>
-              <span className="text-xs font-semibold text-muted-foreground">Module {mod.sequenceOrder}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="surface-card px-5 py-8 text-center text-sm text-muted-foreground">
+            Syllabus modules are not yet published for this course.
+          </div>
+        )}
       </div>
     </div>
   );

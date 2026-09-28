@@ -3,6 +3,7 @@ import { BadRequestException, ConflictException, NotFoundException } from '@nest
 import { CertificateService } from './certificate.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { EnrollmentStatus } from '@repo/db';
 
 // Mock QRCode
@@ -35,12 +36,14 @@ describe('CertificateService', () => {
     };
 
     const mockAuditService = { log: jest.fn().mockResolvedValue(undefined) };
+    const mockNotificationsService = { push: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CertificateService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: AuditService, useValue: mockAuditService },
+        { provide: NotificationsService, useValue: mockNotificationsService },
       ],
     }).compile();
 
@@ -114,7 +117,7 @@ describe('CertificateService', () => {
       // Verify certificate number format CC-YYYYMMDD-XXXXXXXX
       expect(result.certificateNumber).toMatch(/^CC-\d{8}-[A-Z0-9]{8}$/);
       expect(result.verificationUrl).toContain('mock-verify-token-uuid');
-      expect(result.verificationUrl).toContain('/api/v1/certificates/verify/');
+      expect(result.verificationUrl).toContain('/certificates/verify/');
 
       // Verify audit log was called
       expect(auditService.log).toHaveBeenCalledWith(

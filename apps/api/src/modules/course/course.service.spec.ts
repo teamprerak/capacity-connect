@@ -9,6 +9,7 @@ import { CourseStatus, EnrollmentStatus } from '@repo/db';
 import { CourseService } from './course.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 describe('CourseService', () => {
   let service: CourseService;
@@ -30,20 +31,23 @@ describe('CourseService', () => {
       course: { findMany: jest.fn(), findFirst: jest.fn(), count: jest.fn() },
       courseModule: { count: jest.fn(), findMany: jest.fn(), findFirst: jest.fn(), create: jest.fn(), update: jest.fn(), delete: jest.fn() },
       courseCategory: { findMany: jest.fn(), create: jest.fn() },
-      trainerProfile: { findUnique: jest.fn() },
+      trainerProfile: { findUnique: jest.fn(), create: jest.fn() },
       traineeProfile: { findUnique: jest.fn() },
+      user: { findUnique: jest.fn().mockResolvedValue(null) },
       enrollment: { findFirst: jest.fn(), findUnique: jest.fn(), findMany: jest.fn(), update: jest.fn() },
       courseProgress: { upsert: jest.fn() },
       $transaction: jest.fn().mockImplementation((cb) => cb(mockTx)),
     };
 
     const mockAuditService = { log: jest.fn().mockResolvedValue(undefined) };
+    const mockNotificationsService = { push: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CourseService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: AuditService, useValue: mockAuditService },
+        { provide: NotificationsService, useValue: mockNotificationsService },
       ],
     }).compile();
 

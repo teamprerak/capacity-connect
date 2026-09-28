@@ -40,7 +40,7 @@ export class AuthService {
 
     const emailVerificationToken = uuidv4();
 
-    const isDev = process.env.NODE_ENV !== 'production';
+    const isDev = process.env.NODE_ENV === 'development';
 
     return this.prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
@@ -170,7 +170,7 @@ export class AuthService {
 
       this.tokenService.setTokenCookies(res, accessToken, refreshToken);
       
-      const roles = user.userRoles.map((ur) => ur.role.name);
+      const roles = user.userRoles?.map((ur: any) => ur.role?.name || ur.role) || [];
       
       // Also return tokens in response body so frontend clients (SPA) can persist them
       return { message: 'Login successful', accessToken, userId: user.id, roles };

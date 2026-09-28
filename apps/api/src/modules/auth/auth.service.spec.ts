@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { TokenService } from './token.service';
 import { AuditService } from '../../common/services/audit.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 // ─── Argon2 mock ──────────────────────────────────────────────────────────────
 jest.mock('argon2', () => ({
@@ -21,10 +22,13 @@ describe('AuthService', () => {
   let tokenService: jest.Mocked<TokenService>;
   let auditService: jest.Mocked<AuditService>;
 
-  const mockTx = {
+  const mockTx: any = {
     user: { create: jest.fn(), update: jest.fn() },
     refreshToken: { create: jest.fn() },
     auditLog: { create: jest.fn() },
+    traineeProfile: { create: jest.fn() },
+    trainerProfile: { create: jest.fn() },
+    userRole: { findMany: jest.fn().mockResolvedValue([]) },
   };
 
   beforeEach(async () => {
@@ -55,12 +59,17 @@ describe('AuthService', () => {
       log: jest.fn().mockResolvedValue(undefined),
     };
 
+    const mockNotificationsService = {
+      push: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: TokenService, useValue: mockTokenService },
         { provide: AuditService, useValue: mockAuditService },
+        { provide: NotificationsService, useValue: mockNotificationsService },
       ],
     }).compile();
 
@@ -176,7 +185,7 @@ describe('AuthService', () => {
 
       const result = await service.login(dto, mockRes, '127.0.0.1');
 
-      expect(result).toEqual({ message: 'Login successful' });
+      expect(result).toEqual(expect.objectContaining({ message: 'Login successful' }));
       expect(tokenService.setTokenCookies).toHaveBeenCalled();
       expect(auditService.log).toHaveBeenCalledWith(
         expect.objectContaining({ action: 'auth.login' }),

@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AiService } from './ai.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
@@ -42,11 +43,21 @@ describe('AiService', () => {
 
     const mockAuditService = { log: jest.fn().mockResolvedValue(undefined) };
 
+    const mockConfigService = {
+      get: jest.fn().mockImplementation((key: string) => {
+        if (key === 'ai.provider') return 'stub';
+        if (key === 'ai.geminiApiKey') return 'test-gemini-key';
+        if (key === 'ai.geminiDelayMs') return 0;
+        return undefined;
+      }),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AiService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: AuditService, useValue: mockAuditService },
+        { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 

@@ -36,6 +36,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
             },
           },
         },
+        trainerProfile: true,
+        traineeProfile: true,
       },
     });
 
@@ -43,15 +45,27 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('User inactive or not found');
     }
 
+    const resolvedRoles: any[] = user.userRoles.map((ur) => ({
+      name: ur.role.name,
+      permissions: ur.role.rolePermissions.map((rp) => rp.permission),
+    }));
+
+    // Fallback: If user has a trainerProfile in the DB, guarantee they possess the trainer role
+    if (user.trainerProfile && !resolvedRoles.some((r) => r.name?.toLowerCase() === 'trainer')) {
+      resolvedRoles.push({ name: 'trainer', permissions: [] });
+    }
+
+    // Fallback: If user has a traineeProfile in the DB, guarantee they possess the trainee role
+    if (user.traineeProfile && !resolvedRoles.some((r) => r.name?.toLowerCase() === 'trainee')) {
+      resolvedRoles.push({ name: 'trainee', permissions: [] });
+    }
+
     // Shape the user object for downstream guards
     return {
       id: user.id,
       email: user.email,
       status: user.status,
-      roles: user.userRoles.map((ur) => ({
-        name: ur.role.name,
-        permissions: ur.role.rolePermissions.map((rp) => rp.permission),
-      })),
+      roles: resolvedRoles,
     };
   }
 }

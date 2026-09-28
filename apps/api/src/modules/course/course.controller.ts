@@ -89,7 +89,7 @@ export class CourseController {
 
   @Post('courses')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('trainer')
+  @Roles('trainer', 'admin')
   @HttpCode(HttpStatus.CREATED)
   createCourse(
     @CurrentUser('id') userId: string,
@@ -201,7 +201,7 @@ export class CourseController {
 
   @Post('courses/:courseId/modules')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('trainer')
+  @Roles('trainer', 'admin')
   @HttpCode(HttpStatus.CREATED)
   addModule(
     @CurrentUser('id') userId: string,
@@ -213,7 +213,7 @@ export class CourseController {
 
   @Patch('courses/:courseId/modules/:moduleId')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('trainer')
+  @Roles('trainer', 'admin')
   updateModule(
     @CurrentUser('id') userId: string,
     @Param('courseId', ParseUUIDPipe) courseId: string,
@@ -225,7 +225,7 @@ export class CourseController {
 
   @Delete('courses/:courseId/modules/:moduleId')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('trainer')
+  @Roles('trainer', 'admin')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteModule(
     @CurrentUser('id') userId: string,

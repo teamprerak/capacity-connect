@@ -22,8 +22,13 @@ export class RolesGuard implements CanActivate {
     // CRITICAL: roles resolved from DB record attached to request, never from client claim
     if (!user || !user.roles) throw new ForbiddenException('Access denied');
 
-    const userRoles = user.roles.map((r: any) => r.name);
-    const hasRole = requiredRoles.some((role) => userRoles.includes(role));
+    const userRoles: string[] = (user.roles || [])
+      .map((r: any) => (typeof r === 'string' ? r : r?.name))
+      .filter((r: any): r is string => Boolean(r))
+      .map((r: string) => r.toLowerCase().trim());
+
+    const normalizedRequired = requiredRoles.map((r: string) => r.toLowerCase().trim());
+    const hasRole = normalizedRequired.some((role) => userRoles.includes(role));
     const isAdmin = userRoles.includes('admin');
 
     if (!hasRole && !isAdmin) throw new ForbiddenException('Insufficient role');

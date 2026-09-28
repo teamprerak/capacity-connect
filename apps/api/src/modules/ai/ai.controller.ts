@@ -38,7 +38,7 @@ export class AiController {
   }
 
   @Post('draft-course-outline')
-  @Roles('trainer')
+  @Roles('trainer', 'admin')
   @HttpCode(HttpStatus.CREATED)
   draftCourseOutline(
     @Body() dto: DraftCourseOutlineDto,

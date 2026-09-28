@@ -17,6 +17,7 @@ describe('AnalyticsService', () => {
       certificate: { count: jest.fn(), findMany: jest.fn() },
       skillGapAnalysis: { groupBy: jest.fn() },
       traineeCompetency: { findMany: jest.fn() },
+      $queryRaw: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -111,16 +112,13 @@ describe('AnalyticsService', () => {
 
   describe('getHeatmap()', () => {
     it('should return heatmap array with department and skills structure', async () => {
-      (prisma.traineeCompetency.findMany as jest.Mock).mockResolvedValue([
+      (prisma.$queryRaw as jest.Mock).mockResolvedValue([
         {
-          currentLevel: 3,
-          requiredLevel: 5,
-          traineeProfile: { department: { name: 'Engineering' } },
-          competency: {
-            competencySkills: [
-              { skill: { name: 'Cloud Architecture' } },
-            ],
-          },
+          department: 'Engineering',
+          skill: 'Cloud Architecture',
+          avg_current: 3,
+          avg_required: 5,
+          count: BigInt(1),
         },
       ]);
 
@@ -134,7 +132,7 @@ describe('AnalyticsService', () => {
     });
 
     it('should return empty array when no competency data', async () => {
-      (prisma.traineeCompetency.findMany as jest.Mock).mockResolvedValue([]);
+      (prisma.$queryRaw as jest.Mock).mockResolvedValue([]);
       const result = await service.getHeatmap();
       expect(result).toEqual([]);
     });

@@ -167,11 +167,11 @@ export class CourseService {
       if (!newCategoryName) {
         throw new BadRequestException('newCategoryName is required when creating a custom category');
       }
-      let category = await this.prisma.category.findFirst({
+      let category = await this.prisma.courseCategory.findFirst({
         where: { name: { equals: newCategoryName, mode: 'insensitive' } },
       });
       if (!category) {
-        category = await this.prisma.category.create({ data: { name: newCategoryName } });
+        category = await this.prisma.courseCategory.create({ data: { name: newCategoryName } });
       }
       finalCategoryId = category.id;
     }
@@ -226,11 +226,11 @@ export class CourseService {
       if (!newCategoryName) {
         throw new BadRequestException('newCategoryName is required when creating a custom category');
       }
-      let category = await this.prisma.category.findFirst({
+      let category = await this.prisma.courseCategory.findFirst({
         where: { name: { equals: newCategoryName, mode: 'insensitive' } },
       });
       if (!category) {
-        category = await this.prisma.category.create({ data: { name: newCategoryName } });
+        category = await this.prisma.courseCategory.create({ data: { name: newCategoryName } });
       }
       courseData.categoryId = category.id;
     }

@@ -8,6 +8,7 @@ import {
 import { CourseStatus, EnrollmentStatus, ProgressStatus } from '@repo/db';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { CreateModuleDto, UpdateModuleDto } from './dto/create-module.dto';
@@ -20,6 +21,7 @@ export class CourseService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly auditService: AuditService,
+    private readonly notifications: NotificationsService,
   ) {}
 
   // ─── Categories ───────────────────────────────────────────────────────────────
@@ -412,6 +414,21 @@ export class CourseService {
         prisma: tx,
       });
 
+      // ─── Notify the trainer ─────────────────────────────────────────────
+      const trainerUser = await this.prisma.trainerProfile.findUnique({
+        where: { id: course.trainerId },
+        select: { userId: true },
+      }).catch(() => null);
+      if (trainerUser) {
+        this.notifications.push({
+          userId: trainerUser.userId,
+          type: 'course_approved',
+          title: 'Course approved!',
+          message: `Your course "${course.title}" has been approved and is now published.`,
+          link: `/trainer`,
+        });
+      }
+
       return updatedCourse;
     });
   }
@@ -436,6 +453,21 @@ export class CourseService {
         metadata: { newStatus: CourseStatus.draft },
         prisma: tx,
       });
+
+      // ─── Notify the trainer ─────────────────────────────────────────────
+      const trainerUser2 = await this.prisma.trainerProfile.findUnique({
+        where: { id: course.trainerId },
+        select: { userId: true },
+      }).catch(() => null);
+      if (trainerUser2) {
+        this.notifications.push({
+          userId: trainerUser2.userId,
+          type: 'course_rejected',
+          title: 'Course needs revisions',
+          message: `Your course "${course.title}" was returned for revisions. Please update it and resubmit.`,
+          link: `/trainer`,
+        });
+      }
 
       return updatedCourse;
     });
@@ -618,6 +650,31 @@ export class CourseService {
         metadata: { courseId: dto.courseId },
         prisma: tx,
       });
+
+      // ─── Real-time notifications ──────────────────────────────────────────
+      // 1. Notify the trainee
+      this.notifications.push({
+        userId: traineeUserId,
+        type: 'enrollment',
+        title: 'Enrolled successfully!',
+        message: `You are now enrolled in "${enrollment.course.title}". Start learning!`,
+        link: `/trainee/courses/${dto.courseId}/learn`,
+      });
+
+      // 2. Notify the course trainer about the new enrollment
+      const trainerUser = await this.prisma.trainerProfile.findUnique({
+        where: { id: course.trainerId },
+        select: { userId: true },
+      }).catch(() => null);
+      if (trainerUser) {
+        this.notifications.push({
+          userId: trainerUser.userId,
+          type: 'new_enrollment',
+          title: 'New enrollment',
+          message: `A trainee just enrolled in "${enrollment.course.title}".`,
+          link: `/trainer`,
+        });
+      }
 
       return enrollment;
     });

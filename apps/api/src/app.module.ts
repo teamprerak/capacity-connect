@@ -16,7 +16,8 @@ import { AssessmentModule } from './modules/assessment/assessment.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AiModule } from './modules/ai/ai.module';
-import { HealthModule } from './health/health.module'; // L-6
+import { HealthModule } from './health/health.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import authConfig from './config/auth.config';
 import aiConfig from './config/ai.config';
 
@@ -33,6 +34,7 @@ import aiConfig from './config/ai.config';
       { name: 'ai', ttl: 60 * 1000, limit: 10 },
     ]),
     PrismaModule,
+    NotificationsModule,   // ← Global: makes NotificationsService injectable everywhere
     AuthModule,
     TraineeModule,
     TrainerModule,

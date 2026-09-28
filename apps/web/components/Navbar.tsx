@@ -12,6 +12,7 @@ import {
 import { AuthModal } from './AuthModal';
 import { QRScannerModal } from './QRScannerModal';
 import { LogoutConfirmModal } from './LogoutConfirmModal';
+import { NotificationBell } from './NotificationBell';
 
 export function Navbar() {
   const { user, isLoggingOut } = useAuth();
@@ -93,6 +94,9 @@ export function Navbar() {
                 ? <Sun className="w-4 h-4" />
                 : <Moon className="w-4 h-4" />}
             </button>
+
+            {/* Real-time notification bell — only shows when logged in */}
+            <NotificationBell />
 
             {user ? (
               <>

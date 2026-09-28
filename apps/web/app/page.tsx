@@ -17,6 +17,7 @@ import {
   Users,
 } from 'lucide-react';
 import { AuthModal } from '@/components/AuthModal';
+import { Footer } from '@/components/Footer';
 
 export default function LandingPage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -167,16 +168,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-border py-6 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <span>© 2026 Capacity Connect Platform. All rights reserved.</span>
-          <div className="flex gap-5">
-            <Link href="/" className="hover:text-foreground transition-colors">Privacy Policy</Link>
-            <Link href="/" className="hover:text-foreground transition-colors">Terms of Service</Link>
-            <Link href="/" className="hover:text-foreground transition-colors">Security Architecture</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </div>

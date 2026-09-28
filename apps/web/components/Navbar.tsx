@@ -75,6 +75,9 @@ export function Navbar() {
             <Link href="/trainee/courses" className="px-3 py-1.5 rounded-md hover:text-foreground hover:bg-accent transition-all duration-150 flex items-center gap-1.5">
               <BookOpen className="w-3.5 h-3.5" /> Courses
             </Link>
+            <Link href="/about" className="px-3 py-1.5 rounded-md hover:text-foreground hover:bg-accent transition-all duration-150">
+              About
+            </Link>
             <button
               onClick={() => setIsQROpen(true)}
               className="px-3 py-1.5 rounded-md hover:text-foreground hover:bg-accent transition-all duration-150 flex items-center gap-1.5"

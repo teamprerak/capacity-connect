@@ -265,7 +265,7 @@ npx turbo type-check test
 | Email Sending | 🔴 Not Implemented | Email verification and password reset generate tokens but don't send emails. Add an SMTP provider (SendGrid, Resend, SES) by implementing the `TODO` comments in `auth.service.ts` |
 | Real AI Model | ✅ Implemented | `AiService` uses the Gemini API via standard `fetch`. Requires `GEMINI_API_KEY` in environment to function correctly. |
 | File Storage | ✅ Cloud/URL Based | Replaced MinIO storage with YouTube/URL links for zero-cost scalability. |
-| Real-time Notifications | 🔴 Not Implemented | Notification service schema and service exist (Phase 8) but WebSocket/SSE is not yet wired up. |
+| Real-time Notifications | 🟢 Implemented | The notification schema, 14 automatic backend triggers, and the frontend `NotificationBell` component are fully wired up. |
 | Production SSL/TLS | 🔴 Not Configured | Add an nginx reverse proxy or configure `app.enableCors()` with HTTPS origins for production. |
 | Multi-tenant Isolation | 🔴 Out of Scope | The platform currently supports single-tenant deployment. |
 

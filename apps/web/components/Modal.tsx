@@ -8,9 +8,10 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  description?: string;
 }
 
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export function Modal({ isOpen, onClose, title, description, children }: ModalProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -28,18 +29,38 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-card border border-border shadow-sm w-full max-w-lg rounded-md p-6 border border-border shadow-sm relative animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-border">
-          <h3 className="text-lg font-bold text-foreground tracking-tight">{title}</h3>
+    /* Backdrop — semi-opaque, subtle blur */
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      {/* Panel */}
+      <div className="bg-card border border-border shadow-md w-full max-w-md rounded-lg relative">
+        {/* Header */}
+        <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-border">
+          <div>
+            <h2 id="modal-title" className="text-base font-semibold text-foreground tracking-tight">
+              {title}
+            </h2>
+            {description && (
+              <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+            )}
+          </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-card transition-colors"
+            className="ml-4 mt-0.5 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0"
+            aria-label="Close"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
-        <div>{children}</div>
+
+        {/* Body */}
+        <div className="px-6 py-5">{children}</div>
       </div>
     </div>
   );

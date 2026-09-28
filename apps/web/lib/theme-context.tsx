@@ -1,7 +1,6 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 
 type Theme = 'light' | 'dark';
 
@@ -16,42 +15,29 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light');
   const [mounted, setMounted] = useState(false);
-  const pathname = usePathname();
 
-  const isPortal = Boolean(
-    pathname && (
-      pathname.startsWith('/admin') ||
-      pathname.startsWith('/trainee') ||
-      pathname.startsWith('/trainer')
-    )
-  );
+  // NOTE: isPortal is kept in context for backward compatibility with Sidebar/Navbar
+  // but theme now applies globally regardless of route.
+  const isPortal = false; // always expose theme toggle everywhere
 
   useEffect(() => {
     setMounted(true);
-    const savedTheme = (localStorage.getItem('theme') as Theme) || 'light';
+    // Read persisted theme — retained across login/logout since it's in localStorage
+    const savedTheme = (localStorage.getItem('cc-theme') as Theme) || 'light';
     setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    if (isPortal) {
-      document.documentElement.setAttribute('data-theme', theme);
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
-  }, [mounted, isPortal, theme]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    if (isPortal) {
-      document.documentElement.setAttribute('data-theme', newTheme);
-    }
+    localStorage.setItem('cc-theme', newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isPortal }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, isPortal: true }}>
+      {/* Hide until mounted to avoid flash of wrong theme */}
       <div style={!mounted ? { visibility: 'hidden' } : undefined}>
         {children}
       </div>
@@ -66,4 +52,3 @@ export function useTheme() {
   }
   return context;
 }
-

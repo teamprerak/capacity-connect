@@ -21,7 +21,7 @@ export function StatCard({
   trend,
 }: StatCardProps) {
   const colorMap = {
-    blue: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    blue: 'bg-primary/10 text-primary border-primary/20',
     purple: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
     emerald: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
     amber: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
@@ -29,17 +29,17 @@ export function StatCard({
   };
 
   return (
-    <div className="glass-card glass-card-hover rounded-2xl p-5 border flex flex-col justify-between">
+    <div className="bg-card border border-border shadow-sm hover:shadow-md transition-all duration-200 rounded-lg p-5 border flex flex-col justify-between">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-semibold text-slate-400 tracking-wide uppercase">{title}</span>
-        <div className={`p-2.5 rounded-xl border ${colorMap[color]}`}>
+        <span className="text-xs font-semibold text-muted-foreground tracking-wide uppercase">{title}</span>
+        <div className={`p-2.5 rounded-md border ${colorMap[color]}`}>
           <Icon className="w-5 h-5" />
         </div>
       </div>
 
       <div>
-        <div className="text-2xl font-bold tracking-tight text-white">{value}</div>
-        {subtitle && <p className="text-xs text-slate-400 mt-1">{subtitle}</p>}
+        <div className="text-2xl font-bold tracking-tight text-foreground">{value}</div>
+        {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
         {trend && (
           <span className="inline-block text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full mt-2 border border-emerald-500/20">
             {trend}

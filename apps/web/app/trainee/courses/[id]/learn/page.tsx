@@ -66,7 +66,7 @@ export default function CoursePlayerPage() {
 
   if (isLoading) {
     return (
-      <div className="glass-card p-12 rounded-3xl text-center text-slate-400">
+      <div className="bg-card border border-border shadow-sm p-12 rounded-md text-center text-muted-foreground">
         Loading interactive player...
       </div>
     );
@@ -76,7 +76,7 @@ export default function CoursePlayerPage() {
     <div className="space-y-6 animate-in fade-in duration-300">
       <Link
         href="/trainee"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="w-4 h-4" /> Back to Dashboard
       </Link>
@@ -84,15 +84,15 @@ export default function CoursePlayerPage() {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Main Content Viewer */}
         <div className="flex-1 space-y-6">
-          <div className="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800">
-            <h2 className="text-2xl font-bold text-white mb-2">
+          <div className="bg-card border border-border shadow-sm rounded-md p-6 sm:p-8 border border-border">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
               {activeModule ? activeModule.title : course?.title}
             </h2>
-            <p className="text-xs text-slate-400 mb-6">
+            <p className="text-xs text-muted-foreground mb-6">
               Capacity Building Module Player & Resource Desk
             </p>
 
-            <div className="aspect-video w-full rounded-3xl bg-slate-900 border border-slate-700/50 shadow-2xl flex items-center justify-center text-center relative overflow-hidden ring-1 ring-white/10">
+            <div className="aspect-video w-full rounded-md bg-background border border-border/50 shadow-sm flex items-center justify-center text-center relative overflow-hidden ring-1 ring-white/10">
               {activeModule?.videoUrl ? (
                 <iframe
                   src={(() => {
@@ -106,11 +106,11 @@ export default function CoursePlayerPage() {
                 ></iframe>
               ) : (
                 <div className="space-y-3 p-8">
-                  <div className="w-16 h-16 rounded-full bg-slate-800 text-slate-500 border border-slate-700 flex items-center justify-center mx-auto">
+                  <div className="w-16 h-16 rounded-full bg-card text-muted-foreground border border-border flex items-center justify-center mx-auto">
                     <FileText className="w-8 h-8" />
                   </div>
-                  <h4 className="text-base font-bold text-white">No Video Available</h4>
-                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  <h4 className="text-base font-bold text-foreground">No Video Available</h4>
+                  <p className="text-xs text-muted-foreground max-w-sm mx-auto">
                     {activeModule ? activeModule.title : 'Module ready.'}
                   </p>
                 </div>
@@ -118,32 +118,32 @@ export default function CoursePlayerPage() {
             </div>
 
             {activeModule?.documentUrl && (
-              <div className="mt-4 p-4 rounded-xl bg-blue-900/20 border border-blue-800/30 flex items-center justify-between">
+              <div className="mt-4 p-4 rounded-md bg-blue-900/20 border border-blue-800/30 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <FileText className="text-blue-400 w-5 h-5" />
+                  <FileText className="text-primary w-5 h-5" />
                   <div>
-                    <h4 className="text-sm font-bold text-white">Module Resource</h4>
-                    <p className="text-xs text-slate-400">Supporting document or slides</p>
+                    <h4 className="text-sm font-bold text-foreground">Module Resource</h4>
+                    <p className="text-xs text-muted-foreground">Supporting document or slides</p>
                   </div>
                 </div>
                 <a
                   href={activeModule.documentUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors"
+                  className="px-4 py-2 bg-primary hover:bg-blue-500 text-foreground text-xs font-bold rounded-lg transition-colors"
                 >
                   View Resource
                 </a>
               </div>
             )}
 
-            <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-800">
+            <div className="mt-6 flex items-center justify-between pt-4 border-t border-border">
               <button
                 onClick={() => activeModule && handleMarkComplete(activeModule.id)}
                 disabled={activeModule && completedModules.includes(activeModule.id)}
-                className={`px-5 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 ${
+                className={`px-5 py-2.5 rounded-md font-bold text-xs transition-all flex items-center gap-2 ${
                   activeModule && completedModules.includes(activeModule.id)
-                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                    ? 'bg-card text-muted-foreground cursor-not-allowed border border-border'
                     : 'bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30'
                 }`}
               >
@@ -154,7 +154,7 @@ export default function CoursePlayerPage() {
               {course?.assessments?.length > 0 && (
                 <Link
                   href={`/trainee/assessments/${course.assessments[0].id}/take`}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xs hover:opacity-90 transition-all flex items-center gap-2"
+                  className="px-5 py-2.5 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 text-foreground font-bold text-xs hover:opacity-90 transition-all flex items-center gap-2"
                 >
                   <HelpCircle className="w-4 h-4" /> Take Module Assessment
                 </Link>
@@ -164,12 +164,12 @@ export default function CoursePlayerPage() {
         </div>
 
         {/* Sidebar Module List */}
-        <div className="w-full lg:w-80 glass-card rounded-3xl p-5 border border-slate-700/50 shadow-xl space-y-4">
+        <div className="w-full lg:w-80 bg-card border border-border shadow-sm rounded-md p-5 border border-border/50 shadow-xl space-y-4">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider text-slate-400">
+            <h3 className="text-sm font-bold text-foreground uppercase tracking-wider text-muted-foreground">
               Modules
             </h3>
-            <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded-md text-[10px] font-bold">
+            <span className="px-2 py-1 bg-card text-muted-foreground rounded-md text-[10px] font-bold">
               {completedModules.length} / {course?.modules?.length || 0}
             </span>
           </div>
@@ -179,10 +179,10 @@ export default function CoursePlayerPage() {
               <button
                 key={mod.id}
                 onClick={() => setActiveModule(mod)}
-                className={`w-full text-left p-3.5 rounded-xl border text-xs font-semibold transition-all flex items-center justify-between group ${
+                className={`w-full text-left p-3.5 rounded-md border text-xs font-semibold transition-all flex items-center justify-between group ${
                   activeModule?.id === mod.id
-                    ? 'bg-blue-600/20 text-blue-300 border-blue-500/40 shadow-lg shadow-blue-500/10'
-                    : 'bg-slate-900/40 text-slate-400 border-slate-800/60 hover:bg-slate-800/60 hover:text-white'
+                    ? 'bg-primary/20 text-blue-300 border-blue-500/40 shadow-sm shadow-blue-500/10'
+                    : 'bg-background/40 text-muted-foreground border-border hover:bg-card hover:text-foreground'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -190,8 +190,8 @@ export default function CoursePlayerPage() {
                     completedModules.includes(mod.id)
                       ? 'bg-emerald-500/20 text-emerald-400'
                       : activeModule?.id === mod.id
-                      ? 'bg-blue-500/20 text-blue-400'
-                      : 'bg-slate-800 text-slate-400 group-hover:bg-slate-700'
+                      ? 'bg-blue-500/20 text-primary'
+                      : 'bg-card text-muted-foreground group-hover:bg-slate-700'
                   }`}>
                     {completedModules.includes(mod.id) ? <CheckCircle className="w-3 h-3" /> : idx + 1}
                   </span>

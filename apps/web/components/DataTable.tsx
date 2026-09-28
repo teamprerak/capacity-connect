@@ -24,29 +24,29 @@ export function DataTable<T extends { id?: string | number }>({
 }: DataTableProps<T>) {
   if (isLoading) {
     return (
-      <div className="glass-card rounded-2xl p-8 flex flex-col items-center justify-center gap-3">
+      <div className="bg-card border border-border shadow-sm rounded-lg p-8 flex flex-col items-center justify-center gap-3">
         <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-        <span className="text-sm font-medium text-slate-400">Loading data...</span>
+        <span className="text-sm font-medium text-muted-foreground">Loading data...</span>
       </div>
     );
   }
 
   if (!data || data.length === 0) {
     return (
-      <div className="glass-card rounded-2xl p-12 flex flex-col items-center justify-center text-center gap-3">
-        <div className="p-3 rounded-full bg-slate-800/80 text-slate-400">
+      <div className="bg-card border border-border shadow-sm rounded-lg p-12 flex flex-col items-center justify-center text-center gap-3">
+        <div className="p-3 rounded-full bg-card text-muted-foreground">
           <Inbox className="w-6 h-6" />
         </div>
-        <p className="text-sm font-medium text-slate-300">{emptyMessage}</p>
+        <p className="text-sm font-medium text-muted-foreground">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden border border-slate-800">
+    <div className="bg-card border border-border shadow-sm rounded-lg overflow-hidden border border-border">
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-slate-300">
-          <thead className="bg-slate-900/60 text-xs uppercase font-semibold text-slate-400 border-b border-slate-800">
+        <table className="w-full text-left text-sm text-muted-foreground">
+          <thead className="bg-background text-xs uppercase font-semibold text-muted-foreground border-b border-border">
             <tr>
               {columns.map((col, idx) => (
                 <th key={idx} className={`px-6 py-4 ${col.className || ''}`}>
@@ -55,11 +55,11 @@ export function DataTable<T extends { id?: string | number }>({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60">
+          <tbody className="divide-y divide-border">
             {data.map((item, rowIdx) => (
               <tr
                 key={item.id ?? rowIdx}
-                className="hover:bg-slate-800/40 transition-colors"
+                className="hover:bg-card transition-colors"
               >
                 {columns.map((col, colIdx) => (
                   <td key={colIdx} className={`px-6 py-4 ${col.className || ''}`}>

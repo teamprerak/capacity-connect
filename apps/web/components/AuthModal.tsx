@@ -63,7 +63,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-1.5">
+          <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
             Email Address
           </label>
           <input
@@ -72,12 +72,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@company.com"
-            className="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm transition-all"
+            className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground placeholder-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-1.5">
+          <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
             Password
           </label>
           <input
@@ -86,19 +86,19 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            className="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm transition-all"
+            className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground placeholder-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm transition-all"
           />
         </div>
 
         {isRegister && (
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-1.5">
+            <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
               Account Role
             </label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             >
               <option value="trainee">Trainee (Learner)</option>
               <option value="trainer">Trainer (Instructor)</option>
@@ -108,8 +108,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
         {/* Demo Fast Login Buttons — only visible in demo mode */}
         {isDemoMode && (
-          <div className="pt-2 border-t border-slate-800">
-            <span className="text-[11px] font-bold text-blue-400 uppercase tracking-wider block mb-2 flex items-center gap-1">
+          <div className="pt-2 border-t border-border">
+            <span className="text-[11px] font-bold text-primary uppercase tracking-wider block mb-2 flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5" /> Quick Demo Credentials
             </span>
             <div className="grid grid-cols-3 gap-2">
@@ -130,7 +130,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <button
                 type="button"
                 onClick={() => setDemoUser('trainee')}
-                className="px-2 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold hover:bg-blue-500/20 transition-all"
+                className="px-2 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-blue-500/20 transition-all"
               >
                 Trainee Demo
               </button>
@@ -141,7 +141,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:opacity-90 transition-all flex items-center justify-center gap-2 mt-4"
+          className="w-full py-3 rounded-md font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-foreground shadow-sm shadow-blue-500/25 hover:opacity-90 transition-all flex items-center justify-center gap-2 mt-4"
         >
           {isRegister ? <UserPlus className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
           {isSubmitting ? 'Authenticating...' : isRegister ? 'Register Account' : 'Sign In'}
@@ -151,7 +151,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <button
             type="button"
             onClick={() => setIsRegister(!isRegister)}
-            className="text-xs font-medium text-slate-400 hover:text-blue-400 transition-colors"
+            className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors"
           >
             {isRegister ? 'Already have an account? Sign in' : "Don't have an account? Register"}
           </button>

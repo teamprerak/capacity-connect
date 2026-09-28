@@ -20,7 +20,7 @@ export function Spinner({ size = 'md', label, className = '' }: SpinnerProps) {
         role="status"
         aria-label={label || 'Loading'}
       />
-      {label && <span className="text-sm font-semibold text-slate-400">{label}</span>}
+      {label && <span className="text-sm font-semibold text-muted-foreground">{label}</span>}
     </div>
   );
 }

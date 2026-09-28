@@ -44,10 +44,10 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
           Executive Analytics & Intelligence Console
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Real-time organization-wide competency heatmaps, critical gap feeds, and assessment difficulty detectors.
         </p>
       </div>
@@ -85,19 +85,19 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Heatmap Section */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 space-y-4">
+      <div className="bg-card border border-border shadow-sm rounded-md p-6 sm:p-8 border border-border space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Flame className="w-5 h-5 text-amber-400" />
-            <h2 className="text-xl font-bold text-white">Department Competency Heatmap</h2>
+            <h2 className="text-xl font-bold text-foreground">Department Competency Heatmap</h2>
           </div>
-          <span className="text-xs font-semibold text-slate-400">Department &times; Skill Matrix</span>
+          <span className="text-xs font-semibold text-muted-foreground">Department &times; Skill Matrix</span>
         </div>
 
         <div className="overflow-x-auto pt-2">
           {heatmapData.length > 0 ? (
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-900/80 font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
+            <table className="w-full text-left text-xs text-muted-foreground">
+              <thead className="bg-background font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
                 <tr>
                   <th className="px-4 py-3">Department</th>
                   {allSkills.map((skill) => (
@@ -105,25 +105,25 @@ export default function AdminDashboardPage() {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-semibold">
+              <tbody className="divide-y divide-border font-semibold">
                 {heatmapData.map((deptData) => (
                   <tr key={deptData.department}>
-                    <td className="px-4 py-3 text-white font-bold">{deptData.department}</td>
+                    <td className="px-4 py-3 text-foreground font-bold">{deptData.department}</td>
                     {allSkills.map((skillName) => {
                       const skill = deptData.skills.find((s: any) => s.skill === skillName);
                       if (!skill) {
-                        return <td key={skillName} className="px-4 py-3 text-slate-500">N/A</td>;
+                        return <td key={skillName} className="px-4 py-3 text-muted-foreground">N/A</td>;
                       }
                       
                       const lvl = skill.avgCurrentLevel;
-                      let colorClass = 'text-slate-400 bg-slate-500/10';
+                      let colorClass = 'text-muted-foreground bg-slate-500/10';
                       let label = 'Unknown';
                       
                       if (lvl >= 4) {
                         colorClass = 'text-emerald-400 bg-emerald-500/10';
                         label = 'Advanced';
                       } else if (lvl >= 3) {
-                        colorClass = 'text-blue-400 bg-blue-500/10';
+                        colorClass = 'text-primary bg-primary/10';
                         label = 'Intermediate';
                       } else if (lvl >= 2) {
                         colorClass = 'text-amber-400 bg-amber-500/10';
@@ -144,7 +144,7 @@ export default function AdminDashboardPage() {
               </tbody>
             </table>
           ) : (
-            <div className="text-center py-8 text-slate-400 text-sm">
+            <div className="text-center py-8 text-muted-foreground text-sm">
               {isLoading ? 'Loading heatmap data...' : 'No competency data available yet.'}
             </div>
           )}
@@ -154,11 +154,11 @@ export default function AdminDashboardPage() {
       {/* Critical Gap Intervention Feed & Difficult Quizzes Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Critical Gap Urgent Feed */}
-        <div className="glass-card rounded-3xl p-6 border border-rose-500/30 space-y-4">
+        <div className="bg-card border border-border shadow-sm rounded-md p-6 border border-rose-500/30 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-rose-400">
               <AlertTriangle className="w-5 h-5" />
-              <h3 className="text-lg font-bold text-white">Critical Gap Urgent Feed</h3>
+              <h3 className="text-lg font-bold text-foreground">Critical Gap Urgent Feed</h3>
             </div>
             <span className="text-xs font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/20">
               $\ge 3$ Level Gaps
@@ -170,11 +170,11 @@ export default function AdminDashboardPage() {
               criticalFeed.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs flex items-center justify-between"
+                  className="p-3.5 rounded-lg bg-background border border-border text-xs flex items-center justify-between"
                 >
                   <div>
-                    <span className="font-bold text-white block">{item.trainee?.user?.email}</span>
-                    <span className="text-slate-400">{item.traineeCompetency?.competency?.name}</span>
+                    <span className="font-bold text-foreground block">{item.trainee?.user?.email}</span>
+                    <span className="text-muted-foreground">{item.traineeCompetency?.competency?.name}</span>
                   </div>
                   <span className="font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-1 rounded">
                     Gap: -{item.gapValue}
@@ -182,7 +182,7 @@ export default function AdminDashboardPage() {
                 </div>
               ))
             ) : (
-              <div className="text-xs text-slate-400 text-center py-4">
+              <div className="text-xs text-muted-foreground text-center py-4">
                 No active critical gap interventions required.
               </div>
             )}
@@ -190,11 +190,11 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Difficult Assessment Detector */}
-        <div className="glass-card rounded-3xl p-6 border border-amber-500/30 space-y-4">
+        <div className="bg-card border border-border shadow-sm rounded-md p-6 border border-amber-500/30 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-amber-400">
               <FileText className="w-5 h-5" />
-              <h3 className="text-lg font-bold text-white">Low Pass-Rate Assessments</h3>
+              <h3 className="text-lg font-bold text-foreground">Low Pass-Rate Assessments</h3>
             </div>
             <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
               Pass Rate &lt; 50%
@@ -206,11 +206,11 @@ export default function AdminDashboardPage() {
               difficultQuizzes.map((quiz, idx) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs flex items-center justify-between"
+                  className="p-3.5 rounded-lg bg-background border border-border text-xs flex items-center justify-between"
                 >
                   <div>
-                    <span className="font-bold text-white block">{quiz.subject}</span>
-                    <span className="text-slate-400">{quiz.course?.title}</span>
+                    <span className="font-bold text-foreground block">{quiz.subject}</span>
+                    <span className="text-muted-foreground">{quiz.course?.title}</span>
                   </div>
                   <span className="font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded">
                     {quiz.passRatePct}% Pass Rate
@@ -218,7 +218,7 @@ export default function AdminDashboardPage() {
                 </div>
               ))
             ) : (
-              <div className="text-xs text-slate-400 text-center py-4">
+              <div className="text-xs text-muted-foreground text-center py-4">
                 All active assessments meet standard pass rate thresholds.
               </div>
             )}

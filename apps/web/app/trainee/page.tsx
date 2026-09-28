@@ -34,10 +34,10 @@ export default function TraineeDashboard() {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
           Trainee Learning Workspace
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Monitor your skill gaps, active course progress, and certified accomplishments.
         </p>
       </div>
@@ -69,19 +69,19 @@ export default function TraineeDashboard() {
       </div>
 
       {/* Skill Gap Analysis & AI Assistance Banner */}
-      <div className="glass-card rounded-3xl p-6 border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-indigo-950/20 to-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="bg-card border border-border shadow-sm rounded-md p-6 border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-indigo-950/20 to-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-500/30">
             <BrainCircuit className="w-4 h-4" /> Skill Gap Target
           </div>
-          <h3 className="text-xl font-bold text-white">Target Assessment</h3>
-          <p className="text-xs text-slate-300 max-w-xl leading-relaxed">
+          <h3 className="text-xl font-bold text-foreground">Target Assessment</h3>
+          <p className="text-xs text-muted-foreground max-w-xl leading-relaxed">
             Your current baseline is Level {currentLvl}. Completing recommended courses will bridge your overall gap to Level {reqLvl}.
           </p>
         </div>
         <Link
           href="/trainee/courses"
-          className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-500/20 flex items-center gap-2 whitespace-nowrap"
+          className="px-5 py-3 rounded-lg bg-primary hover:bg-blue-500 text-foreground font-bold text-xs shadow-sm shadow-blue-500/20 flex items-center gap-2 whitespace-nowrap"
         >
           View Recommendations <ArrowRight className="w-4 h-4" />
         </Link>
@@ -90,8 +90,8 @@ export default function TraineeDashboard() {
       {/* Active Enrollments Section */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-white">My Active Courses</h2>
-          <Link href="/trainee/courses" className="text-xs font-semibold text-blue-400 hover:text-blue-300">
+          <h2 className="text-xl font-bold text-foreground">My Active Courses</h2>
+          <Link href="/trainee/courses" className="text-xs font-semibold text-primary hover:text-blue-300">
             View All Catalog →
           </Link>
         </div>
@@ -116,9 +116,9 @@ export default function TraineeDashboard() {
             ))}
           </div>
         ) : (
-          <div className="glass-card p-8 rounded-2xl text-center text-slate-400 text-sm">
+          <div className="bg-card border border-border shadow-sm p-8 rounded-lg text-center text-muted-foreground text-sm">
             You are not enrolled in any courses yet.{' '}
-            <Link href="/trainee/courses" className="text-blue-400 underline font-semibold">
+            <Link href="/trainee/courses" className="text-primary underline font-semibold">
               Browse Course Catalog
             </Link>
           </div>

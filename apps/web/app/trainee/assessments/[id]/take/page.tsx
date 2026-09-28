@@ -73,7 +73,7 @@ export default function TakeAssessmentPage() {
 
   if (isLoading) {
     return (
-      <div className="glass-card p-12 rounded-3xl text-center text-slate-400">
+      <div className="bg-card border border-border shadow-sm p-12 rounded-md text-center text-muted-foreground">
         Initializing assessment questions...
       </div>
     );
@@ -83,7 +83,7 @@ export default function TakeAssessmentPage() {
     return (
       <div className="max-w-2xl mx-auto space-y-6 animate-in zoom-in-95 duration-300">
         <div
-          className={`glass-card rounded-3xl p-8 border text-center ${
+          className={`bg-card border border-border shadow-sm rounded-md p-8 border text-center ${
             result.passed ? 'border-emerald-500/30' : 'border-rose-500/30'
           }`}
         >
@@ -107,14 +107,14 @@ export default function TakeAssessmentPage() {
             {result.passed ? 'PASSED ASSESSMENT' : 'FAILED - RETAKE REQUIRED'}
           </span>
 
-          <h2 className="text-3xl font-extrabold text-white mb-2">Final Score: {result.scorePct}%</h2>
-          <p className="text-xs text-slate-400 mb-6">
+          <h2 className="text-3xl font-extrabold text-foreground mb-2">Final Score: {result.scorePct}%</h2>
+          <p className="text-xs text-muted-foreground mb-6">
             Earned {result.earnedPoints} out of {result.totalPoints} points (Pass Mark: {result.passScorePct}%)
           </p>
 
           <button
             onClick={() => router.push('/trainee')}
-            className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-xs text-white shadow-lg transition-all"
+            className="px-6 py-3 rounded-md bg-primary hover:bg-blue-500 font-bold text-xs text-foreground shadow-sm transition-all"
           >
             Return to Dashboard
           </button>
@@ -125,7 +125,7 @@ export default function TakeAssessmentPage() {
 
   if (!attemptData || !attemptData.questions || attemptData.questions.length === 0) {
     return (
-      <div className="glass-card p-12 rounded-3xl text-center text-slate-400">
+      <div className="bg-card border border-border shadow-sm p-12 rounded-md text-center text-muted-foreground">
         No questions available for this assessment.
       </div>
     );
@@ -137,30 +137,30 @@ export default function TakeAssessmentPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-300">
       {/* Assessment Header */}
-      <div className="glass-card rounded-2xl p-4 border border-slate-800 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-          <HelpCircle className="w-4 h-4 text-blue-400" />
+      <div className="bg-card border border-border shadow-sm rounded-lg p-4 border border-border flex items-center justify-between">
+        <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+          <HelpCircle className="w-4 h-4 text-primary" />
           <span>
             Question {currentIdx + 1} of {attemptData.totalQuestions}
           </span>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs font-mono text-amber-400">
+        <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-background border border-border text-xs font-mono text-amber-400">
           <Clock className="w-3.5 h-3.5" />
           <span>{attemptData.timeLimitMinutes ?? 30} mins remaining</span>
         </div>
       </div>
 
       {/* Question Card */}
-      <div className="glass-card rounded-3xl p-8 border border-slate-800 space-y-6">
+      <div className="bg-card border border-border shadow-sm rounded-md p-8 border border-border space-y-6">
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-bold uppercase tracking-wider text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-full border border-purple-500/20">
             {currentQ.questionType.replace('_', ' ')}
           </span>
-          <span className="text-xs font-semibold text-slate-400">{currentQ.points} Points</span>
+          <span className="text-xs font-semibold text-muted-foreground">{currentQ.points} Points</span>
         </div>
 
-        <h3 className="text-xl font-bold text-white leading-snug">{currentQ.questionText}</h3>
+        <h3 className="text-xl font-bold text-foreground leading-snug">{currentQ.questionText}</h3>
 
         <div className="space-y-3 pt-2">
           {currentQ.options?.map((opt: any) => {
@@ -171,14 +171,14 @@ export default function TakeAssessmentPage() {
                 key={opt.id}
                 type="button"
                 onClick={() => handleSelectOption(currentQ.id, opt.id, isMulti)}
-                className={`w-full text-left p-4 rounded-2xl border text-sm font-semibold transition-all flex items-center justify-between ${
+                className={`w-full text-left p-4 rounded-lg border text-sm font-semibold transition-all flex items-center justify-between ${
                   isSelected
-                    ? 'bg-blue-600/20 border-blue-500 text-white shadow-lg shadow-blue-500/10'
-                    : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:bg-slate-800/60'
+                    ? 'bg-primary/20 border-blue-500 text-foreground shadow-sm shadow-blue-500/10'
+                    : 'bg-background border-border text-muted-foreground hover:bg-card'
                 }`}
               >
                 <span>{opt.optionText}</span>
-                {isSelected && <CheckCircle className="w-4 h-4 text-blue-400" />}
+                {isSelected && <CheckCircle className="w-4 h-4 text-primary" />}
               </button>
             );
           })}
@@ -190,7 +190,7 @@ export default function TakeAssessmentPage() {
         <button
           disabled={currentIdx === 0}
           onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
-          className="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 transition-all"
+          className="px-5 py-2.5 rounded-md text-xs font-bold text-muted-foreground bg-card hover:bg-slate-700 disabled:opacity-40 transition-all"
         >
           Previous Question
         </button>
@@ -199,14 +199,14 @@ export default function TakeAssessmentPage() {
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="px-6 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/20 hover:opacity-90 transition-all"
+            className="px-6 py-2.5 rounded-md text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 text-foreground shadow-sm shadow-emerald-500/20 hover:opacity-90 transition-all"
           >
             {isSubmitting ? 'Grading Answers...' : 'Submit Final Attempt'}
           </button>
         ) : (
           <button
             onClick={() => setCurrentIdx((i) => Math.min(attemptData.questions.length - 1, i + 1))}
-            className="px-6 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20 transition-all flex items-center gap-1.5"
+            className="px-6 py-2.5 rounded-md text-xs font-bold bg-primary hover:bg-blue-500 text-foreground shadow-sm shadow-blue-500/20 transition-all flex items-center gap-1.5"
           >
             Next Question <ArrowRight className="w-4 h-4" />
           </button>

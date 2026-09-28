@@ -48,7 +48,7 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
     <Modal isOpen={isOpen} onClose={onClose} title="Verify Digital Certificate Token">
       <form onSubmit={handleVerify} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wide mb-1.5">
+          <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
             Certificate Token / Verification URL
           </label>
           <div className="relative">
@@ -58,16 +58,16 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
               value={token}
               onChange={(e) => setToken(e.target.value)}
               placeholder="e.g. http://localhost:3000/verify/ab12cd34..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-mono"
+              className="w-full pl-10 pr-4 py-2.5 rounded-md bg-background border border-border text-foreground placeholder-slate-500 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-mono"
             />
-            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+            <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-3.5" />
           </div>
         </div>
 
         <button
           type="submit"
           disabled={isVerifying}
-          className="w-full py-2.5 rounded-xl font-bold bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500 transition-all flex items-center justify-center gap-2"
+          className="w-full py-2.5 rounded-md font-bold bg-emerald-600 text-foreground shadow-sm shadow-emerald-500/20 hover:bg-emerald-500 transition-all flex items-center justify-center gap-2"
         >
           <Award className="w-4 h-4" />
           {isVerifying ? 'Verifying Token...' : 'Verify Authenticity'}
@@ -75,19 +75,19 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
       </form>
 
       {result && (
-        <div className="mt-5 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 animate-in fade-in duration-200">
+        <div className="mt-5 p-4 rounded-lg bg-background border border-border animate-in fade-in duration-200">
           {result.valid ? (
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
                 <ShieldCheck className="w-5 h-5 text-emerald-400" />
                 <span>OFFICIALLY VERIFIED CERTIFICATE</span>
               </div>
-              <div className="text-xs text-slate-300 space-y-1 pt-2 border-t border-slate-800">
-                <p><span className="text-slate-500">Certificate No:</span> {result.certificateNumber}</p>
-                <p><span className="text-slate-500">Trainee Email:</span> {result.trainee?.email}</p>
-                <p><span className="text-slate-500">Course Title:</span> {result.course?.title}</p>
-                <p><span className="text-slate-500">Trainer:</span> {result.trainer?.email}</p>
-                <p><span className="text-slate-500">Issued On:</span> {new Date(result.issuedAt).toLocaleDateString()}</p>
+              <div className="text-xs text-muted-foreground space-y-1 pt-2 border-t border-border">
+                <p><span className="text-muted-foreground">Certificate No:</span> {result.certificateNumber}</p>
+                <p><span className="text-muted-foreground">Trainee Email:</span> {result.trainee?.email}</p>
+                <p><span className="text-muted-foreground">Course Title:</span> {result.course?.title}</p>
+                <p><span className="text-muted-foreground">Trainer:</span> {result.trainer?.email}</p>
+                <p><span className="text-muted-foreground">Issued On:</span> {new Date(result.issuedAt).toLocaleDateString()}</p>
               </div>
             </div>
           ) : (

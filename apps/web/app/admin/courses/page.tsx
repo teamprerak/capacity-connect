@@ -65,15 +65,15 @@ export default function AdminCourseModerationPage() {
       header: 'Course Title',
       accessor: (course: any) => (
         <div>
-          <span className="font-bold text-white block">{course.title}</span>
-          <span className="text-[10px] text-slate-500 font-mono">Slug: {course.slug}</span>
+          <span className="font-bold text-foreground block">{course.title}</span>
+          <span className="text-[10px] text-muted-foreground font-mono">Slug: {course.slug}</span>
         </div>
       ),
     },
     {
       header: 'Status',
       accessor: (course: any) => (
-        <span className="text-xs font-bold uppercase px-2 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">
+        <span className="text-xs font-bold uppercase px-2 py-1 rounded bg-card text-muted-foreground border border-border">
           {course.status}
         </span>
       ),
@@ -82,7 +82,7 @@ export default function AdminCourseModerationPage() {
       header: 'Category & Level',
       accessor: (course: any) => (
         <div className="space-x-2">
-          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
             {course.category?.name || 'Category'}
           </span>
           <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
@@ -94,7 +94,7 @@ export default function AdminCourseModerationPage() {
     {
       header: 'Author Trainer',
       accessor: (course: any) => (
-        <span className="text-xs text-slate-300 font-medium">{course.trainer?.user?.email}</span>
+        <span className="text-xs text-muted-foreground font-medium">{course.trainer?.user?.email}</span>
       ),
     },
     {
@@ -142,10 +142,10 @@ export default function AdminCourseModerationPage() {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
           Course Moderation Queue
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Review courses submitted by trainers before publishing them to the enterprise catalog. Manage existing courses.
         </p>
       </div>

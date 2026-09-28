@@ -31,22 +31,22 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 glass-nav w-full">
+      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              <Layers className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 rounded-md bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
+              <Layers className="w-5 h-5 text-foreground" />
             </div>
             <div className="flex flex-col">
               {/* L-5: Brand title colour follows theme */}
-              <span className={`text-lg font-bold tracking-tight bg-clip-text text-transparent brand-title bg-gradient-to-r ${
+              <span className={`text-lg font-bold tracking-tight bg-clip-text text-transparent text-primary font-bold tracking-tight bg-gradient-to-r ${
                 isDark
                   ? 'from-white via-slate-200 to-slate-400'
                   : 'from-slate-900 via-slate-700 to-slate-500'
               }`}>
                 Capacity Connect
               </span>
-              <span className="text-[10px] tracking-wider uppercase font-semibold text-blue-400 -mt-1">
+              <span className="text-[10px] tracking-wider uppercase font-semibold text-primary -mt-1">
                 Enterprise LMS
               </span>
             </div>
@@ -54,17 +54,17 @@ export function Navbar() {
 
           {/* L-5: Nav link colours adapt to theme */}
           <nav className={`hidden md:flex items-center gap-6 text-sm font-medium ${
-            isDark ? 'text-slate-300' : 'text-slate-600'
+            isDark ? 'text-muted-foreground' : 'text-slate-600'
           }`}>
-            <Link href="/" className={`transition-colors ${ isDark ? 'hover:text-blue-400' : 'hover:text-blue-600' }`}>
+            <Link href="/" className={`transition-colors ${ isDark ? 'hover:text-primary' : 'hover:text-blue-600' }`}>
               Overview
             </Link>
-            <Link href="/trainee/courses" className={`transition-colors flex items-center gap-1.5 ${ isDark ? 'hover:text-blue-400' : 'hover:text-blue-600' }`}>
+            <Link href="/trainee/courses" className={`transition-colors flex items-center gap-1.5 ${ isDark ? 'hover:text-primary' : 'hover:text-blue-600' }`}>
               <BookOpen className="w-4 h-4" /> Courses
             </Link>
             <button
               onClick={() => setIsQROpen(true)}
-              className={`transition-colors flex items-center gap-1.5 ${ isDark ? 'hover:text-blue-400' : 'hover:text-blue-600' }`}
+              className={`transition-colors flex items-center gap-1.5 ${ isDark ? 'hover:text-primary' : 'hover:text-blue-600' }`}
             >
               <QrCode className="w-4 h-4 text-emerald-400" /> Verify Cert
             </button>
@@ -91,7 +91,7 @@ export function Navbar() {
                 )}
                 <Link
                   href="/trainee"
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-primary/10 text-primary border border-primary/20 hover:bg-blue-500/20 transition-all flex items-center gap-1.5"
                 >
                   <User className="w-3.5 h-3.5" /> Portal
                 </Link>
@@ -100,8 +100,8 @@ export function Navbar() {
                     onClick={toggleTheme}
                     className={`p-2 rounded-lg transition-colors ${
                       isDark
-                        ? 'text-slate-400 hover:text-blue-400 hover:bg-blue-500/10'
-                        : 'text-slate-500 hover:text-blue-600 hover:bg-blue-100'
+                        ? 'text-muted-foreground hover:text-primary hover:bg-primary/10'
+                        : 'text-muted-foreground hover:text-blue-600 hover:bg-blue-100'
                     }`}
                     title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
                   >
@@ -114,8 +114,8 @@ export function Navbar() {
                   disabled={isLoggingOut}
                   className={`p-2 rounded-lg transition-colors disabled:opacity-50 ${
                     isDark
-                      ? 'text-slate-400 hover:text-rose-400 hover:bg-rose-500/10'
-                      : 'text-slate-500 hover:text-rose-600 hover:bg-rose-100'
+                      ? 'text-muted-foreground hover:text-rose-400 hover:bg-rose-500/10'
+                      : 'text-muted-foreground hover:text-rose-600 hover:bg-rose-100'
                   }`}
                   title="Log Out"
                 >
@@ -125,7 +125,7 @@ export function Navbar() {
             ) : (
               <button
                 onClick={() => setIsAuthOpen(true)}
-                className="px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:opacity-90 hover:scale-[1.02] active:scale-95 transition-all"
+                className="px-4 py-2 rounded-md text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-foreground shadow-sm shadow-blue-500/25 hover:opacity-90 hover:scale-[1.02] active:scale-95 transition-all"
               >
                 Sign In
               </button>

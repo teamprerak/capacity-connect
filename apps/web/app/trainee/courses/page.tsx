@@ -34,32 +34,32 @@ export default function CourseCatalogPage() {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
           Industrial Course Catalog
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Filter multi-module capacity building courses by difficulty, technology domain, and prerequisite skills.
         </p>
       </div>
 
       {/* Filter Bar */}
-      <div className="glass-card rounded-2xl p-4 border border-slate-800 flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="bg-card border border-border shadow-sm rounded-lg p-4 border border-border flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:w-96">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search courses, skills, topics..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-sm placeholder-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm placeholder-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
-          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+          <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-3.5" />
         </div>
 
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-300 text-xs font-semibold"
+            className="px-3 py-2.5 rounded-md bg-background border border-border text-muted-foreground text-xs font-semibold"
           >
             <option value="">All Categories</option>
             {categories.map((cat) => (
@@ -72,7 +72,7 @@ export default function CourseCatalogPage() {
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="px-3 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-300 text-xs font-semibold"
+            className="px-3 py-2.5 rounded-md bg-background border border-border text-muted-foreground text-xs font-semibold"
           >
             <option value="">All Difficulties</option>
             <option value="beginner">Beginner</option>
@@ -86,7 +86,7 @@ export default function CourseCatalogPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="glass-card rounded-2xl h-64 animate-pulse"></div>
+            <div key={i} className="bg-card border border-border shadow-sm rounded-lg h-64 animate-pulse"></div>
           ))}
         </div>
       ) : courses.length > 0 ? (
@@ -103,7 +103,7 @@ export default function CourseCatalogPage() {
           ))}
         </div>
       ) : (
-        <div className="glass-card rounded-2xl p-12 text-center text-slate-400">
+        <div className="bg-card border border-border shadow-sm rounded-lg p-12 text-center text-muted-foreground">
           No courses matching your filter criteria.
         </div>
       )}

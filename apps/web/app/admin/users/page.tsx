@@ -50,8 +50,8 @@ export default function AdminUsersPage() {
       header: 'User Email',
       accessor: (user: any) => (
         <div>
-          <span className="font-bold text-white block">{user.email}</span>
-          <span className="text-[10px] text-slate-500 font-mono">ID: {user.id}</span>
+          <span className="font-bold text-foreground block">{user.email}</span>
+          <span className="text-[10px] text-muted-foreground font-mono">ID: {user.id}</span>
         </div>
       ),
     },
@@ -67,7 +67,7 @@ export default function AdminUsersPage() {
                   ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
                   : ur.role?.name === 'trainer'
                   ? 'bg-purple-500/10 text-purple-400 border-purple-500/20'
-                  : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                  : 'bg-primary/10 text-primary border-primary/20'
               }`}
             >
               {ur.role?.name || 'user'}
@@ -139,10 +139,10 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
           User & Trainer Verification Management
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Manage system users, activate/suspend accounts, and moderate trainer verification applications.
         </p>
       </div>

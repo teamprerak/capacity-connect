@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" style="background-color: #fafafa; font-family: 'Segoe UI', system-ui, sans-serif;">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+    <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d84315" />
+    </marker>
+    <style>
+      .actor-box { fill: #e8f0fe; stroke: #4285f4; stroke-width: 1.5; }
+      .actor-title { font-weight: 700; font-size: 13px; fill: #174ea6; text-anchor: middle; text-transform: uppercase; }
+      .actor-sub { font-size: 12px; fill: #3c4043; text-anchor: middle; }
+
+      .fe-box { fill: #e8f0fe; stroke: #4285f4; stroke-width: 1.5; }
+      .fe-title { font-weight: 700; font-size: 13px; fill: #174ea6; text-anchor: middle; text-transform: uppercase; }
+      .fe-sub { font-size: 12px; fill: #3c4043; text-anchor: middle; font-weight: 500; }
+
+      .api-box { fill: #f3e8fd; stroke: #9333ea; stroke-width: 1.5; }
+      .api-title { font-weight: 700; font-size: 14px; fill: #6b21a8; text-anchor: middle; text-transform: uppercase; }
+      .api-sub { font-size: 13px; fill: #3c4043; text-anchor: middle; font-weight: 500; }
+
+      .mod-box { fill: #e0f2f1; stroke: #0d9488; stroke-width: 1.5; }
+      .mod-title { font-weight: 700; font-size: 12px; fill: #0f766e; text-anchor: middle; text-transform: uppercase; }
+      .mod-sub { font-size: 11px; fill: #3c4043; text-anchor: middle; font-weight: 500; }
+      .mod-sub2 { font-size: 11px; fill: #5f6368; text-anchor: middle; }
+
+      .db-box { fill: #fef1e6; stroke: #ea580c; stroke-width: 1.5; rx: 12; ry: 12; }
+      .db-title { font-weight: 700; font-size: 14px; fill: #c2410c; text-anchor: middle; text-transform: uppercase; }
+      .db-sub { font-size: 12px; fill: #3c4043; text-anchor: middle; font-weight: 500; }
+      .db-sub2 { font-size: 12px; fill: #5f6368; text-anchor: middle; }
+
+      .ext-box { fill: #fff1f2; stroke: #e11d48; stroke-width: 1.5; rx: 12; ry: 12; }
+      .ext-title { font-weight: 700; font-size: 14px; fill: #be123c; text-anchor: middle; text-transform: uppercase; }
+
+      .arrow-line { stroke: #666; stroke-width: 1.5; fill: none; }
+      .dashed-line { stroke: #d84315; stroke-width: 1.5; fill: none; stroke-dasharray: 6,4; }
+      
+      .label-bg { fill: #ffffff; stroke: #e5e7eb; stroke-width: 1; rx: 4; ry: 4; }
+      .label-text { font-size: 11px; fill: #4b5563; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <!-- LINES (Drawn first to be under boxes) -->
+  <!-- L1 to L2 -->
+  <path d="M 180 100 L 180 160" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 450 100 L 450 160" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 720 100 L 720 160" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 990 100 L 990 160" class="arrow-line" marker-end="url(#arrowhead)"/>
+
+  <!-- L2 to L3 -->
+  <path d="M 180 230 L 180 275 L 285 275 L 285 320" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 450 230 L 450 275 L 485 275 L 485 320" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 720 230 L 720 275 L 685 275 L 685 320" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 990 230 L 990 275 L 885 275 L 885 320" class="arrow-line" marker-end="url(#arrowhead)"/>
+
+  <!-- L3 to L4 -->
+  <path d="M 585 390 L 585 435" class="arrow-line"/>
+  <path d="M 150 435 L 1050 435" class="arrow-line"/>
+  <path d="M 150 435 L 150 480" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 375 435 L 375 480" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 600 435 L 600 480" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 825 435 L 825 480" class="arrow-line" marker-end="url(#arrowhead)"/>
+  <path d="M 1050 435 L 1050 480" class="arrow-line" marker-end="url(#arrowhead)"/>
+
+  <!-- L4 to DB -->
+  <path d="M 150 565 L 150 605" class="arrow-line"/>
+  <path d="M 375 565 L 375 605" class="arrow-line"/>
+  <path d="M 600 565 L 600 605" class="arrow-line"/>
+  <path d="M 825 565 L 825 605" class="arrow-line"/>
+  <path d="M 1050 565 L 1050 605" class="arrow-line"/>
+  <path d="M 150 605 L 1050 605" class="arrow-line"/>
+  <path d="M 410 605 L 410 670" class="arrow-line" marker-end="url(#arrowhead)"/>
+
+  <!-- L4 Course Engine to External Providers -->
+  <path d="M 375 565 L 375 635 L 790 635 L 790 670" class="dashed-line" marker-end="url(#arrowhead-dashed)"/>
+
+  <!-- LABELS ON LINES -->
+  <rect x="145" y="245" width="70" height="20" class="label-bg" />
+  <text x="180" y="259" class="label-text">REST API</text>
+
+  <rect x="415" y="245" width="70" height="20" class="label-bg" />
+  <text x="450" y="259" class="label-text">REST API</text>
+
+  <rect x="685" y="245" width="70" height="20" class="label-bg" />
+  <text x="720" y="259" class="label-text">REST API</text>
+
+  <rect x="940" y="245" width="100" height="20" class="label-bg" />
+  <text x="990" y="259" class="label-text">Instant QR Scan</text>
+
+  <rect x="520" y="625" width="140" height="20" class="label-bg" style="stroke:#fca5a5" />
+  <text x="590" y="639" class="label-text" style="fill:#be123c">Media Embeds (URLs)</text>
+
+
+  <!-- BOXES: L1 ACTORS -->
+  <rect x="60" y="40" width="240" height="60" class="actor-box" />
+  <text x="180" y="65" class="actor-title">ADMINISTRATOR</text>
+  <text x="180" y="82" class="actor-sub">System Governance &amp; Vetting</text>
+
+  <rect x="330" y="40" width="240" height="60" class="actor-box" />
+  <text x="450" y="65" class="actor-title">TRAINER</text>
+  <text x="450" y="82" class="actor-sub">Course Authoring &amp; Ratings</text>
+
+  <rect x="600" y="40" width="240" height="60" class="actor-box" />
+  <text x="720" y="65" class="actor-title">TRAINEE</text>
+  <text x="720" y="82" class="actor-sub">Skill Assessment &amp; Learning</text>
+
+  <rect x="870" y="40" width="240" height="60" class="actor-box" />
+  <text x="990" y="65" class="actor-title">PUBLIC VERIFIER</text>
+  <text x="990" y="82" class="actor-sub">Employers &amp; Recruiters</text>
+
+
+  <!-- BOXES: L2 FRONTEND -->
+  <rect x="60" y="160" width="240" height="70" class="fe-box" />
+  <text x="180" y="190" class="fe-title">ADMIN DASHBOARD</text>
+  <text x="180" y="210" class="fe-sub">Tech: Next.js 14 + Tailwind CSS</text>
+
+  <rect x="330" y="160" width="240" height="70" class="fe-box" />
+  <text x="450" y="190" class="fe-title">TRAINER DASHBOARD</text>
+  <text x="450" y="210" class="fe-sub">Tech: Next.js 14 + Lucide Icons</text>
+
+  <rect x="600" y="160" width="240" height="70" class="fe-box" />
+  <text x="720" y="190" class="fe-title">TRAINEE PORTAL</text>
+  <text x="720" y="210" class="fe-sub">Tech: Next.js 14 + React SSR</text>
+
+  <rect x="870" y="160" width="240" height="70" class="fe-box" />
+  <text x="990" y="190" class="fe-title">QR VERIFIER PAGE</text>
+  <text x="990" y="210" class="fe-sub">Tech: Next.js Public Route</text>
+
+
+  <!-- BOXES: L3 GATEWAY -->
+  <rect x="120" y="320" width="930" height="70" class="api-box" />
+  <text x="585" y="350" class="api-title">API GATEWAY &amp; SECURITY LAYER</text>
+  <text x="585" y="372" class="api-sub">Tech: NestJS + Argon2id Password Hashing + JWT + RBAC Execution Guards</text>
+
+
+  <!-- BOXES: L4 MODULES -->
+  <!-- 1 -->
+  <rect x="50" y="480" width="200" height="85" class="mod-box" />
+  <text x="150" y="508" class="mod-title">ADMIN MODULE</text>
+  <text x="150" y="530" class="mod-sub">Tech: NestJS Service</text>
+  <text x="150" y="547" class="mod-sub2">Trainer Vetting &amp; Audit</text>
+
+  <!-- 2 -->
+  <rect x="275" y="480" width="200" height="85" class="mod-box" />
+  <text x="375" y="508" class="mod-title">COURSE ENGINE</text>
+  <text x="375" y="530" class="mod-sub">Tech: NestJS Service</text>
+  <text x="375" y="547" class="mod-sub2">Curriculum &amp; Chapters</text>
+
+  <!-- 3 -->
+  <rect x="500" y="480" width="200" height="85" class="mod-box" />
+  <text x="600" y="508" class="mod-title">SKILL-GAP &amp; MATCHING AI</text>
+  <text x="600" y="530" class="mod-sub">Tech: 6-Signal Algorithm</text>
+  <text x="600" y="547" class="mod-sub2">Deficit Matrix &amp; Pairing</text>
+
+  <!-- 4 -->
+  <rect x="725" y="480" width="200" height="85" class="mod-box" />
+  <text x="825" y="508" class="mod-title">QUIZ &amp; ASSESSMENT</text>
+  <text x="825" y="530" class="mod-sub">Tech: NestJS Service</text>
+  <text x="825" y="547" class="mod-sub2">Pre/Post Tests &amp; Delta</text>
+
+  <!-- 5 -->
+  <rect x="950" y="480" width="200" height="85" class="mod-box" />
+  <text x="1050" y="508" class="mod-title">QR CERTIFICATE ENGINE</text>
+  <text x="1050" y="530" class="mod-sub">Tech: SHA-256 + QR Matrix</text>
+  <text x="1050" y="547" class="mod-sub2">Zero-Trust Fraud Proofing</text>
+
+
+  <!-- BOXES: L5 DB & EXTERNAL -->
+  <rect x="240" y="670" width="340" height="90" class="db-box" />
+  <text x="410" y="700" class="db-title">PRIMARY DATABASE</text>
+  <text x="410" y="722" class="db-sub">Tech: PostgreSQL (Neon Serverless)</text>
+  <text x="410" y="742" class="db-sub2">ORM: Prisma ORM (40+ Relational Models)</text>
+
+  <rect x="620" y="670" width="340" height="90" class="ext-box" />
+  <text x="790" y="700" class="ext-title">EXTERNAL CONTENT PROVIDERS</text>
+  <text x="790" y="722" class="db-sub">Tech: YouTube &amp; Google Drive</text>
+  <text x="790" y="742" class="db-sub2">Zero-Cost Cloud Media Hosting</text>
+</svg>

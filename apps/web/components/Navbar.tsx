@@ -7,12 +7,13 @@ import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
 import {
   ShieldCheck, User, LogOut, QrCode, BookOpen, Layers,
-  LayoutDashboard, Loader2, Moon, Sun,
+  LayoutDashboard, Loader2, Moon, Sun, KeyRound
 } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { QRScannerModal } from './QRScannerModal';
 import { LogoutConfirmModal } from './LogoutConfirmModal';
 import { NotificationBell } from './NotificationBell';
+import { ChangePasswordModal } from './ChangePasswordModal';
 
 export function Navbar() {
   const { user, isLoggingOut } = useAuth();
@@ -23,6 +24,7 @@ export function Navbar() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isQROpen, setIsQROpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
   useEffect(() => {
     if (searchParams.get('auth') === 'true') {
@@ -132,6 +134,14 @@ export function Navbar() {
                   <span className="hidden sm:inline">Portal</span>
                 </Link>
 
+                <button
+                  onClick={() => setIsChangePasswordOpen(true)}
+                  className="btn-ghost p-2 text-muted-foreground hover:text-foreground"
+                  title="Change Password"
+                >
+                  <KeyRound className="w-4 h-4" />
+                </button>
+
                 {/* Sign out */}
                 <button
                   onClick={() => setIsLogoutOpen(true)}
@@ -162,6 +172,7 @@ export function Navbar() {
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       <QRScannerModal isOpen={isQROpen} onClose={() => setIsQROpen(false)} />
       <LogoutConfirmModal isOpen={isLogoutOpen} onClose={() => setIsLogoutOpen(false)} />
+      <ChangePasswordModal isOpen={isChangePasswordOpen} onClose={() => setIsChangePasswordOpen(false)} />
     </>
   );
 }

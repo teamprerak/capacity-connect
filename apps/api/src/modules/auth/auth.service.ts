@@ -283,4 +283,39 @@ export class AuthService {
       return { message: 'Password reset successful' };
     });
   }
+
+  async changePassword(userId: string, currentPassword: string, newPassword: string, ipAddress: string | null = null) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found');
+
+    const passwordValid = await argon2.verify(user.passwordHash, currentPassword);
+    if (!passwordValid) throw new UnauthorizedException('Incorrect current password');
+
+    const passwordHash = await argon2.hash(newPassword, { type: argon2.argon2id });
+    
+    return this.prisma.$transaction(async (tx) => {
+      await tx.user.update({
+        where: { id: user.id },
+        data: { passwordHash },
+      });
+
+      // Revoke all refresh tokens so all devices are logged out except current session if desired.
+      // But standard approach for security:
+      await tx.refreshToken.updateMany({
+        where: { userId: user.id },
+        data: { revoked: true },
+      });
+
+      await this.auditService.log({
+        actorUserId: user.id,
+        action: 'auth.password_changed',
+        entityType: 'User',
+        entityId: user.id,
+        ipAddress,
+        metadata: null,
+        prisma: tx,
+      });
+      return { message: 'Password changed successfully. You may need to log in again on other devices.' };
+    });
+  }
 }

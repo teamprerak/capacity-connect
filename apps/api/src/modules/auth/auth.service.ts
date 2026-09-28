@@ -12,6 +12,7 @@ import { TokenService } from './token.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuditService } from '../../common/services/audit.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
     private prisma: PrismaService,
     private tokenService: TokenService,
     private auditService: AuditService,
+    private notifications: NotificationsService,
   ) {}
 
   async register(dto: RegisterDto, ipAddress: string | null = null) {
@@ -70,6 +72,20 @@ export class AuthService {
         ipAddress,
         metadata: { role: dto.role, autoActivated: isDev },
         prisma: tx,
+      });
+
+      const admins = await tx.userRole.findMany({
+        where: { role: { name: 'admin' } },
+        select: { userId: true },
+      });
+      admins.forEach((admin) => {
+        this.notifications.push({
+          userId: admin.userId,
+          type: 'user_registered',
+          title: 'New User Registration',
+          message: `${dto.email} registered as a ${dto.role}.`,
+          link: '/admin',
+        });
       });
 
       if (isDev) {

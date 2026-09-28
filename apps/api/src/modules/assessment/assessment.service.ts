@@ -10,12 +10,14 @@ import { AuditService } from '../../common/services/audit.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { AddQuestionDto } from './dto/add-question.dto';
 import { SubmitAttemptDto } from './dto/submit-attempt.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class AssessmentService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly auditService: AuditService,
+    private readonly notifications: NotificationsService,
   ) {}
 
   // ─── Assessment CRUD ──────────────────────────────────────────────────────────
@@ -319,6 +321,22 @@ export class AssessmentService {
         metadata: { scorePct, passed },
         prisma: tx,
       });
+
+      if (passed) {
+        this.notifications.push({
+          userId: traineeUserId,
+          type: 'assessment_passed',
+          title: 'Assessment Passed',
+          message: `You passed the assessment with a score of ${Math.round(scorePct)}%.`,
+        });
+      } else {
+        this.notifications.push({
+          userId: traineeUserId,
+          type: 'assessment_failed',
+          title: 'Assessment Failed',
+          message: `You scored ${Math.round(scorePct)}% on the assessment. You need ${attempt.assessment.passScorePct}% to pass.`,
+        });
+      }
 
       return {
         attemptId,

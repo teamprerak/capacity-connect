@@ -385,6 +385,20 @@ export class CourseService {
         prisma: tx,
       });
 
+      const admins = await tx.userRole.findMany({
+        where: { role: { name: 'admin' } },
+        select: { userId: true },
+      });
+      admins.forEach((admin) => {
+        this.notifications.push({
+          userId: admin.userId,
+          type: 'course_submitted',
+          title: 'Course Requires Approval',
+          message: `The course "${updatedCourse.title}" has been submitted for approval.`,
+          link: '/admin/courses',
+        });
+      });
+
       return updatedCourse;
     });
   }
@@ -813,6 +827,20 @@ export class CourseService {
         where: { id: enrollmentId },
         data: { status: EnrollmentStatus.completed, completedAt: new Date() },
       });
+
+      const traineeUser = await db.traineeProfile.findUnique({
+        where: { id: enrollment.traineeId },
+        select: { userId: true },
+      });
+      if (traineeUser) {
+        this.notifications.push({
+          userId: traineeUser.userId,
+          type: 'course_completed',
+          title: 'Course Completed!',
+          message: `Congratulations! You have completed all modules for "${enrollment.course.title}".`,
+          link: `/trainee/courses/${enrollment.courseId}`,
+        });
+      }
     } else if (enrollment.status === EnrollmentStatus.started) {
       await db.enrollment.update({
         where: { id: enrollmentId },

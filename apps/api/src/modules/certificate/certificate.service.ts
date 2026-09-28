@@ -9,12 +9,14 @@ import * as QRCode from 'qrcode';
 import { EnrollmentStatus } from '@repo/db';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class CertificateService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly auditService: AuditService,
+    private readonly notifications: NotificationsService,
   ) {}
 
   /**
@@ -100,6 +102,14 @@ export class CertificateService {
         ipAddress,
         metadata: { certificateNumber, enrollmentId },
         prisma: tx,
+      });
+
+      this.notifications.push({
+        userId: enrollment.trainee.userId,
+        type: 'certificate_issued',
+        title: 'Certificate Issued!',
+        message: `You have been issued a certificate for "${certificate.course.title}".`,
+        link: `/trainee/certificates`,
       });
 
       return {

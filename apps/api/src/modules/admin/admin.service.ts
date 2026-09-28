@@ -2,12 +2,14 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { PrismaService } from '../prisma/prisma.service';
 import { UserStatus, VerificationStatus } from '@repo/db';
 import { AuditService } from '../../common/services/audit.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class AdminService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly auditService: AuditService,
+    private readonly notifications: NotificationsService,
   ) {}
 
   async getUsers(page: number = 1, limit: number = 10) {
@@ -77,6 +79,22 @@ export class AdminService {
         metadata: { status },
         prisma: tx,
       });
+
+      if (status === 'active') {
+        this.notifications.push({
+          userId: id,
+          type: 'account_activated',
+          title: 'Account Activated',
+          message: 'Your account has been activated. You can now access all features.',
+        });
+      } else if (status === 'suspended') {
+        this.notifications.push({
+          userId: id,
+          type: 'account_deactivated',
+          title: 'Account Suspended',
+          message: 'Your account has been suspended by an administrator.',
+        });
+      }
 
       return updatedUser;
     });

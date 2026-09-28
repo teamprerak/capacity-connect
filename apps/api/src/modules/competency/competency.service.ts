@@ -7,10 +7,14 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UpsertTraineeCompetencyDto } from './dto/upsert-trainee-competency.dto';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { CreateCompetencyDto } from './dto/create-competency.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class CompetencyService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notifications: NotificationsService,
+  ) {}
 
   // ─── Skills ──────────────────────────────────────────────────────────────────
 
@@ -83,6 +87,15 @@ export class CompetencyService {
       throw new NotFoundException(`Competency ${dto.competencyId} not found`);
     }
 
+    const existingRecord = await this.prisma.traineeCompetency.findUnique({
+      where: {
+        traineeProfileId_competencyId: {
+          traineeProfileId: profile.id,
+          competencyId: dto.competencyId,
+        },
+      },
+    });
+
     const record = await this.prisma.traineeCompetency.upsert({
       where: {
         traineeProfileId_competencyId: {
@@ -107,6 +120,16 @@ export class CompetencyService {
       },
       include: { competency: true },
     });
+
+    if (existingRecord && existingRecord.targetLevel !== dto.targetLevel) {
+      this.notifications.push({
+        userId,
+        type: 'competency_target_updated',
+        title: 'Competency Target Updated',
+        message: `Your target level for ${competency.name} has been updated to ${dto.targetLevel}.`,
+        link: '/trainee/competencies',
+      });
+    }
 
     // Immediately recompute gap after upsert
     const gap = await this._computeAndPersistGap(
@@ -258,16 +281,41 @@ export class CompetencyService {
       where: { traineeCompetencyId },
     });
 
+    let result;
     if (existing) {
-      return this.prisma.skillGapAnalysis.update({
+      result = await this.prisma.skillGapAnalysis.update({
         where: { id: existing.id },
         data: { gapValue, gapClassification, computedAt: new Date() },
       });
+    } else {
+      result = await this.prisma.skillGapAnalysis.create({
+        data: { traineeCompetencyId, gapValue, gapClassification },
+      });
     }
 
-    return this.prisma.skillGapAnalysis.create({
-      data: { traineeCompetencyId, gapValue, gapClassification },
-    });
+    if (gapValue >= 3 && (!existing || existing.gapValue < 3)) {
+      const tc = await this.prisma.traineeCompetency.findUnique({
+        where: { id: traineeCompetencyId },
+        include: { traineeProfile: { include: { user: true } }, competency: true },
+      });
+      if (tc) {
+        const admins = await this.prisma.userRole.findMany({
+          where: { role: { name: 'admin' } },
+          select: { userId: true },
+        });
+        admins.forEach((admin) => {
+          this.notifications.push({
+            userId: admin.userId,
+            type: 'critical_gap_alert',
+            title: 'Critical Skill Gap Alert',
+            message: `Trainee ${tc.traineeProfile.user.email} has a critical skill gap in ${tc.competency.name}.`,
+            link: '/admin',
+          });
+        });
+      }
+    }
+
+    return result;
   }
 }
 

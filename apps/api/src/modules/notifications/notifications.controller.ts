@@ -1,28 +1,21 @@
 import {
   Controller,
   Get,
+  Patch,
+  Param,
   Req,
   Sse,
   MessageEvent,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { NotificationsService } from './notifications.service';
 import { Observable, map } from 'rxjs';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
-/**
- * SSE Notifications Controller
- *
- * EventSource in browsers cannot send custom headers, so we extract the
- * JWT from:
- *   1. ?token= query parameter (used by the frontend EventSource)
- *   2. Authorization: Bearer header (usable from non-browser clients)
- *   3. httpOnly access_token cookie
- *
- * We skip the standard JwtAuthGuard and validate the token manually here,
- * because Passport's guard closes the SSE stream on any error.
- */
 @Controller('notifications')
 export class NotificationsController {
   constructor(
@@ -30,6 +23,26 @@ export class NotificationsController {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getHistoricalNotifications(@CurrentUser() user: any) {
+    return this.notificationsService.getUserNotifications(user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('read-all')
+  async markAllRead(@CurrentUser() user: any) {
+    await this.notificationsService.markAllAsRead(user.userId);
+    return { success: true };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/read')
+  async markRead(@Param('id') id: string, @CurrentUser() user: any) {
+    await this.notificationsService.markAsRead(id, user.userId);
+    return { success: true };
+  }
 
   @Sse('stream')
   stream(@Req() req: any): Observable<MessageEvent> {
@@ -45,14 +58,11 @@ export class NotificationsController {
   private extractUserId(req: any): string {
     const secret = this.configService.get<string>('auth.jwtSecret');
 
-    // 1. Query param: ?token=<jwt>  (EventSource browser default)
     const queryToken = req.query?.token as string | undefined;
-    // 2. Authorization header
     const authHeader = req.headers?.authorization as string | undefined;
     const bearerToken = authHeader?.startsWith('Bearer ')
       ? authHeader.slice(7)
       : undefined;
-    // 3. Cookie
     const cookieToken = req.cookies?.access_token as string | undefined;
 
     const raw = queryToken ?? bearerToken ?? cookieToken;

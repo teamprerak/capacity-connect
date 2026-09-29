@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from './auth-context';
+import { api } from './api-client';
 
 export interface AppNotification {
   id: string;
@@ -24,6 +25,19 @@ export function useNotifications() {
   const esRef = useRef<EventSource | null>(null);
   const retryRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const fetchInitial = useCallback(async () => {
+    if (!user) return;
+    try {
+      const data = await api.get('/notifications');
+      if (Array.isArray(data)) {
+        setNotifications(data.slice(0, MAX_NOTIFICATIONS));
+        setUnreadCount(data.filter((n: AppNotification) => !n.read).length);
+      }
+    } catch (err) {
+      console.error('Failed to fetch initial notifications', err);
+    }
+  }, [user]);
+
   const connect = useCallback(() => {
     if (!user) return;
 
@@ -45,7 +59,11 @@ export function useNotifications() {
     es.addEventListener('notification', (e: MessageEvent) => {
       try {
         const notification: AppNotification = { ...JSON.parse(e.data), read: false };
-        setNotifications((prev) => [notification, ...prev].slice(0, MAX_NOTIFICATIONS));
+        setNotifications((prev) => {
+          // Prevent duplicates if already fetched via API
+          if (prev.some((n) => n.id === notification.id)) return prev;
+          return [notification, ...prev].slice(0, MAX_NOTIFICATIONS);
+        });
         setUnreadCount((c) => c + 1);
       } catch {
         // malformed event — ignore
@@ -62,24 +80,37 @@ export function useNotifications() {
   }, [user]);
 
   useEffect(() => {
-    connect();
+    if (user) {
+      fetchInitial();
+      connect();
+    }
     return () => {
       esRef.current?.close();
       if (retryRef.current) clearTimeout(retryRef.current);
     };
-  }, [connect]);
+  }, [user, fetchInitial, connect]);
 
-  const markAllRead = useCallback(() => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    setUnreadCount(0);
+  const markAllRead = useCallback(async () => {
+    try {
+      await api.patch('/notifications/read-all');
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      setUnreadCount(0);
+    } catch (err) {
+      console.error('Failed to mark all as read', err);
+    }
   }, []);
 
-  const dismiss = useCallback((id: string) => {
-    setNotifications((prev) => {
-      const updated = prev.filter((n) => n.id !== id);
-      setUnreadCount(updated.filter((n) => !n.read).length);
-      return updated;
-    });
+  const dismiss = useCallback(async (id: string) => {
+    try {
+      await api.patch(`/notifications/${id}/read`);
+      setNotifications((prev) => {
+        const updated = prev.filter((n) => n.id !== id);
+        setUnreadCount(updated.filter((n) => !n.read).length);
+        return updated;
+      });
+    } catch (err) {
+      console.error('Failed to dismiss notification', err);
+    }
   }, []);
 
   return { notifications, unreadCount, markAllRead, dismiss };

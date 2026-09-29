@@ -607,6 +607,16 @@ export class CourseService {
       });
       if (!mod) throw new NotFoundException('Module not found');
 
+      let hasChanges = false;
+      if (dto.title !== undefined && dto.title !== mod.title) hasChanges = true;
+      if (dto.sequenceOrder !== undefined && dto.sequenceOrder !== mod.sequenceOrder) hasChanges = true;
+      if (dto.videoUrl !== undefined && dto.videoUrl !== mod.videoUrl) hasChanges = true;
+      if (dto.documentUrl !== undefined && dto.documentUrl !== mod.documentUrl) hasChanges = true;
+
+      if (!hasChanges) {
+        return mod;
+      }
+
       const updatedModule = await tx.courseModule.update({
         where: { id: moduleId },
         data: dto,

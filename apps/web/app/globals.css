@@ -289,48 +289,7 @@
   border-radius: var(--radius-sm);
 }
 
-/* Hide html5-qrcode attribution */
-#reader a {
-  display: none !important;
-}
-
-/* ==========================================================================
-   HTML5-QRCODE CUSTOM OVERRIDES 
-   ========================================================================== */
-#reader {
-  border: none !important;
-}
-#reader img {
-  margin: 0 auto !important;
-  display: block !important;
-}
-#reader__dashboard_section_csr,
-#reader__dashboard_section_fs {
-  text-align: center !important;
-  padding: 2rem 1rem !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-#reader__dashboard_section_swaplink {
-  text-align: center !important;
-  margin-top: 1rem !important;
-  display: block !important;
-}
-#reader input[type="file"] {
-  margin: 1rem auto !important;
-  display: block !important;
-  max-width: 100% !important;
-}
-#reader button {
-  margin: 1rem auto !important;
-}
-/* Hide the small info icon in the top right of the scanner */
-#reader img[alt*="info" i],
-#reader img[src*="info" i],
-#reader__dashboard_section_csr > div:first-child > span > a > img,
-#reader__dashboard_section_fs > div:first-child > span > a > img,
-#html5-qrcode-tooltip {
-  display: none !important;
-}
+/* QR Scanner Camera Viewport */
+#reader { border: none !important; background: black !important; }
+#reader video { width: 100% !important; height: auto !important; max-height: 320px !important; object-fit: cover !important; border-radius: 0.75rem !important; display: block !important; }
+#reader a, #reader img { display: none !important; }

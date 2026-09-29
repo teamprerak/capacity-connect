@@ -773,7 +773,15 @@ export class CourseService {
   async getMyEnrollments(traineeUserId: string): Promise<any> {
     const traineeProfile = await this._requireTraineeProfile(traineeUserId);
     return this.prisma.enrollment.findMany({
-      where: { traineeId: traineeProfile.id },
+      where: { 
+        traineeId: traineeProfile.id,
+        course: {
+          deletedAt: null,
+          status: {
+            in: [CourseStatus.published, CourseStatus.archived]
+          }
+        }
+      },
       include: {
         course: {
           select: {
@@ -811,9 +819,23 @@ export class CourseService {
     });
     if (!enrollment) throw new NotFoundException('Enrollment not found');
 
-    // C-4: Enforce ownership — trainees can only see their own enrollment.
-    if (!isPrivileged && enrollment.trainee.userId !== userId) {
-      throw new ForbiddenException('You do not have access to this enrollment');
+    // M-5: Ensure deleted or unpublished courses are not accessible by trainees
+    if (enrollment.course.deletedAt !== null) {
+      throw new NotFoundException('Course no longer available');
+    }
+
+    if (!isPrivileged) {
+      if (
+        enrollment.course.status !== CourseStatus.published &&
+        enrollment.course.status !== CourseStatus.archived
+      ) {
+        throw new NotFoundException('Course no longer available');
+      }
+      
+      // C-4: Enforce ownership
+      if (enrollment.trainee.userId !== userId) {
+        throw new ForbiddenException('You do not have access to this enrollment');
+      }
     }
 
     return enrollment;
@@ -827,9 +849,16 @@ export class CourseService {
     const traineeProfile = await this._requireTraineeProfile(traineeUserId);
 
     const enrollment = await this.prisma.enrollment.findFirst({
-      where: { id: enrollmentId, traineeId: traineeProfile.id },
+      where: { 
+        id: enrollmentId, 
+        traineeId: traineeProfile.id,
+        course: {
+          deletedAt: null,
+          status: { in: [CourseStatus.published, CourseStatus.archived] }
+        }
+      },
     });
-    if (!enrollment) throw new NotFoundException('Enrollment not found');
+    if (!enrollment) throw new NotFoundException('Enrollment not found or course unavailable');
 
     if (
       enrollment.status === EnrollmentStatus.completed ||

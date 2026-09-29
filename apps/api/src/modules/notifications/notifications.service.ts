@@ -25,21 +25,26 @@ export class NotificationsService {
    */
   async push(notification: Omit<AppNotification, 'id' | 'createdAt' | 'read'>): Promise<void> {
     try {
+      // We serialize message and link into the Prisma `body` field
+      const bodyData = JSON.stringify({
+        message: notification.message,
+        link: notification.link,
+      });
+
       const record = await this.prisma.notification.create({
         data: {
           userId: notification.userId,
           type: notification.type,
           title: notification.title,
-          message: notification.message,
-          link: notification.link,
-          read: false,
+          body: bodyData,
+          isRead: false,
         },
       });
 
       this.events$.next({
         id: record.id,
         createdAt: record.createdAt.toISOString(),
-        read: record.read,
+        read: record.isRead,
         ...notification,
       });
     } catch (err) {
@@ -64,16 +69,31 @@ export class NotificationsService {
       take: 50,
     });
 
-    return records.map((r) => ({
-      id: r.id,
-      userId: r.userId,
-      type: r.type,
-      title: r.title,
-      message: r.message,
-      link: r.link ?? undefined,
-      read: r.read,
-      createdAt: r.createdAt.toISOString(),
-    }));
+    return records.map((r) => {
+      let message = r.body;
+      let link: string | undefined = undefined;
+
+      try {
+        const parsed = JSON.parse(r.body);
+        if (parsed && typeof parsed === 'object') {
+          message = parsed.message || r.body;
+          link = parsed.link;
+        }
+      } catch (e) {
+        // Fallback if body was not JSON (e.g. old data)
+      }
+
+      return {
+        id: r.id,
+        userId: r.userId,
+        type: r.type,
+        title: r.title,
+        message,
+        link,
+        read: r.isRead,
+        createdAt: r.createdAt.toISOString(),
+      };
+    });
   }
 
   /**
@@ -82,7 +102,7 @@ export class NotificationsService {
   async markAsRead(id: string, userId: string): Promise<void> {
     await this.prisma.notification.updateMany({
       where: { id, userId },
-      data: { read: true },
+      data: { isRead: true },
     });
   }
 
@@ -91,8 +111,8 @@ export class NotificationsService {
    */
   async markAllAsRead(userId: string): Promise<void> {
     await this.prisma.notification.updateMany({
-      where: { userId, read: false },
-      data: { read: true },
+      where: { userId, isRead: false },
+      data: { isRead: true },
     });
   }
 }

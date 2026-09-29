@@ -8,6 +8,7 @@ import { QRScannerModal } from './QRScannerModal';
 export function Footer() {
   const [isQROpen, setIsQROpen] = useState(false);
   return (
+    <>
     <footer className="mt-auto border-t border-border bg-card/50 backdrop-blur-xs">
       {/* Upper Footer: Branding & Categorized Links */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -152,8 +153,8 @@ export function Footer() {
           </div>
         </div>
       </div>
-
-      <QRScannerModal isOpen={isQROpen} onClose={() => setIsQROpen(false)} />
     </footer>
+    <QRScannerModal isOpen={isQROpen} onClose={() => setIsQROpen(false)} />
+    </>
   );
 }

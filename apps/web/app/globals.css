@@ -293,3 +293,36 @@
 #reader a {
   display: none !important;
 }
+
+/* ==========================================================================
+   HTML5-QRCODE CUSTOM OVERRIDES 
+   ========================================================================== */
+#reader {
+  border: none !important;
+}
+#reader img {
+  margin: 0 auto !important;
+  display: block !important;
+}
+#reader__dashboard_section_csr,
+#reader__dashboard_section_fs {
+  text-align: center !important;
+  padding: 2rem 1rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#reader__dashboard_section_swaplink {
+  text-align: center !important;
+  margin-top: 1rem !important;
+  display: block !important;
+}
+#reader input[type="file"] {
+  margin: 1rem auto !important;
+  display: block !important;
+  max-width: 100% !important;
+}
+#reader button {
+  margin: 1rem auto !important;
+}

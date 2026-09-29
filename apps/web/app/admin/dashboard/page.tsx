@@ -88,7 +88,7 @@ export default function AdminDashboardPage() {
       <div className="bg-card border border-border shadow-sm rounded-md p-6 sm:p-8 border border-border space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Flame className="w-5 h-5 text-amber-400" />
+            <Flame className="w-5 h-5 text-amber-700" />
             <h2 className="text-xl font-bold text-foreground">Department Competency Heatmap</h2>
           </div>
           <span className="text-xs font-semibold text-muted-foreground">Department &times; Skill Matrix</span>
@@ -116,20 +116,20 @@ export default function AdminDashboardPage() {
                       }
                       
                       const lvl = skill.avgCurrentLevel;
-                      let colorClass = 'text-muted-foreground bg-slate-500/10';
+                      let colorClass = 'text-muted-foreground bg-slate-100';
                       let label = 'Unknown';
                       
                       if (lvl >= 4) {
-                        colorClass = 'text-emerald-400 bg-emerald-500/10';
+                        colorClass = 'text-emerald-700 bg-emerald-100';
                         label = 'Advanced';
                       } else if (lvl >= 3) {
                         colorClass = 'text-primary bg-primary/10';
                         label = 'Intermediate';
                       } else if (lvl >= 2) {
-                        colorClass = 'text-amber-400 bg-amber-500/10';
+                        colorClass = 'text-amber-700 bg-amber-100';
                         label = 'Beginner';
                       } else {
-                        colorClass = 'text-rose-400 bg-rose-500/10';
+                        colorClass = 'text-rose-700 bg-rose-100';
                         label = 'Novice';
                       }
 

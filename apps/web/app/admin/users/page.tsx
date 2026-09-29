@@ -64,9 +64,9 @@ export default function AdminUsersPage() {
               key={idx}
               className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded border ${
                 ur.role?.name === 'admin'
-                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                  ? 'bg-amber-100 text-amber-700 border-amber-200'
                   : ur.role?.name === 'trainer'
-                  ? 'bg-purple-500/10 text-purple-400 border-purple-500/20'
+                  ? 'bg-purple-100 text-purple-700 border-purple-200'
                   : 'bg-primary/10 text-primary border-primary/20'
               }`}
             >
@@ -82,10 +82,10 @@ export default function AdminUsersPage() {
         <span
           className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full border ${
             user.status === 'active'
-              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+              ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
               : user.status === 'suspended'
-              ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-              : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+              ? 'bg-rose-100 text-rose-700 border-rose-200'
+              : 'bg-amber-100 text-amber-700 border-amber-200'
           }`}
         >
           {user.status}
@@ -102,21 +102,21 @@ export default function AdminUsersPage() {
           <div className="flex items-center gap-2">
             {isAdminUser || isSelf ? (
               // Admin accounts and the current session user cannot be suspended
-              <span className="flex items-center gap-1.5 text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+              <span className="flex items-center gap-1.5 text-[10px] font-semibold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-200">
                 <ShieldCheck className="w-3 h-3" />
                 {isSelf ? 'You' : 'Admin'}
               </span>
             ) : user.status === 'active' ? (
               <button
                 onClick={() => handleUpdateStatus(user.id, 'suspended')}
-                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-colors"
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-rose-100 text-rose-700 border border-rose-200 hover:bg-rose-200 transition-colors"
               >
                 Suspend
               </button>
             ) : (
               <button
                 onClick={() => handleUpdateStatus(user.id, 'active')}
-                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors"
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200 transition-colors"
               >
                 Activate
               </button>
@@ -125,7 +125,7 @@ export default function AdminUsersPage() {
             {user.trainerProfile && !isAdminUser && (
               <button
                 onClick={() => handleVerifyTrainer(user.trainerProfile.id, 'verified')}
-                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20 hover:bg-purple-500/20 transition-colors"
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-100 text-purple-700 border border-purple-200 hover:bg-purple-200 transition-colors"
               >
                 Verify Trainer
               </button>

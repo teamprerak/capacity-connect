@@ -45,7 +45,7 @@ export function LogoutConfirmModal({ isOpen, onClose }: LogoutConfirmModalProps)
             className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold
               bg-red-50 text-red-700 border border-red-200
               hover:bg-red-100 hover:border-red-300
-              dark:bg-red-950 dark:text-red-400 dark:border-red-900 dark:hover:bg-red-900
+              dark:bg-red-950 dark:text-red-700 dark:border-red-900 dark:hover:bg-red-900
               transition-colors duration-150 disabled:opacity-50"
           >
             {isLoggingOut

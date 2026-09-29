@@ -85,7 +85,7 @@ export default function AdminCourseModerationPage() {
           <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
             {course.category?.name || 'Category'}
           </span>
-          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
+          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-purple-100 text-purple-700 border border-purple-200">
             {course.difficulty}
           </span>
         </div>
@@ -105,7 +105,7 @@ export default function AdminCourseModerationPage() {
             <>
               <button
                 onClick={() => handleApprove(course.id)}
-                className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5"
+                className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200 transition-all flex items-center gap-1.5"
               >
                 <CheckCircle className="w-3.5 h-3.5" /> Approve
               </button>
@@ -121,7 +121,7 @@ export default function AdminCourseModerationPage() {
           {course.status === 'published' && (
             <button
               onClick={() => handleRollbackClick(course.id, course.title)}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-all flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200 hover:bg-amber-200 transition-all flex items-center gap-1.5"
             >
               <RotateCcw className="w-3.5 h-3.5" /> Rollback
             </button>
@@ -129,7 +129,7 @@ export default function AdminCourseModerationPage() {
 
           <button
             onClick={() => handleDelete(course.id)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500/20 transition-all flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-100 text-rose-500 border border-rose-200 hover:bg-rose-200 transition-all flex items-center gap-1.5"
             title="Delete Course"
           >
             <Trash2 className="w-3.5 h-3.5" /> Delete

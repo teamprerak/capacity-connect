@@ -33,22 +33,22 @@ const STATUS_CONFIG: Record<
 > = {
   draft: {
     label: 'Draft',
-    className: 'bg-slate-500/10 text-muted-foreground border-slate-500/20',
+    className: 'bg-slate-100 text-slate-700 border-slate-200',
     Icon: FileText,
   },
   pending_approval: {
     label: 'Pending Review',
-    className: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    className: 'bg-amber-100 text-amber-700 border-amber-200',
     Icon: Clock,
   },
   published: {
     label: 'Published',
-    className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    className: 'bg-emerald-100 text-emerald-700 border-emerald-200',
     Icon: CheckCircle2,
   },
   archived: {
     label: 'Archived',
-    className: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+    className: 'bg-rose-100 text-rose-700 border-rose-200',
     Icon: Archive,
   },
 };
@@ -87,7 +87,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
         {course.status !== 'archived' && (
           <button
             onClick={() => onEdit(course)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-500/10 text-muted-foreground border border-slate-500/20 hover:bg-slate-500/20 transition-all flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-muted-foreground border border-slate-200 hover:bg-slate-200 transition-all flex items-center gap-1.5"
           >
             Edit Course
           </button>
@@ -108,14 +108,14 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
             <button
               onClick={() => onSubmit(course.id, moduleCount)}
               disabled={moduleCount === 0}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200 transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <SendHorizonal className="w-3.5 h-3.5" />
               Submit
             </button>
 
             {moduleCount === 0 && (
-              <div className="absolute bottom-full right-0 mb-2 w-52 px-3 py-2 rounded-lg bg-background border border-border text-[11px] text-amber-400 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+              <div className="absolute bottom-full right-0 mb-2 w-52 px-3 py-2 rounded-lg bg-background border border-border text-[11px] text-amber-700 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                 <div className="flex items-start gap-1.5">
                   <BadgeAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                   Add at least 1 module before submitting.
@@ -128,7 +128,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
         {course.status === 'published' && (
           <button
             onClick={() => onArchive(course.id)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200 hover:bg-rose-200 transition-all flex items-center gap-1.5"
           >
             <Archive className="w-3.5 h-3.5" />
             Archive
@@ -138,7 +138,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
         {course.status === 'archived' && (
           <button
             onClick={() => onUnarchive(course.id)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-100 text-indigo-700 border border-indigo-200 hover:bg-indigo-200 transition-all flex items-center gap-1.5"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Unarchive
@@ -147,7 +147,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
 
         <button
           onClick={() => onDelete(course.id)}
-          className="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all flex items-center gap-1.5"
+          className="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-100 text-red-700 border border-red-200 hover:bg-red-200 transition-all flex items-center gap-1.5"
         >
           <Trash2 className="w-3.5 h-3.5" />
           Delete
@@ -155,7 +155,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
       </div>
       
       {course.status === 'pending_approval' && (
-        <div className="flex items-center gap-1.5 text-amber-400 text-xs font-semibold mt-1">
+        <div className="flex items-center gap-1.5 text-amber-700 text-xs font-semibold mt-1">
           <Clock className="w-4 h-4 animate-pulse" />
           Under Review
         </div>
@@ -326,7 +326,7 @@ export default function TrainerDashboard() {
 
       {/* ── Pending Review Banner ── */}
       {pendingCount > 0 && (
-        <div className="flex items-center gap-3 px-5 py-3.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm font-medium">
+        <div className="flex items-center gap-3 px-5 py-3.5 rounded-lg bg-amber-100 border border-amber-200 text-amber-700 text-sm font-medium">
           <Clock className="w-5 h-5 shrink-0 animate-pulse" />
           <span>
             You have{' '}
@@ -356,7 +356,7 @@ export default function TrainerDashboard() {
                   <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                     <StatusBadge status={course.status} />
                     <span className="text-xs text-muted-foreground">{course.category?.name}</span>
-                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-purple-100 text-purple-700 border border-purple-200">
                       {course.difficulty}
                     </span>
                   </div>
@@ -369,7 +369,7 @@ export default function TrainerDashboard() {
                       {(course._count?.modules ?? 0) === 1 ? 'Module' : 'Modules'}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      <span className="font-semibold text-emerald-400">
+                      <span className="font-semibold text-emerald-700">
                         {course._count?.enrollments ?? 0}
                       </span>{' '}
                       Enrolled

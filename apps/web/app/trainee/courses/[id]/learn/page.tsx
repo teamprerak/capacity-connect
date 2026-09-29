@@ -118,7 +118,7 @@ export default function CoursePlayerPage() {
             </div>
 
             {activeModule?.documentUrl && (
-              <div className="mt-4 p-4 rounded-md bg-blue-900/20 border border-blue-800/30 flex items-center justify-between">
+              <div className="mt-4 p-4 rounded-md bg-blue-50 border border-blue-100 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <FileText className="text-primary w-5 h-5" />
                   <div>
@@ -144,7 +144,7 @@ export default function CoursePlayerPage() {
                 className={`px-5 py-2.5 rounded-md font-bold text-xs transition-all flex items-center gap-2 ${
                   activeModule && completedModules.includes(activeModule.id)
                     ? 'bg-card text-muted-foreground cursor-not-allowed border border-border'
-                    : 'bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/30'
+                    : 'bg-emerald-100 border border-emerald-200 text-emerald-700 hover:bg-emerald-200'
                 }`}
               >
                 <CheckCircle className="w-4 h-4" /> 
@@ -154,7 +154,7 @@ export default function CoursePlayerPage() {
               {course?.assessments?.length > 0 && (
                 <Link
                   href={`/trainee/assessments/${course.assessments[0].id}/take`}
-                  className="px-5 py-2.5 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 text-foreground font-bold text-xs hover:opacity-90 transition-all flex items-center gap-2"
+                  className="px-5 py-2.5 rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xs hover:opacity-90 transition-all flex items-center gap-2"
                 >
                   <HelpCircle className="w-4 h-4" /> Take Module Assessment
                 </Link>
@@ -164,12 +164,12 @@ export default function CoursePlayerPage() {
         </div>
 
         {/* Sidebar Module List */}
-        <div className="w-full lg:w-80 bg-card border border-border shadow-sm rounded-md p-5 border border-border/50 shadow-xl space-y-4">
+        <div className="w-full lg:w-80 bg-card border border-border shadow-sm rounded-md p-5 space-y-4">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-bold text-foreground uppercase tracking-wider text-muted-foreground">
+            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
               Modules
             </h3>
-            <span className="px-2 py-1 bg-card text-muted-foreground rounded-md text-[10px] font-bold">
+            <span className="px-2 py-1 bg-muted text-muted-foreground rounded-md text-[10px] font-bold">
               {completedModules.length} / {course?.modules?.length || 0}
             </span>
           </div>
@@ -181,17 +181,17 @@ export default function CoursePlayerPage() {
                 onClick={() => setActiveModule(mod)}
                 className={`w-full text-left p-3.5 rounded-md border text-xs font-semibold transition-all flex items-center justify-between group ${
                   activeModule?.id === mod.id
-                    ? 'bg-primary/20 text-blue-300 border-blue-500/40 shadow-sm shadow-blue-500/10'
-                    : 'bg-background/40 text-muted-foreground border-border hover:bg-card hover:text-foreground'
+                    ? 'bg-blue-50 text-blue-700 border-blue-200 shadow-sm shadow-blue-500/10'
+                    : 'bg-background text-muted-foreground border-border hover:bg-muted hover:text-foreground'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-bold transition-colors ${
                     completedModules.includes(mod.id)
-                      ? 'bg-emerald-500/20 text-emerald-400'
+                      ? 'bg-emerald-100 text-emerald-600'
                       : activeModule?.id === mod.id
-                      ? 'bg-blue-500/20 text-primary'
-                      : 'bg-card text-muted-foreground group-hover:bg-slate-700'
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'bg-muted text-muted-foreground group-hover:bg-gray-200'
                   }`}>
                     {completedModules.includes(mod.id) ? <CheckCircle className="w-3 h-3" /> : idx + 1}
                   </span>

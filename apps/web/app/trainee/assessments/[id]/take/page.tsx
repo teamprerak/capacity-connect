@@ -84,14 +84,14 @@ export default function TakeAssessmentPage() {
       <div className="max-w-2xl mx-auto space-y-6 animate-in zoom-in-95 duration-300">
         <div
           className={`bg-card border border-border shadow-sm rounded-md p-8 border text-center ${
-            result.passed ? 'border-emerald-500/30' : 'border-rose-500/30'
+            result.passed ? 'border-emerald-200' : 'border-rose-200'
           }`}
         >
           <div
             className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border ${
               result.passed
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
+                : 'bg-rose-100 text-rose-700 border-rose-200'
             }`}
           >
             {result.passed ? <CheckCircle className="w-8 h-8" /> : <AlertTriangle className="w-8 h-8" />}
@@ -100,8 +100,8 @@ export default function TakeAssessmentPage() {
           <span
             className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 border ${
               result.passed
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
+                : 'bg-rose-100 text-rose-700 border-rose-200'
             }`}
           >
             {result.passed ? 'PASSED ASSESSMENT' : 'FAILED - RETAKE REQUIRED'}
@@ -145,7 +145,7 @@ export default function TakeAssessmentPage() {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-background border border-border text-xs font-mono text-amber-400">
+        <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-background border border-border text-xs font-mono text-amber-700">
           <Clock className="w-3.5 h-3.5" />
           <span>{attemptData.timeLimitMinutes ?? 30} mins remaining</span>
         </div>
@@ -154,7 +154,7 @@ export default function TakeAssessmentPage() {
       {/* Question Card */}
       <div className="bg-card border border-border shadow-sm rounded-md p-8 border border-border space-y-6">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-full border border-purple-500/20">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-purple-700 bg-purple-100 px-2.5 py-1 rounded-full border border-purple-200">
             {currentQ.questionType.replace('_', ' ')}
           </span>
           <span className="text-xs font-semibold text-muted-foreground">{currentQ.points} Points</span>

@@ -70,7 +70,7 @@ export default function CertificateVaultPage() {
               <div className="flex items-start justify-between flex-1">
                 <div className="space-y-6">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <div className="p-2.5 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-200">
                       <Award className="w-6 h-6" />
                     </div>
                     <div>
@@ -84,7 +84,7 @@ export default function CertificateVaultPage() {
                       <Calendar className="w-4 h-4" />
                       <span>Issued: {new Date(cert.issuedAt).toLocaleDateString()}</span>
                     </div>
-                    <span className="text-sm font-mono font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 self-start">
+                    <span className="text-sm font-mono font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200 self-start">
                       No: {cert.certificateNumber}
                     </span>
                   </div>

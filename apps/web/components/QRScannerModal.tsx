@@ -308,7 +308,7 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
       {scanMode === 'camera' && (
         <div className="space-y-4">
           {cameraError && (
-            <div className="p-3.5 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-500 text-xs flex items-start gap-2.5">
+            <div className="p-3.5 rounded-lg border border-rose-200 bg-rose-100 text-rose-500 text-xs flex items-start gap-2.5">
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <div className="flex-1">
                 <p className="font-semibold">Camera Access Error</p>

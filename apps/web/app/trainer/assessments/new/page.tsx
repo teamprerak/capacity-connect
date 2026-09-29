@@ -208,7 +208,7 @@ export default function AssessmentAuthoringPage() {
                 <button
                   type="button"
                   onClick={() => handleRemoveOption(idx)}
-                  className="p-2 text-muted-foreground hover:text-rose-400 transition-colors"
+                  className="p-2 text-muted-foreground hover:text-rose-700 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

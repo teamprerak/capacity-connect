@@ -111,7 +111,7 @@ export default function AdminAuditLogsPage() {
         onClose={() => setSelectedMeta(null)}
         title="Audit Event Metadata Inspector"
       >
-        <pre className="p-4 rounded-md bg-background border border-border text-xs font-mono text-emerald-400 overflow-x-auto">
+        <pre className="p-4 rounded-md bg-background border border-border text-xs font-mono text-emerald-700 overflow-x-auto">
           {JSON.stringify(selectedMeta, null, 2)}
         </pre>
       </Modal>

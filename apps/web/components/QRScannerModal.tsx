@@ -46,7 +46,7 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
     if (!verifyToken.trim()) return;
 
     // Extract token if user pasted the full verification URL
-    let finalToken = verifyToken.trim();
+    let finalToken = verifyToken.trim().split('?')[0].replace(/\/+$/, '');
     if (finalToken.includes('/')) {
       finalToken = finalToken.split('/').pop() || finalToken;
     }
@@ -277,11 +277,15 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
                 required
                 value={token}
                 onChange={(e) => setToken(e.target.value)}
-                placeholder="e.g. CERT-2026-XXXX or https://.../verify/XXXX"
-                className="form-input pl-10 pr-4 font-mono text-xs sm:text-sm"
+                placeholder="e.g. 8a3f89a2-4c21-4db8-9218-e21f92e3a19b or verify URL"
+                style={{ paddingLeft: '2.5rem' }}
+                className="form-input !pl-10 pr-4 font-mono text-xs sm:text-sm"
               />
-              <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-3.5" />
+              <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
+            <p className="text-[11px] text-muted-foreground mt-1.5">
+              Enter the unique verification token UUID, certificate number (CC-...), or paste the verification URL.
+            </p>
           </div>
 
           <button

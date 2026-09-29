@@ -128,8 +128,9 @@ export class CertificateService {
     token: string,
     verifierIp?: string,
   ): Promise<any> {
-    const certificate = await this.prisma.certificate.findUnique({
-      where: { verificationToken: token },
+    const cleanToken = token.trim();
+    let certificate = await this.prisma.certificate.findUnique({
+      where: { verificationToken: cleanToken },
       include: {
         trainee: {
           select: {
@@ -144,6 +145,25 @@ export class CertificateService {
         },
       },
     });
+
+    if (!certificate && this.prisma.certificate.findFirst) {
+      certificate = await this.prisma.certificate.findFirst({
+        where: { certificateNumber: { equals: cleanToken, mode: 'insensitive' } },
+        include: {
+          trainee: {
+            select: {
+              user: { select: { email: true } },
+            },
+          },
+          course: { select: { title: true, slug: true } },
+          trainer: {
+            select: {
+              user: { select: { email: true } },
+            },
+          },
+        },
+      });
+    }
 
     if (!certificate) {
       return {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import {
@@ -26,6 +26,16 @@ const VIDEO_CHAPTERS = [
 
 export default function LandingPage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [activeChapter, setActiveChapter] = useState<number>(0);
+
+  const handleChapterClick = (seconds: number) => {
+    setActiveChapter(seconds);
+    if (videoRef.current) {
+      videoRef.current.currentTime = seconds;
+      videoRef.current.play().catch(e => console.log('Autoplay blocked:', e));
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -67,33 +77,50 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-col gap-4 w-full h-full justify-center">
-            {/* Interactive Chapter Markers Redirecting to YouTube */}
-            <div className="surface-card p-6 rounded-xl border border-border shadow-lg w-full max-w-xl mx-auto lg:ml-auto">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 rounded-xl bg-red-500/10 text-red-500">
-                  <Play className="w-6 h-6 fill-current" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground">Project Demonstration</h3>
-                  <span className="text-sm text-muted-foreground block">Select a chapter to watch directly on YouTube</span>
-                </div>
+            {/* Custom Native HTML5 Player */}
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-border bg-black">
+              <video
+                ref={videoRef}
+                className="absolute top-0 left-0 w-full h-full object-cover"
+                src="https://nvmerpleyyxbdhodwdcz.supabase.co/storage/v1/object/public/demo-videos/demo.mp4"
+                controls
+                controlsList="nodownload"
+                onContextMenu={(e) => e.preventDefault()}
+                poster="/thumbnail.jpg" // Optional placeholder
+              />
+            </div>
+
+            {/* Interactive Chapter Markers */}
+            <div className="surface-card p-5 rounded-xl border border-border shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                  Video Navigation
+                </span>
+                
+                {/* Watch on YouTube Redirect Button */}
+                <a
+                  href="https://www.youtube.com/watch?v=1YdGX3fXZtk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-red-500 bg-red-500/10 hover:bg-red-500/20 transition-colors"
+                >
+                  <Play className="w-3.5 h-3.5" /> Watch on YouTube
+                </a>
               </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+              <div className="flex flex-wrap gap-2.5">
                 {VIDEO_CHAPTERS.map((chapter) => (
-                  <a
+                  <button
                     key={chapter.label}
-                    href={`https://www.youtube.com/watch?v=1YdGX3fXZtk&t=${chapter.start}s`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3.5 rounded-lg border border-border bg-card hover:bg-accent hover:border-primary/50 transition-all duration-200 group"
+                    onClick={() => handleChapterClick(chapter.start)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border ${
+                      activeChapter === chapter.start
+                        ? 'bg-primary text-primary-foreground border-primary shadow-sm scale-105'
+                        : 'bg-accent/50 hover:bg-accent text-foreground border-border hover:scale-105'
+                    }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <Play className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" /> 
-                      <span className="text-sm font-medium text-foreground">{chapter.label}</span>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                  </a>
+                    <Play className="w-3 h-3" /> {chapter.label}
+                  </button>
                 ))}
               </div>
             </div>

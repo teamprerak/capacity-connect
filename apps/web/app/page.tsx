@@ -28,7 +28,8 @@ export default function LandingPage() {
 
       {/* Hero Section — left-leaning, restrained scale */}
       <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="max-w-3xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="max-w-3xl">
           {/* Neutral label badge — no colored glow */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent border border-border text-muted-foreground text-xs font-medium mb-6">
             <Sparkles className="w-3.5 h-3.5 text-primary" />

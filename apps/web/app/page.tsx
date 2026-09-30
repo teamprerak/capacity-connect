@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import {
@@ -10,16 +10,10 @@ import {
   TrendingUp,
   BrainCircuit,
   Users,
-  Play,
-  Pause,
-  Maximize,
-  Volume2,
-  VolumeX
+  Play
 } from 'lucide-react';
 import { AuthModal } from '@/components/AuthModal';
 import { Footer } from '@/components/Footer';
-import ReactPlayer from 'react-player';
-const Player = ReactPlayer as any;
 
 const VIDEO_CHAPTERS = [
   { label: 'Introduction', start: 0 },
@@ -33,30 +27,18 @@ const VIDEO_CHAPTERS = [
 export default function LandingPage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   
-  // Custom Video Player State
-  const playerRef = useRef<any>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
+  // Track active chapter for the UI highlight
   const [activeChapter, setActiveChapter] = useState<number>(0);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-    setHasStarted(true);
-  };
+  
+  // Track the actual iframe src string (forces iframe reload to the new timestamp with autoplay)
+  const [videoSrc, setVideoSrc] = useState(
+    'https://www.youtube.com/embed/1YdGX3fXZtk?modestbranding=1&rel=0&controls=0&showinfo=0'
+  );
 
   const handleChapterClick = (seconds: number) => {
     setActiveChapter(seconds);
-    setIsPlaying(true);
-    setHasStarted(true);
-    if (playerRef.current) {
-      playerRef.current.seekTo(seconds, 'seconds');
-    }
+    // Reload iframe at specific time and force autoplay
+    setVideoSrc(`https://www.youtube.com/embed/1YdGX3fXZtk?start=${seconds}&autoplay=1&modestbranding=1&rel=0&controls=0&showinfo=0`);
   };
 
   return (
@@ -67,13 +49,11 @@ export default function LandingPage() {
       <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10">
           <div className="max-w-3xl">
-            {/* Neutral label badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent border border-border text-muted-foreground text-xs font-medium mb-6">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span>Industrial Capacity Building &amp; LMS Platform</span>
             </div>
 
-            {/* Hero heading */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.15] mb-5 text-foreground">
               Automate Competency Growth<br className="hidden sm:block" />
               {' '}with AI-Driven Learning
@@ -84,7 +64,6 @@ export default function LandingPage() {
               interactive assessments, and issue cryptographically verifiable QR certificates.
             </p>
 
-            {/* CTA buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setIsAuthOpen(true)}
@@ -102,67 +81,17 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-col gap-4 w-full">
-            {/* Custom Video Player Container */}
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-border bg-black group">
-              
-              {/* The actual YouTube Player - pointer-events-none hides YouTube's internal UI hovering */}
-              <div className="absolute inset-0 pointer-events-none scale-[1.02]">
-                {isClient && (
-                  <Player
-                    ref={playerRef}
-                    url="https://www.youtube.com/watch?v=1YdGX3fXZtk"
-                    width="100%"
-                    height="100%"
-                    playing={isPlaying}
-                    muted={isMuted}
-                    controls={false}
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                    config={{
-                      youtube: {
-                        playerVars: {
-                          modestbranding: 1,
-                          rel: 0,
-                          showinfo: 0,
-                          iv_load_policy: 3,
-                          disablekb: 1
-                        }
-                      } as any
-                    }}
-                  />
-                )}
-              </div>
-
-              {/* Initial Play Facade (Shown before first play) */}
-              {!hasStarted && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] z-10 transition-opacity duration-300">
-                  <button
-                    onClick={handlePlayPause}
-                    className="w-16 h-16 rounded-full bg-primary/90 text-primary-foreground flex items-center justify-center hover:bg-primary hover:scale-110 transition-all shadow-lg shadow-primary/25"
-                  >
-                    <Play className="w-8 h-8 ml-1" />
-                  </button>
-                </div>
-              )}
-
-              {/* Custom Hover Controls Overlay (Shown during playback) */}
-              {hasStarted && (
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-between">
-                  <button 
-                    onClick={handlePlayPause}
-                    className="text-white hover:text-primary transition-colors"
-                  >
-                    {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
-                  </button>
-                  
-                  <button 
-                    onClick={() => setIsMuted(!isMuted)}
-                    className="text-white hover:text-primary transition-colors"
-                  >
-                    {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
-                  </button>
-                </div>
-              )}
+            {/* Minimal Native Iframe Player */}
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-border bg-black">
+              <iframe
+                key={videoSrc} // Forces React to re-mount the iframe when src changes to ensure autoplay works
+                className="absolute top-0 left-0 w-full h-full"
+                src={videoSrc}
+                title="Capacity Connect Demo Video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
             </div>
 
             {/* Interactive Chapter Markers */}

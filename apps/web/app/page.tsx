@@ -10,7 +10,11 @@ import {
   TrendingUp,
   BrainCircuit,
   Users,
-  Play
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Maximize
 } from 'lucide-react';
 import { AuthModal } from '@/components/AuthModal';
 import { Footer } from '@/components/Footer';
@@ -28,12 +32,48 @@ export default function LandingPage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeChapter, setActiveChapter] = useState<number>(0);
+  
+  // Custom Video Player State
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+  const [showControls, setShowControls] = useState(true);
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      const p = (videoRef.current.currentTime / videoRef.current.duration) * 100;
+      setProgress(p || 0);
+    }
+  };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) videoRef.current.pause();
+      else videoRef.current.play();
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      }
+    }
+  };
 
   const handleChapterClick = (seconds: number) => {
     setActiveChapter(seconds);
     if (videoRef.current) {
       videoRef.current.currentTime = seconds;
-      videoRef.current.play().catch(e => console.log('Autoplay blocked:', e));
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(e => console.log('Autoplay blocked:', e));
     }
   };
 
@@ -77,17 +117,65 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-col gap-4 w-full h-full justify-center">
-            {/* Custom Native HTML5 Player */}
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-border bg-black">
+            {/* Premium Native HTML5 Player with Custom Controls */}
+            <div 
+              className="relative w-full aspect-video rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-border bg-black group"
+              onMouseEnter={() => setShowControls(true)}
+              onMouseLeave={() => isPlaying && setShowControls(false)}
+            >
               <video
                 ref={videoRef}
-                className="absolute top-0 left-0 w-full h-full object-cover"
+                className="absolute top-0 left-0 w-full h-full object-contain"
                 src="https://nvmerpleyyxbdhodwdcz.supabase.co/storage/v1/object/public/demo-videos/demo.mp4"
-                controls
+                onTimeUpdate={handleTimeUpdate}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onClick={togglePlay}
                 controlsList="nodownload"
                 onContextMenu={(e) => e.preventDefault()}
-                poster="/thumbnail.jpg" // Optional placeholder
+                poster="/thumbnail.jpg"
               />
+              
+              {/* Center Play Button Overlay (fades out when playing) */}
+              <div 
+                className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${isPlaying ? 'opacity-0' : 'opacity-100 bg-black/40 backdrop-blur-[2px]'}`}
+              >
+                <div className="w-16 h-16 rounded-full bg-primary/90 text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/25">
+                  <Play className="w-8 h-8 ml-1" />
+                </div>
+              </div>
+
+              {/* Bottom Control Bar */}
+              <div 
+                className={`absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent transition-opacity duration-300 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'}`}
+              >
+                {/* Progress Bar */}
+                <div className="w-full h-1.5 bg-white/20 rounded-full mb-4 overflow-hidden cursor-pointer" onClick={(e) => {
+                  if (videoRef.current) {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const pos = (e.clientX - rect.left) / rect.width;
+                    videoRef.current.currentTime = pos * videoRef.current.duration;
+                  }
+                }}>
+                  <div className="h-full bg-primary transition-all duration-100" style={{ width: `${progress}%` }} />
+                </div>
+
+                {/* Controls */}
+                <div className="flex items-center justify-between text-white">
+                  <div className="flex items-center gap-4">
+                    <button onClick={togglePlay} className="hover:text-primary transition-colors">
+                      {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                    </button>
+                    <button onClick={toggleMute} className="hover:text-primary transition-colors">
+                      {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                    </button>
+                  </div>
+                  
+                  <button onClick={toggleFullscreen} className="hover:text-primary transition-colors">
+                    <Maximize className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Interactive Chapter Markers */}

@@ -26,20 +26,6 @@ const VIDEO_CHAPTERS = [
 
 export default function LandingPage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  
-  // Track active chapter for the UI highlight
-  const [activeChapter, setActiveChapter] = useState<number>(0);
-  
-  // Track the actual iframe src string (forces iframe reload to the new timestamp with autoplay)
-  const [videoSrc, setVideoSrc] = useState(
-    'https://www.youtube.com/embed/1YdGX3fXZtk?modestbranding=1&rel=0&controls=0&showinfo=0'
-  );
-
-  const handleChapterClick = (seconds: number) => {
-    setActiveChapter(seconds);
-    // Reload iframe at specific time and force autoplay
-    setVideoSrc(`https://www.youtube.com/embed/1YdGX3fXZtk?start=${seconds}&autoplay=1&modestbranding=1&rel=0&controls=0&showinfo=0`);
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -80,38 +66,34 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 w-full">
-            {/* Minimal Native Iframe Player */}
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-border bg-black">
-              <iframe
-                key={videoSrc} // Forces React to re-mount the iframe when src changes to ensure autoplay works
-                className="absolute top-0 left-0 w-full h-full"
-                src={videoSrc}
-                title="Capacity Connect Demo Video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
-            </div>
-
-            {/* Interactive Chapter Markers */}
-            <div className="surface-card p-5 rounded-xl border border-border shadow-sm">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-3">
-                Video Navigation
-              </span>
-              <div className="flex flex-wrap gap-2.5">
+          <div className="flex flex-col gap-4 w-full h-full justify-center">
+            {/* Interactive Chapter Markers Redirecting to YouTube */}
+            <div className="surface-card p-6 rounded-xl border border-border shadow-lg w-full max-w-xl mx-auto lg:ml-auto">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 rounded-xl bg-red-500/10 text-red-500">
+                  <Play className="w-6 h-6 fill-current" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">Project Demonstration</h3>
+                  <span className="text-sm text-muted-foreground block">Select a chapter to watch directly on YouTube</span>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {VIDEO_CHAPTERS.map((chapter) => (
-                  <button
+                  <a
                     key={chapter.label}
-                    onClick={() => handleChapterClick(chapter.start)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border ${
-                      activeChapter === chapter.start
-                        ? 'bg-primary text-primary-foreground border-primary shadow-sm scale-105'
-                        : 'bg-accent/50 hover:bg-accent text-foreground border-border hover:scale-105'
-                    }`}
+                    href={`https://www.youtube.com/watch?v=1YdGX3fXZtk&t=${chapter.start}s`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3.5 rounded-lg border border-border bg-card hover:bg-accent hover:border-primary/50 transition-all duration-200 group"
                   >
-                    <Play className="w-3 h-3" /> {chapter.label}
-                  </button>
+                    <div className="flex items-center gap-3">
+                      <Play className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" /> 
+                      <span className="text-sm font-medium text-foreground">{chapter.label}</span>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </a>
                 ))}
               </div>
             </div>

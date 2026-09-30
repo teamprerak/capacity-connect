@@ -19,6 +19,7 @@ import {
 import { AuthModal } from '@/components/AuthModal';
 import { Footer } from '@/components/Footer';
 import ReactPlayer from 'react-player';
+const Player = ReactPlayer as any;
 
 const VIDEO_CHAPTERS = [
   { label: 'Introduction', start: 0 },
@@ -106,9 +107,7 @@ export default function LandingPage() {
               
               {/* The actual YouTube Player - pointer-events-none hides YouTube's internal UI hovering */}
               <div className="absolute inset-0 pointer-events-none scale-[1.02]">
-                {isClient && (() => {
-                  const Player = ReactPlayer as any;
-                  return (
+                {isClient && (
                   <Player
                     ref={playerRef}
                     url="https://www.youtube.com/watch?v=1YdGX3fXZtk"
@@ -131,8 +130,7 @@ export default function LandingPage() {
                       } as any
                     }}
                   />
-                  );
-                })()}
+                )}
               </div>
 
               {/* Initial Play Facade (Shown before first play) */}

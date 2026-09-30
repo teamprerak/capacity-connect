@@ -1,24 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import {
-  Layers,
   Sparkles,
-  Zap,
-  ShieldCheck,
   Award,
-  BookOpen,
   ArrowRight,
   TrendingUp,
   BrainCircuit,
-  CheckCircle2,
   Users,
-  Play
+  Play,
+  Pause,
+  Maximize,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { AuthModal } from '@/components/AuthModal';
 import { Footer } from '@/components/Footer';
+import ReactPlayer from 'react-player';
 
 const VIDEO_CHAPTERS = [
   { label: 'Introduction', start: 0 },
@@ -31,11 +31,32 @@ const VIDEO_CHAPTERS = [
 
 export default function LandingPage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [activeChapter, setActiveChapter] = useState<number | null>(null);
+  
+  // Custom Video Player State
+  const playerRef = useRef<any>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [activeChapter, setActiveChapter] = useState<number>(0);
+  const [isClient, setIsClient] = useState(false);
 
-  const videoUrl = activeChapter !== null
-    ? `https://www.youtube.com/embed/1YdGX3fXZtk?start=${activeChapter}&autoplay=1&rel=0`
-    : `https://www.youtube.com/embed/1YdGX3fXZtk?rel=0`;
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+    setHasStarted(true);
+  };
+
+  const handleChapterClick = (seconds: number) => {
+    setActiveChapter(seconds);
+    setIsPlaying(true);
+    setHasStarted(true);
+    if (playerRef.current) {
+      playerRef.current.seekTo(seconds, 'seconds');
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -79,27 +100,83 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-5 w-full">
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg border border-border bg-black">
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src={videoUrl}
-                title="Capacity Connect Demo Video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
+          <div className="flex flex-col gap-4 w-full">
+            {/* Custom Video Player Container */}
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-border bg-black group">
+              
+              {/* The actual YouTube Player - pointer-events-none hides YouTube's internal UI hovering */}
+              <div className="absolute inset-0 pointer-events-none scale-[1.02]">
+                {isClient && (() => {
+                  const Player = ReactPlayer as any;
+                  return (
+                  <Player
+                    ref={playerRef}
+                    url="https://www.youtube.com/watch?v=1YdGX3fXZtk"
+                    width="100%"
+                    height="100%"
+                    playing={isPlaying}
+                    muted={isMuted}
+                    controls={false}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    config={{
+                      youtube: {
+                        playerVars: {
+                          modestbranding: 1,
+                          rel: 0,
+                          showinfo: 0,
+                          iv_load_policy: 3,
+                          disablekb: 1
+                        }
+                      } as any
+                    }}
+                  />
+                  );
+                })()}
+              </div>
+
+              {/* Initial Play Facade (Shown before first play) */}
+              {!hasStarted && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] z-10 transition-opacity duration-300">
+                  <button
+                    onClick={handlePlayPause}
+                    className="w-16 h-16 rounded-full bg-primary/90 text-primary-foreground flex items-center justify-center hover:bg-primary hover:scale-110 transition-all shadow-lg shadow-primary/25"
+                  >
+                    <Play className="w-8 h-8 ml-1" />
+                  </button>
+                </div>
+              )}
+
+              {/* Custom Hover Controls Overlay (Shown during playback) */}
+              {hasStarted && (
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-between">
+                  <button 
+                    onClick={handlePlayPause}
+                    className="text-white hover:text-primary transition-colors"
+                  >
+                    {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
+                  </button>
+                  
+                  <button 
+                    onClick={() => setIsMuted(!isMuted)}
+                    className="text-white hover:text-primary transition-colors"
+                  >
+                    {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
+                  </button>
+                </div>
+              )}
             </div>
 
+            {/* Interactive Chapter Markers */}
             <div className="surface-card p-5 rounded-xl border border-border shadow-sm">
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-3">
-                Jump to Chapter
+                Video Navigation
               </span>
               <div className="flex flex-wrap gap-2.5">
                 {VIDEO_CHAPTERS.map((chapter) => (
                   <button
                     key={chapter.label}
-                    onClick={() => setActiveChapter(chapter.start)}
+                    onClick={() => handleChapterClick(chapter.start)}
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border ${
                       activeChapter === chapter.start
                         ? 'bg-primary text-primary-foreground border-primary shadow-sm scale-105'

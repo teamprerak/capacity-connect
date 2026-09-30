@@ -15,56 +15,106 @@ import {
   BrainCircuit,
   CheckCircle2,
   Users,
+  Play
 } from 'lucide-react';
 import { AuthModal } from '@/components/AuthModal';
 import { Footer } from '@/components/Footer';
 
+const VIDEO_CHAPTERS = [
+  { label: 'Introduction', start: 0 },
+  { label: 'Trainee Portal', start: 49 },
+  { label: 'Trainer Studio', start: 78 },
+  { label: 'Admin Dashboard', start: 105 },
+  { label: 'Verification', start: 124 },
+  { label: 'Outro', start: 134 }
+];
+
 export default function LandingPage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [activeChapter, setActiveChapter] = useState<number | null>(null);
+
+  const videoUrl = activeChapter !== null
+    ? `https://www.youtube.com/embed/1YdGX3fXZtk?start=${activeChapter}&autoplay=1&rel=0`
+    : `https://www.youtube.com/embed/1YdGX3fXZtk?rel=0`;
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      {/* Hero Section — left-leaning, restrained scale */}
+      {/* Hero Section */}
       <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10">
           <div className="max-w-3xl">
-          {/* Neutral label badge — no colored glow */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent border border-border text-muted-foreground text-xs font-medium mb-6">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span>Industrial Capacity Building &amp; LMS Platform</span>
+            {/* Neutral label badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent border border-border text-muted-foreground text-xs font-medium mb-6">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span>Industrial Capacity Building &amp; LMS Platform</span>
+            </div>
+
+            {/* Hero heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.15] mb-5 text-foreground">
+              Automate Competency Growth<br className="hidden sm:block" />
+              {' '}with AI-Driven Learning
+            </h1>
+
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-8 leading-relaxed font-normal">
+              Bridge workforce skill gaps automatically. Match trainees with expert trainers, author
+              interactive assessments, and issue cryptographically verifiable QR certificates.
+            </p>
+
+            {/* CTA buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => setIsAuthOpen(true)}
+                className="btn-primary px-6 py-2.5 text-sm"
+              >
+                Launch Platform Portal <ArrowRight className="w-4 h-4" />
+              </button>
+              <Link
+                href="/trainee/courses"
+                className="btn-secondary px-6 py-2.5 text-sm"
+              >
+                Explore Catalog
+              </Link>
+            </div>
           </div>
 
-          {/* Hero heading — restrained scale, solid text only */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.15] mb-5 text-foreground">
-            Automate Competency Growth<br className="hidden sm:block" />
-            {' '}with AI-Driven Learning
-          </h1>
+          <div className="flex flex-col gap-5 w-full">
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg border border-border bg-black">
+              <iframe
+                className="absolute top-0 left-0 w-full h-full"
+                src={videoUrl}
+                title="Capacity Connect Demo Video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
+            </div>
 
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-8 leading-relaxed font-normal">
-            Bridge workforce skill gaps automatically. Match trainees with expert trainers, author
-            interactive assessments, and issue cryptographically verifiable QR certificates.
-          </p>
-
-          {/* CTA buttons — solid primary, no gradient/glow */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={() => setIsAuthOpen(true)}
-              className="btn-primary px-6 py-2.5 text-sm"
-            >
-              Launch Platform Portal <ArrowRight className="w-4 h-4" />
-            </button>
-            <Link
-              href="/trainee/courses"
-              className="btn-secondary px-6 py-2.5 text-sm"
-            >
-              Explore Catalog
-            </Link>
+            <div className="surface-card p-5 rounded-xl border border-border shadow-sm">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-3">
+                Jump to Chapter
+              </span>
+              <div className="flex flex-wrap gap-2.5">
+                {VIDEO_CHAPTERS.map((chapter) => (
+                  <button
+                    key={chapter.label}
+                    onClick={() => setActiveChapter(chapter.start)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border ${
+                      activeChapter === chapter.start
+                        ? 'bg-primary text-primary-foreground border-primary shadow-sm scale-105'
+                        : 'bg-accent/50 hover:bg-accent text-foreground border-border hover:scale-105'
+                    }`}
+                  >
+                    <Play className="w-3 h-3" /> {chapter.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Feature Highlights Grid — unified neutral icon style */}
+        {/* Feature Highlights Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-20 w-full">
           {[
             { Icon: BrainCircuit, title: 'Competency Engine', desc: 'Automated skill gap matrix computation comparing target vs actual proficiency levels.' },
@@ -100,7 +150,7 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            {/* Skill Gap chart — semantic colors for real status */}
+            {/* Skill Gap chart */}
             <div className="p-4 rounded-lg bg-background border border-border">
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-4">Skill Gap Priority Distribution</span>
               <div className="space-y-3">
@@ -134,7 +184,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Match scores — one neutral badge style */}
+            {/* Match scores */}
             <div className="p-4 rounded-lg bg-background border border-border">
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-4">Top Matched Competency Units</span>
               <ul className="space-y-2">

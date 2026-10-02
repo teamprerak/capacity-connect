@@ -52,47 +52,56 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-background">
+    <div className="min-h-screen w-full flex flex-col md:flex-row bg-background overflow-hidden">
       {/* LEFT PANE - Branding / Info */}
       <div className="w-full md:w-1/2 bg-[#0B3B59] text-white p-8 md:p-16 flex flex-col justify-center relative min-h-[40vh] md:min-h-screen">
-        <Link 
-          href="/" 
-          className="absolute top-8 left-8 flex items-center gap-2 text-sm text-white/80 hover:text-white transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to homepage
-        </Link>
+        {/* Subtle Background Image Overlay */}
+        <div 
+          className="absolute inset-0 z-0 opacity-20 bg-cover bg-center mix-blend-overlay"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')" }}
+        />
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0B3B59]/50 via-transparent to-[#0B3B59]" />
+
+        <div className="relative z-10 w-full animate-fade-in-up">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white transition-colors mb-12"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to homepage
+          </Link>
+        </div>
         
-        <div className="max-w-md mt-12 md:mt-0">
-          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/70 mb-3">
+        <div className="relative z-10 max-w-md mt-auto mb-auto animate-fade-in-left animation-delay-200 opacity-0" style={{ animationFillMode: 'forwards' }}>
+          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-sky-400 mb-3">
             CAPACITY CONNECT
           </div>
           <h1 className="text-3xl md:text-5xl font-semibold leading-tight mb-4 tracking-tight">
-            Secure role-based access for capacity building.
+            Accelerate Meteorological Capability.
           </h1>
-          <p className="text-white/80 text-sm mb-12 max-w-sm">
-            Use one of the demo accounts to test Admin, Trainer and Trainee workflows.
+          <p className="text-white/80 text-sm mb-12 max-w-sm leading-relaxed">
+            Secure access to specialized training modules, operational knowledge, and competency verification.
           </p>
           
-          <ul className="space-y-3 text-sm text-white/80">
+          <ul className="space-y-4 text-sm text-white/90">
             <li className="flex items-center gap-3">
-              <div className="w-1 h-1 rounded-full bg-white" />
-              Pending registrations cannot log in
+              <div className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0" />
+              Access role-specific forecasting modules
             </li>
             <li className="flex items-center gap-3">
-              <div className="w-1 h-1 rounded-full bg-white" />
-              Each role has protected routes
+              <div className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0" />
+              Engage with expert trainers globally
             </li>
             <li className="flex items-center gap-3">
-              <div className="w-1 h-1 rounded-full bg-white" />
-              Sessions persist in local storage
+              <div className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0" />
+              Earn verifiable competency passports
             </li>
           </ul>
         </div>
       </div>
 
       {/* RIGHT PANE - Auth Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-8 bg-background relative">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-8 bg-background relative animate-fade-in-right opacity-0" style={{ animationFillMode: 'forwards' }}>
         <div className="w-full max-w-[400px] surface-card p-8 rounded-2xl border border-border shadow-2xl shadow-black/5 dark:shadow-white/5">
           <div className="flex flex-col items-center mb-8 text-center">
             <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 text-primary">

@@ -338,15 +338,18 @@ model TraineeCompetency {
   currentLevel     Int      @default(1)
   requiredLevel    Int      @default(3)
   targetLevel      Int      @default(3)
+  confidence       Float    @default(0)
   evidenceUrl      String?
   assessmentScore  Decimal? @db.Decimal(5, 2)
   lastAssessedAt   DateTime?
+  lastEvidenceAt   DateTime @default(now())
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
   traineeProfile TraineeProfile  @relation(fields: [traineeProfileId], references: [id])
   competency     Competency      @relation(fields: [competencyId], references: [id])
   skillGaps      SkillGapAnalysis[]
+  evidence       CompetencyEvidence[]
 
   @@unique([traineeProfileId, competencyId])
   @@index([traineeProfileId])
@@ -374,6 +377,32 @@ enum GapClassification {
   medium
   high
   critical
+}
+
+// ─── Competency Evidence Ledger ───────────────────────────────────────────────
+
+enum EvidenceType {
+  QUIZ_INFERRED
+  SELF_REPORTED
+  BEHAVIORAL
+  ASSESSED
+}
+
+model CompetencyEvidence {
+  id                    String             @id @default(uuid())
+  traineeCompetencyId   String
+  type                  EvidenceType
+  level                 Float
+  weight                Float
+  sourceRefId           String
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  traineeCompetency TraineeCompetency @relation(fields: [traineeCompetencyId], references: [id])
+
+  @@unique([traineeCompetencyId, type, sourceRefId])
+  @@index([traineeCompetencyId])
+  @@map("competency_evidence")
 }
 
 model TrainerExpertise {
@@ -502,6 +531,8 @@ model CourseModule {
   sequenceOrder  Int
   videoUrl       String?
   documentUrl    String?
+  textContent    String?  @db.Text
+  assessmentJson Json?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 

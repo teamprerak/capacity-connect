@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Body, UseGuards, HttpCode, HttpStatus } from '@nestjs/common';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -39,5 +39,21 @@ export class TraineeController {
   @Post('qualifications')
   addQualification(@CurrentUser('id') userId: string, @Body() data: CreateQualificationDto) {
     return this.traineeService.addQualification(userId, data);
+  }
+
+  @Get('wizard/skills')
+  getWizardSkills() {
+    return this.traineeService.getWizardSkills();
+  }
+
+  @Post('wizard/match-trainer')
+  @HttpCode(HttpStatus.OK)
+  submitWizard(@CurrentUser('id') userId: string, @Body() body: { domainSkillIds: string[] }) {
+    return this.traineeService.submitWizard(userId, body.domainSkillIds);
+  }
+
+  @Get('wizard/my-matches')
+  getMyMatches(@CurrentUser('id') userId: string) {
+    return this.traineeService.getMyMatches(userId);
   }
 }

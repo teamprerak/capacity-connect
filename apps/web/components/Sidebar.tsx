@@ -39,6 +39,7 @@ export function Sidebar({ role }: SidebarProps) {
       { href: '/trainee', label: 'My Dashboard', icon: LayoutDashboard },
       { href: '/trainee/courses', label: 'Course Catalog', icon: BookOpen },
       { href: '/trainee/certificates', label: 'Certificate Vault', icon: Award },
+      { href: '/trainee/wizard', label: 'Match Your Trainer', icon: Sparkles },
       { href: '/profile', label: 'My Profile', icon: User },
     ],
     trainer: [

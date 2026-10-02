@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
+import OnboardingGuard from "@/components/OnboardingGuard";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -15,7 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col antialiased">
         <ThemeProvider>
           <AuthProvider>
-            {children}
+            <OnboardingGuard>
+              {children}
+            </OnboardingGuard>
             <Toaster position="top-right" theme="dark" />
           </AuthProvider>
         </ThemeProvider>

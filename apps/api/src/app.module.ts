@@ -16,6 +16,7 @@ import { AssessmentModule } from './modules/assessment/assessment.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AiModule } from './modules/ai/ai.module';
+import { OnboardingModule } from './modules/onboarding/onboarding.module';
 import { HealthModule } from './health/health.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import authConfig from './config/auth.config';
@@ -38,6 +39,7 @@ import aiConfig from './config/ai.config';
     AuthModule,
     TraineeModule,
     TrainerModule,
+    OnboardingModule,
     AdminModule,
     CompetencyModule,
     MatchingModule,

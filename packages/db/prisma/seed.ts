@@ -125,6 +125,7 @@ async function main() {
       passwordHash,
       status: UserStatus.active,
       emailVerifiedAt: new Date(),
+      onboardingCompleted: true,
       userRoles: { create: { roleId: roleAdmin.id } },
     },
   });
@@ -146,6 +147,7 @@ async function main() {
         passwordHash,
         status: UserStatus.active,
         emailVerifiedAt: new Date(),
+        onboardingCompleted: true,
         userRoles: { create: { roleId: roleTrainer.id } },
       },
     });
@@ -186,6 +188,7 @@ async function main() {
         passwordHash,
         status: UserStatus.active,
         emailVerifiedAt: new Date(),
+        onboardingCompleted: true,
         userRoles: { create: { roleId: roleTrainee.id } },
       },
     });

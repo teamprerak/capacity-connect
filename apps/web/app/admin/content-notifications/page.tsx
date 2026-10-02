@@ -2,8 +2,14 @@
 
 import React from 'react';
 
-const publishedContent: any[] = [];
+import { api } from '@/lib/api-client';
+
 export default function ContentNotificationsPage() {
+  const [publishedContent, setPublished] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    api.get('/admin/announcements').then(setPublished).catch(() => []);
+  }, []);
   return (
     <div className="space-y-6">
       {/* Header */}

@@ -45,4 +45,28 @@ export class AnalyticsController {
   getDifficultAssessments(): Promise<any> {
     return this.analyticsService.getDifficultAssessments();
   }
+
+  @Get('dashboard-charts')
+  @Roles('admin')
+  getDashboardCharts(): Promise<any> {
+    return this.analyticsService.getDashboardCharts();
+  }
+
+  @Get('pending-actions')
+  @Roles('admin')
+  getPendingActions(): Promise<any> {
+    return this.analyticsService.getPendingActions();
+  }
+
+  @Get('readiness/personnel')
+  @Roles('admin')
+  getReadinessPersonnel(): Promise<any> {
+    return this.analyticsService.getReadinessPersonnel();
+  }
+
+  @Get('readiness/departments')
+  @Roles('admin')
+  getReadinessDepartments(): Promise<any> {
+    return this.analyticsService.getReadinessDepartments();
+  }
 }

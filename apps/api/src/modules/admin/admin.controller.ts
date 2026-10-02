@@ -50,4 +50,24 @@ export class AdminController {
   getAuditLogs(@Query() query: PaginationQueryDto): Promise<any> {
     return this.adminService.getAuditLogs(query.page || 1, query.limit || 20);
   }
+
+  @Get('trainers/all')
+  getAllTrainers(): Promise<any> {
+    return this.adminService.getAllTrainers();
+  }
+
+  @Get('knowledge-vault')
+  getKnowledgeVault(): Promise<any> {
+    return this.adminService.getKnowledgeVault();
+  }
+
+  @Get('media-governance')
+  getMediaGovernance(): Promise<any> {
+    return this.adminService.getMediaGovernance();
+  }
+
+  @Get('announcements')
+  getAnnouncements(): Promise<any> {
+    return this.adminService.getAnnouncements();
+  }
 }

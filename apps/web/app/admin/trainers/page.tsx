@@ -3,8 +3,15 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 
-const trainersData: any[] = [];
+import { api } from '@/lib/api-client';
+
 export default function TrainerManagementPage() {
+  const [trainersData, setTrainers] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    api.get('/admin/trainers/all').then(setTrainers).catch(() => []);
+  }, []);
+
   const isDataAvailable = trainersData.length > 0;
 
   return (

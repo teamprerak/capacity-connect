@@ -182,4 +182,90 @@ export class AdminService {
       },
     };
   }
+
+  async getAllTrainers(): Promise<any> {
+    const trainers = await this.prisma.trainerProfile.findMany({
+      include: {
+        user: true,
+        department: true,
+        expertise: { include: { skill: true } }
+      }
+    });
+
+    return trainers.map(t => {
+      const names = t.user.email.split('@')[0].split('.');
+      return {
+        id: t.id,
+        initials: names.map(n => n.charAt(0).toUpperCase()).join(''),
+        name: names.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(' '),
+        department: t.department?.name || 'General',
+        rating: Number(t.trainerRatingAvg) || 4.5, // Dummy default if 0
+        years: t.yearsExperience,
+        level: t.yearsExperience > 10 ? 'Advanced' : 'Intermediate',
+        description: t.bio || 'Specialist in training.',
+        tags: t.expertise.map(e => e.skill.name),
+        verificationStatus: t.verificationStatus,
+      };
+    });
+  }
+
+  async getKnowledgeVault(): Promise<any> {
+    const items = await this.prisma.knowledgeHubItem.findMany({
+      include: { uploadedBy: true, department: true }
+    });
+
+    return {
+      metrics: {
+        capturedAssets: items.length,
+        missionCritical: items.filter(i => i.criticality === 'Mission Critical').length,
+        highRisk: items.filter(i => i.successionRisk === 'High').length,
+        domains: new Set(items.map(i => i.subject)).size
+      },
+      assets: items.map(i => ({
+        id: i.id,
+        criticality: i.criticality || 'Normal',
+        risk: i.successionRisk || 'Low',
+        type: i.type,
+        domain: i.subject,
+        title: i.title,
+        description: i.category, // Just map to category
+        author: i.uploadedBy.email,
+        date: i.createdAt
+      }))
+    };
+  }
+
+  async getMediaGovernance(): Promise<any> {
+    const items = await this.prisma.knowledgeHubItem.findMany({
+      include: { uploadedBy: true }
+    });
+    
+    // We mock some data if none exist or map existing items
+    return items.map(i => ({
+      id: i.id,
+      title: i.title,
+      subtitle: i.subject,
+      mappingType: 'Shared Library',
+      mappingDetails: 'No module - No lesson',
+      trainer: i.uploadedBy.email,
+      mediaType: i.type,
+      mediaLang: 'English',
+      status: 'Published'
+    }));
+  }
+
+  async getAnnouncements(): Promise<any> {
+    const announcements = await this.prisma.announcement.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    return announcements.map(a => ({
+      id: a.id,
+      type: a.type || 'Resource',
+      audience: a.audience,
+      title: a.title,
+      message: a.body,
+      date: a.createdAt
+    }));
+  }
 }

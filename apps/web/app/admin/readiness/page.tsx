@@ -3,10 +3,22 @@
 import React from 'react';
 import { Target, AlertTriangle, ShieldCheck, TrendingUp, CheckCircle2 } from 'lucide-react';
 
-const personnelReadiness: any[] = [];
-const departmentHeatmap: any[] = [];
+import { api } from '@/lib/api-client';
 
 export default function ReadinessCommandPage() {
+  const [personnelReadiness, setPersonnel] = React.useState<any[]>([]);
+  const [departmentHeatmap, setHeatmap] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    Promise.all([
+      api.get('/analytics/readiness/personnel').catch(() => []),
+      api.get('/analytics/readiness/departments').catch(() => [])
+    ]).then(([p, d]) => {
+      setPersonnel(p);
+      setHeatmap(d);
+    });
+  }, []);
+
   const isDataAvailable = personnelReadiness.length > 0;
 
   return (

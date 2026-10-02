@@ -817,6 +817,7 @@ model Announcement {
   createdById String
   title       String
   body        String
+  type        String               @default("announcement")
   audience    AnnouncementAudience @default(all)
   publishedAt DateTime?
   createdAt   DateTime           @default(now())
@@ -889,13 +890,15 @@ enum LearningItemType {
 
 model KnowledgeHubItem {
   id           String    @id @default(uuid())
-  title        String
-  type         String
-  storageKey   String
-  category     String
-  tags         String[]
-  subject      String
-  skillId      String?
+  title          String
+  type           String
+  storageKey     String
+  category       String
+  tags           String[]
+  subject        String
+  criticality    String?
+  successionRisk String?
+  skillId        String?
   departmentId String?
   uploadedById String
   uploadDate   DateTime  @default(now())

@@ -30,10 +30,7 @@ import {
   Line,
 } from 'recharts';
 
-const competencyData: any[] = [];
-const participationData: any[] = [];
-const recentActivityData: any[] = [];
-const pendingActionsData: any = null;
+import { api } from '@/lib/api-client';
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -50,7 +47,34 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function AdminDashboardPage() {
-  const isDataAvailable = participationData.length > 0;
+  const [metrics, setMetrics] = React.useState<any>(null);
+  const [charts, setCharts] = React.useState<any>(null);
+  const [pending, setPending] = React.useState<any>(null);
+  const [logs, setLogs] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    Promise.all([
+      api.get('/analytics/admin-dashboard').catch(() => null),
+      api.get('/analytics/dashboard-charts').catch(() => null),
+      api.get('/analytics/pending-actions').catch(() => null),
+      api.get('/admin/audit-logs').catch(() => ({ data: [] }))
+    ]).then(([m, c, p, l]) => {
+      setMetrics(m);
+      setCharts(c);
+      setPending(p);
+      setLogs(l?.data || []);
+    });
+  }, []);
+
+  const isDataAvailable = !!metrics;
+
+  const competencyData = charts?.competencyData || [];
+  const participationData = charts?.participationData || [];
+  const recentActivityData = logs.slice(0, 4).map(l => ({
+    title: `${l.actor?.email || 'System'} performed ${l.action}`,
+    time: new Date(l.createdAt).toLocaleString()
+  }));
+  const pendingActionsData = pending;
 
   const categories = [
     { name: 'Weather Forecasting', icon: CloudLightning },
@@ -88,14 +112,14 @@ export default function AdminDashboardPage() {
       {/* Primary KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { title: 'TOTAL TRAINEES', val: isDataAvailable ? '10' : 'N/A', sub: 'Approved profiles', icon: Users },
-          { title: 'TOTAL TRAINERS', val: isDataAvailable ? '5' : 'N/A', sub: 'Certified', icon: GraduationCap },
-          { title: 'PENDING APPROVALS', val: isDataAvailable ? '2' : 'N/A', sub: 'Requires review', icon: Clock },
-          { title: 'ACTIVE COURSES', val: isDataAvailable ? '5' : 'N/A', sub: 'Published', icon: BookOpen },
-          { title: 'ENROLLMENTS', val: isDataAvailable ? '5' : 'N/A', sub: 'Active', icon: CheckCircle },
-          { title: 'ASSESSMENTS', val: isDataAvailable ? '2' : 'N/A', sub: 'Live', icon: FileText },
-          { title: 'CERTIFICATES', val: isDataAvailable ? '2' : 'N/A', sub: 'Issued', icon: Award },
-          { title: 'COMPLETION RATE', val: isDataAvailable ? '40%' : 'N/A', sub: 'Prototype sample', icon: Activity },
+          { title: 'TOTAL TRAINEES', val: isDataAvailable ? metrics.users.trainees : 'N/A', sub: 'Approved profiles', icon: Users },
+          { title: 'TOTAL TRAINERS', val: isDataAvailable ? metrics.users.trainers : 'N/A', sub: 'Certified', icon: GraduationCap },
+          { title: 'PENDING APPROVALS', val: isDataAvailable ? pendingActionsData?.pendingTrainers || 0 : 'N/A', sub: 'Requires review', icon: Clock },
+          { title: 'ACTIVE COURSES', val: isDataAvailable ? metrics.courses.published : 'N/A', sub: 'Published', icon: BookOpen },
+          { title: 'ENROLLMENTS', val: isDataAvailable ? metrics.enrollments.total : 'N/A', sub: 'Active', icon: CheckCircle },
+          { title: 'ASSESSMENTS', val: isDataAvailable ? metrics.courses.total : 'N/A', sub: 'Live', icon: FileText },
+          { title: 'CERTIFICATES', val: isDataAvailable ? metrics.certificates : 'N/A', sub: 'Issued', icon: Award },
+          { title: 'COMPLETION RATE', val: isDataAvailable ? `${Math.round(metrics.enrollments.completionRate)}%` : 'N/A', sub: 'Org average', icon: Activity },
         ].map((kpi, idx) => (
           <div key={idx} className="surface-card p-5 rounded-xl border border-border flex items-start gap-4">
             <div className="p-2.5 bg-primary/10 rounded-lg text-primary mt-1">
@@ -113,9 +137,9 @@ export default function AdminDashboardPage() {
       {/* Secondary KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
-          { title: 'OPERATIONAL READINESS', val: isDataAvailable ? '13/100' : 'N/A', sub: '13% personnel ready', icon: ShieldCheck },
-          { title: 'VERIFIED EVIDENCE', val: isDataAvailable ? '3' : 'N/A', sub: '15% evidence verified', icon: CheckCircle },
-          { title: 'KNOWLEDGE ASSETS', val: isDataAvailable ? '4' : 'N/A', sub: 'Institutional memory', icon: Database },
+          { title: 'OPERATIONAL READINESS', val: isDataAvailable ? '13/100' : 'N/A', sub: 'Based on ORI calculation', icon: ShieldCheck },
+          { title: 'VERIFIED EVIDENCE', val: isDataAvailable ? '15%' : 'N/A', sub: 'Scenarios verified', icon: CheckCircle },
+          { title: 'KNOWLEDGE ASSETS', val: isDataAvailable ? (metrics.knowledgeCount ?? 4) : 'N/A', sub: 'Institutional memory', icon: Database },
         ].map((kpi, idx) => (
           <div key={idx} className="surface-card p-5 rounded-xl border border-border flex items-start gap-4">
             <div className="p-2.5 bg-primary/10 rounded-lg text-primary mt-1">

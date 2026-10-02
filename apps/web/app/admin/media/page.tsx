@@ -3,8 +3,16 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 
-const mediaData: any[] = [];
+import { api } from '@/lib/api-client';
+
 export default function MediaGovernancePage() {
+  const [mediaData, setMediaData] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    api.get('/admin/media-governance').then(setMediaData).catch(() => []);
+  }, []);
+
+  const isDataAvailable = mediaData.length > 0;
   return (
     <div className="space-y-6">
       {/* Header */}

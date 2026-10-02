@@ -3,9 +3,16 @@
 import React from 'react';
 import { Database, ShieldAlert, AlertTriangle, Layers } from 'lucide-react';
 
-const vaultAssets: any[] = [];
+import { api } from '@/lib/api-client';
 
 export default function KnowledgeContinuityPage() {
+  const [data, setData] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    api.get('/admin/knowledge-vault').then(setData).catch(() => null);
+  }, []);
+
+  const vaultAssets = data?.assets || [];
   const isDataAvailable = vaultAssets.length > 0;
 
   return (
@@ -21,10 +28,10 @@ export default function KnowledgeContinuityPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         {[
-          { title: 'CAPTURED ASSETS', value: isDataAvailable ? '4' : 'N/A', icon: Database },
-          { title: 'MISSION CRITICAL', value: isDataAvailable ? '2' : 'N/A', icon: ShieldAlert },
-          { title: 'HIGH SUCCESSION RISK', value: isDataAvailable ? '1' : 'N/A', icon: AlertTriangle },
-          { title: 'COVERED DOMAINS', value: isDataAvailable ? '4' : 'N/A', icon: Layers },
+          { title: 'CAPTURED ASSETS', value: isDataAvailable ? data.metrics.capturedAssets : 'N/A', icon: Database },
+          { title: 'MISSION CRITICAL', value: isDataAvailable ? data.metrics.missionCritical : 'N/A', icon: ShieldAlert },
+          { title: 'HIGH SUCCESSION RISK', value: isDataAvailable ? data.metrics.highRisk : 'N/A', icon: AlertTriangle },
+          { title: 'COVERED DOMAINS', value: isDataAvailable ? data.metrics.domains : 'N/A', icon: Layers },
         ].map((metric, idx) => (
           <div key={idx} className="surface-card p-5 rounded-xl border border-border flex items-center gap-4">
             <div className="p-2.5 bg-primary/10 rounded-lg text-primary">

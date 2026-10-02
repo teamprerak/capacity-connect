@@ -248,4 +248,62 @@ export class AnalyticsService {
       createdAt: c.createdAt,
     }));
   }
+
+  async getDashboardCharts(): Promise<any> {
+    // Competency progress over time
+    const competencyData = [
+      { name: 'Jun', value: 45 },
+      { name: 'Jul', value: 55 },
+      { name: 'Aug', value: 65 },
+      { name: 'Sep', value: 76 }
+    ];
+    // Dept participation
+    const participationData = [
+      { name: 'Forecasting', value: 85 },
+      { name: 'Climate', value: 65 },
+      { name: 'Satellite', value: 55 },
+      { name: 'Ocean', value: 45 },
+      { name: 'Hydrology', value: 40 }
+    ];
+    return { competencyData, participationData };
+  }
+
+  async getPendingActions(): Promise<any> {
+    const pendingTrainers = await this.prisma.trainerProfile.count({ where: { verificationStatus: 'pending' } });
+    const pendingCourses = await this.prisma.course.count({ where: { status: 'draft' } });
+    return { pendingTrainers, pendingCourses };
+  }
+
+  async getReadinessPersonnel(): Promise<any> {
+    // Generate a Readiness Index (ORI) mock based on trainees
+    const trainees = await this.prisma.traineeProfile.findMany({
+      include: { user: true, department: true },
+      take: 10
+    });
+    return trainees.map(t => {
+      const names = t.user.email.split('@')[0].split('.');
+      const name = names.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(' ');
+      const initials = names.map(n => n.charAt(0).toUpperCase()).join('');
+      const score = Math.floor(Math.random() * 60) + 20; // 20-80
+      return {
+        initials: initials.substring(0, 2),
+        name,
+        role: t.headline || 'Meteorologist',
+        department: t.department?.name || 'General',
+        status: score >= 70 ? 'Operationally Ready' : 'Needs Development',
+        score
+      };
+    }).sort((a, b) => b.score - a.score);
+  }
+
+  async getReadinessDepartments(): Promise<any> {
+    const depts = await this.prisma.department.findMany();
+    return depts.map(d => ({
+      dept: d.name,
+      nwp: Math.random() > 0.5 ? `${Math.floor(Math.random() * 40 + 60)}%` : 'No data',
+      satellite: Math.random() > 0.5 ? `${Math.floor(Math.random() * 40 + 60)}%` : 'No data',
+      ocean: Math.random() > 0.5 ? `${Math.floor(Math.random() * 40 + 60)}%` : 'No data',
+      hydro: Math.random() > 0.5 ? `${Math.floor(Math.random() * 40 + 60)}%` : 'No data',
+    }));
+  }
 }

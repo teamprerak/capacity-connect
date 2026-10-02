@@ -97,7 +97,7 @@ export default function ReportsAnalyticsPage() {
                     domain={[0, 100]}
                     ticks={[0, 25, 50, 75, 100]}
                   />
-                  <RechartsTooltip cursor={{ fill: 'hsl(var(--accent))' }} content={<CustomTooltip />} />
+                  <RechartsTooltip cursor={false} content={<CustomTooltip />} />
                   <Bar dataKey="value" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
                 </BarChart>
               ) : (

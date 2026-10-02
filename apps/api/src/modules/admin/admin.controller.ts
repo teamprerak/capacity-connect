@@ -79,4 +79,9 @@ export class AdminController {
   ): Promise<any> {
     return this.adminService.createAnnouncement(createAnnouncementDto, adminId);
   }
+
+  @Post('reset-demo')
+  resetDemo(): Promise<{ message: string }> {
+    return this.adminService.resetDemo();
+  }
 }

@@ -101,7 +101,7 @@ export class EvidenceService {
       });
 
       // Recompute the competency from all evidence
-      await this._recomputeCompetency(tx, traineeCompetencyId);
+      await this.recomputeCompetency(tx, traineeCompetencyId);
     });
   }
 
@@ -149,7 +149,7 @@ export class EvidenceService {
 
       // Recompute each distinct competency once
       for (const tcId of affectedIds) {
-        await this._recomputeCompetency(tx, tcId);
+        await this.recomputeCompetency(tx, tcId);
       }
     });
   }
@@ -166,7 +166,7 @@ export class EvidenceService {
       await tx.competencyEvidence.deleteMany({
         where: { traineeCompetencyId, type },
       });
-      await this._recomputeCompetency(tx, traineeCompetencyId);
+      await this.recomputeCompetency(tx, traineeCompetencyId);
     });
   }
 
@@ -183,7 +183,7 @@ export class EvidenceService {
    *      Behavioral weight is capped at BEHAVIORAL_CAP in the sum.
    *   4. Gap analysis is recomputed and persisted after level changes.
    */
-  private async _recomputeCompetency(
+  public async recomputeCompetency(
     tx: Parameters<Parameters<typeof this.prisma.$transaction>[0]>[0],
     traineeCompetencyId: string,
   ): Promise<void> {
@@ -200,6 +200,8 @@ export class EvidenceService {
           currentLevel: 1,
           confidence: 0,
           lastEvidenceAt: new Date(),
+          lastAssessedAt: null,
+          assessmentScore: null,
         },
       });
       return;
@@ -258,9 +260,9 @@ export class EvidenceService {
         confidence,
         lastEvidenceAt: new Date(),
         lastAssessedAt:
-          assessedRows.length > 0 ? assessedRows[0].updatedAt : undefined,
+          assessedRows.length > 0 ? assessedRows[0].updatedAt : null,
         assessmentScore:
-          assessedRows.length > 0 ? assessedRows[0].level * 20 : undefined,
+          assessedRows.length > 0 ? assessedRows[0].level * 20 : null,
       },
     });
 

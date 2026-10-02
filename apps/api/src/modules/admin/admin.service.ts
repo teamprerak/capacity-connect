@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UserStatus, VerificationStatus } from '@repo/db';
 import { AuditService } from '../../common/services/audit.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { EvidenceService } from '../competency/evidence.service';
 
 @Injectable()
 export class AdminService {
@@ -10,7 +11,73 @@ export class AdminService {
     private readonly prisma: PrismaService,
     private readonly auditService: AuditService,
     private readonly notifications: NotificationsService,
+    private readonly evidenceService: EvidenceService,
   ) {}
+
+  async resetDemo(): Promise<{ message: string }> {
+    if (process.env.DEMO_MODE !== 'true') {
+      throw new ForbiddenException('Demo mode is not enabled');
+    }
+
+    const demoUser = await this.prisma.user.findUnique({
+      where: { email: 'demo.trainee@capacityconnect.org' },
+      include: { traineeProfile: true },
+    });
+
+    if (!demoUser || !demoUser.traineeProfile) {
+      throw new NotFoundException('Demo trainee not found');
+    }
+
+    const traineeProfileId = demoUser.traineeProfile.id;
+
+    await this.prisma.$transaction(async (tx) => {
+      // 1. Delete AssessmentAnswer
+      await tx.assessmentAnswer.deleteMany({
+        where: { attempt: { traineeId: traineeProfileId } },
+      });
+
+      // 2. Delete AssessmentAttempt
+      await tx.assessmentAttempt.deleteMany({
+        where: { traineeId: traineeProfileId },
+      });
+
+      // 3. Find affected TraineeCompetencies
+      const affectedTcs = await tx.traineeCompetency.findMany({
+        where: { traineeProfileId },
+        include: { competency: true },
+      });
+
+      // 4. Delete ASSESSED CompetencyEvidence
+      await tx.competencyEvidence.deleteMany({
+        where: {
+          traineeCompetency: { traineeProfileId },
+          type: 'ASSESSED',
+        },
+      });
+
+      // 5. Reset seismology competency explicitly (if currentLevel > 1)
+      const seismologyTc = affectedTcs.find((tc) =>
+        tc.competency.name.toLowerCase().includes('seismology'),
+      );
+      if (seismologyTc && seismologyTc.currentLevel > 1) {
+        await tx.traineeCompetency.update({
+          where: { id: seismologyTc.id },
+          data: {
+            currentLevel: 1,
+            assessmentScore: null,
+            lastAssessedAt: null,
+          },
+        });
+      }
+
+      // 6. Recompute all affected TraineeCompetencies
+      for (const tc of affectedTcs) {
+        await this.evidenceService.recomputeCompetency(tx, tc.id);
+      }
+    });
+
+    return { message: 'Demo reset successfully' };
+  }
 
   async getUsers(page: number = 1, limit: number = 10) {
     const skip = (page - 1) * limit;

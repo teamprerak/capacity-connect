@@ -53,7 +53,24 @@ export class AnalyticsService {
       skillGaps: topGaps,
       knowledgeAssets: await this.prisma.knowledgeHubItem.count(),
       verifiedEvidence: await this.getVerifiedEvidencePercentage(),
+      operationalReadiness: await this.getOperationalReadinessPercentage(),
     };
+  }
+
+  private async getOperationalReadinessPercentage(): Promise<string> {
+    const trainees = await this.prisma.traineeProfile.findMany({
+      include: { traineeCompetencies: true },
+    });
+    if (trainees.length === 0) return '0%';
+
+    let readyCount = 0;
+    for (const t of trainees) {
+      if (t.traineeCompetencies.length === 0) continue;
+      const ready = t.traineeCompetencies.every(tc => tc.currentLevel >= tc.requiredLevel);
+      if (ready) readyCount++;
+    }
+
+    return `${Math.round((readyCount / trainees.length) * 100)}%`;
   }
 
   private async getVerifiedEvidencePercentage(): Promise<string | null> {
@@ -261,9 +278,43 @@ export class AnalyticsService {
   }
 
   async getDashboardCharts(): Promise<any> {
-    // Return empty arrays instead of dummy data to mark as N/A but keep capacity
-    const competencyData: any[] = [];
-    const participationData: any[] = [];
+    const competencies = await this.prisma.competency.findMany({
+      include: {
+        traineeCompetencies: true,
+      },
+      take: 10,
+    });
+    const competencyData = competencies.map((c) => {
+      const avg =
+        c.traineeCompetencies.length > 0
+          ? c.traineeCompetencies.reduce((sum, tc) => sum + tc.currentLevel, 0) /
+            c.traineeCompetencies.length
+          : 0;
+      return {
+        name: c.name,
+        value: Math.round((avg / 5) * 100),
+      };
+    });
+
+    const departments = await this.prisma.department.findMany({
+      include: {
+        traineeProfiles: {
+          where: {
+            enrollments: {
+              some: {
+                status: { in: ['started', 'in_progress'] },
+              },
+            },
+          },
+        },
+      },
+      take: 10,
+    });
+    const participationData = departments.map((d) => ({
+      name: d.name,
+      value: d.traineeProfiles.length,
+    }));
+
     return { competencyData, participationData };
   }
 

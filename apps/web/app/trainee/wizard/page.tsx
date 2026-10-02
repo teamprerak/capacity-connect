@@ -426,16 +426,23 @@ export default function MatchWizardPage() {
 
                       {/* Reasons */}
                       {match.reasons && match.reasons.length > 0 && (
-                        <div className="space-y-1.5">
-                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Why this match</p>
-                          <ul className="space-y-1">
-                            {match.reasons.map((reason, rIdx) => (
-                              <li key={rIdx} className="flex items-start gap-1.5 text-xs text-foreground">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-                                {reason}
-                              </li>
-                            ))}
-                          </ul>
+                        <div className="mt-5 pt-4 border-t border-border">
+                          <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-primary" />
+                            Why this match?
+                          </h4>
+                          <div className="bg-primary/5 rounded-lg p-3.5 border border-primary/10">
+                            <ul className="space-y-3">
+                              {match.reasons.map((reason, rIdx) => (
+                                <li key={rIdx} className="flex items-start gap-3">
+                                  <div className="bg-primary/20 p-1 rounded-full shrink-0 mt-0.5">
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
+                                  </div>
+                                  <span className="text-sm text-foreground/90 leading-snug">{reason}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
                       )}
                     </motion.div>

@@ -13,6 +13,7 @@ import { QRScannerModal } from './QRScannerModal';
 import { LogoutConfirmModal } from './LogoutConfirmModal';
 import { NotificationBell } from './NotificationBell';
 import { ChangePasswordModal } from './ChangePasswordModal';
+import { AccessibilityWidget } from './AccessibilityWidget';
 
 export function Navbar() {
   const { user, isLoggingOut } = useAuth();
@@ -87,6 +88,8 @@ export function Navbar() {
 
           {/* Right controls */}
           <div className="flex items-center gap-1.5 shrink-0">
+            <AccessibilityWidget />
+
             {/* Theme toggle — always visible on all pages */}
             <button
               onClick={toggleTheme}

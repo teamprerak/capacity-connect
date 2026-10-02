@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Globe } from 'lucide-react';
+import { Globe, Settings2, Type } from 'lucide-react';
 
-export default function AccessibilityBar() {
+export function AccessibilityWidget() {
   const [fontSize, setFontSize] = useState<number>(16);
   const [lang, setLang] = useState<'EN' | 'HI'>('EN');
   const [mounted, setMounted] = useState(false);
@@ -14,8 +14,6 @@ export default function AccessibilityBar() {
     if (saved) {
       setFontSize(parseInt(saved, 10));
     }
-    
-    // Check google translate cookie for Hindi
     const hasHiCookie = document.cookie.includes('googtrans=/en/hi');
     if (hasHiCookie) setLang('HI');
   }, []);
@@ -29,8 +27,6 @@ export default function AccessibilityBar() {
 
   const toggleLanguage = () => {
     const newLang = lang === 'EN' ? 'HI' : 'EN';
-    
-    // Google translate requires cookies to be set on domain and path
     const domain = window.location.hostname;
     const cookieString = newLang === 'HI' ? 'googtrans=/en/hi' : 'googtrans=/en/en';
     
@@ -41,44 +37,46 @@ export default function AccessibilityBar() {
     window.location.reload();
   };
 
-  if (!mounted) return null; // Avoid hydration mismatch
+  if (!mounted) return null;
 
   return (
-    <div className="bg-[#0f172a] text-white flex justify-end items-center px-4 sm:px-8 py-1.5 gap-4 text-sm border-b border-white/10 z-50 relative">
-      <div className="flex bg-[#1e293b] rounded overflow-hidden shadow-inner border border-white/5">
+    <div className="flex items-center gap-1 sm:gap-2 mr-1">
+      {/* Font Size Adjuster */}
+      <div className="hidden sm:flex items-center bg-accent/50 rounded-md border border-border overflow-hidden">
         <button 
           onClick={() => setFontSize(14)} 
-          className={`px-3 py-1 font-bold transition-colors ${fontSize === 14 ? 'bg-[#0ea5e9] text-white' : 'text-slate-300 hover:bg-white/10'}`}
-          aria-label="Decrease text size"
+          className={`px-2 py-1 text-xs font-bold transition-colors ${fontSize === 14 ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
+          title="Decrease text size"
         >
           A-
         </button>
         <button 
           onClick={() => setFontSize(16)} 
-          className={`px-3 py-1 font-bold transition-colors border-x border-white/5 ${fontSize === 16 ? 'bg-[#0ea5e9] text-white' : 'text-slate-300 hover:bg-white/10'}`}
-          aria-label="Normal text size"
+          className={`px-2 py-1 text-xs font-bold transition-colors border-x border-border ${fontSize === 16 ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
+          title="Normal text size"
         >
           A
         </button>
         <button 
           onClick={() => setFontSize(18)} 
-          className={`px-3 py-1 font-bold transition-colors ${fontSize === 18 ? 'bg-[#0ea5e9] text-white' : 'text-slate-300 hover:bg-white/10'}`}
-          aria-label="Increase text size"
+          className={`px-2 py-1 text-xs font-bold transition-colors ${fontSize === 18 ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
+          title="Increase text size"
         >
           A+
         </button>
       </div>
-      
+
+      {/* Language Toggle */}
       <button 
         onClick={toggleLanguage} 
-        className="flex items-center gap-2 border border-orange-400/30 bg-orange-400/10 rounded px-3 py-1 hover:bg-orange-400/20 transition-colors"
+        className="flex items-center gap-1.5 px-2 py-1.5 rounded-md hover:bg-accent transition-colors border border-transparent hover:border-border"
+        title="Toggle Language"
       >
-        <Globe className="w-4 h-4 text-orange-400" />
-        <span className="font-semibold text-orange-400">{lang === 'EN' ? 'English (EN)' : 'हिन्दी (HI)'}</span>
+        <Globe className="w-4 h-4 text-primary" />
+        <span className="text-xs font-medium text-foreground hidden sm:inline-block">
+          {lang === 'EN' ? 'EN' : 'HI'}
+        </span>
       </button>
-      
-      {/* Hidden div required by Google Translate */}
-      <div id="google_translate_element" className="hidden"></div>
     </div>
   );
 }

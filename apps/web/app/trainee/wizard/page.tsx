@@ -96,8 +96,8 @@ export default function MatchWizardPage() {
       const attemptRes = await api.post(`/assessments/${assessment.id}/start`);
       const attemptData = attemptRes?.data || attemptRes;
       
-      setActiveAssessment(assessment);
-      setAssessmentAttemptId(attemptData.id);
+      setActiveAssessment({ ...assessment, questions: attemptData.questions });
+      setAssessmentAttemptId(attemptData.attemptId || attemptData.id);
       setAssessmentAnswers({});
     } catch (error: any) {
       toast.error(error?.message || 'Failed to start assessment.');
@@ -143,7 +143,10 @@ export default function MatchWizardPage() {
     }
   }
 
-  const scorePercent = (score: number) => Math.round(score * 100);
+  const scorePercent = (score?: number) => {
+    if (typeof score !== 'number' || isNaN(score)) return 0;
+    return Math.round(score * 100);
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
@@ -320,7 +323,7 @@ export default function MatchWizardPage() {
                   <div key={q.id} className="space-y-3">
                     <p className="text-sm font-medium text-foreground">
                       <span className="text-muted-foreground mr-2">{idx + 1}.</span>
-                      {q.text}
+                      {q.questionText || q.text}
                     </p>
                     <div className="space-y-2">
                       {q.options?.map((opt: any) => (
@@ -345,7 +348,7 @@ export default function MatchWizardPage() {
                           }`}>
                             {assessmentAnswers[q.id] === opt.id && <div className="w-2 h-2 rounded-full bg-primary" />}
                           </div>
-                          <span className="text-sm">{opt.text}</span>
+                          <span className="text-sm">{opt.optionText || opt.text}</span>
                         </label>
                       ))}
                     </div>
@@ -380,7 +383,7 @@ export default function MatchWizardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <AnimatePresence>
                 {matches.map((match, idx) => {
-                  const pct = scorePercent(match.score);
+                  const pct = scorePercent((match as any).matchScore ?? match.score);
                   const displayName = match.trainerName || match.trainerEmail || `Trainer ${idx + 1}`;
                   return (
                     <motion.div

@@ -3,7 +3,6 @@ import Script from "next/script";
 import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import OnboardingGuard from "@/components/OnboardingGuard";
-import AccessibilityBar from "@/components/AccessibilityBar";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -18,7 +17,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col antialiased">
         <ThemeProvider>
           <AuthProvider>
-            <AccessibilityBar />
             <OnboardingGuard>
               {children}
             </OnboardingGuard>

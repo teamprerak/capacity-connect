@@ -3,11 +3,61 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 
-// Replace with actual database fetching when API is ready
-const trainersData: any[] = []; // Empty array triggers N/A fallback
+const trainersData = [
+  {
+    initials: 'DA',
+    name: 'Dr. Arvind Rao',
+    department: 'Meteorology',
+    rating: '4.9',
+    years: '16',
+    level: 'Advanced',
+    description: 'Specialist in operational forecasting and numerical prediction.',
+    tags: ['Numerical Weather Prediction', 'Synoptic Meteorology']
+  },
+  {
+    initials: 'DK',
+    name: 'Dr. Kavita Menon',
+    department: 'Ocean Services',
+    rating: '4.8',
+    years: '14',
+    level: 'Advanced',
+    description: 'Ocean information and marine forecasting specialist.',
+    tags: ['Ocean Forecasting', 'Marine Services']
+  },
+  {
+    initials: 'RD',
+    name: 'Rahul Deshmukh',
+    department: 'Satellite Meteorology',
+    rating: '4.7',
+    years: '11',
+    level: 'Advanced',
+    description: 'Operational satellite interpretation and nowcasting trainer.',
+    tags: ['Satellite Meteorology', 'Remote Sensing']
+  },
+  {
+    initials: 'DS',
+    name: 'Dr. Sana Khan',
+    department: 'Hydrometeorology',
+    rating: '4.6',
+    years: '12',
+    level: 'Advanced',
+    description: 'Focuses on hydrometeorological hazards and warning services.',
+    tags: ['Hydrometeorology', 'Flood Forecasting']
+  },
+  {
+    initials: 'VI',
+    name: 'Vivek Iyer',
+    department: 'Climate Services',
+    rating: '4.5',
+    years: '9',
+    level: 'Intermediate',
+    description: 'Trainer for operational climate data and services.',
+    tags: ['Climate Data', 'Seasonal Outlooks']
+  }
+];
 
 export default function TrainerManagementPage() {
-  const isDataAvailable = trainersData.length > 0;
+  const isDataAvailable = true;
 
   return (
     <div className="space-y-6">

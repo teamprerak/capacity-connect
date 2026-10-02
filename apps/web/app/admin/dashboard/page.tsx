@@ -30,11 +30,26 @@ import {
   Line,
 } from 'recharts';
 
-// Empty arrays to trigger N/A fallback state as requested
-const competencyData: any[] = [];
-const participationData: any[] = [];
-const recentActivityData: any[] = [];
-const pendingActionsData: any = null;
+const competencyData = [
+  { name: 'Jun', value: 45 },
+  { name: 'Jul', value: 55 },
+  { name: 'Aug', value: 65 },
+  { name: 'Sep', value: 76 }
+];
+const participationData = [
+  { name: 'Forecasting', value: 85 },
+  { name: 'Climate', value: 65 },
+  { name: 'Satellite', value: 55 },
+  { name: 'Ocean', value: 45 },
+  { name: 'Hydrology', value: 40 }
+];
+const recentActivityData = [
+  { title: 'Ananya Roy submitted trainer registration.', time: '2026-09-18 09:41' },
+  { title: 'Farah Ali requested enrollment in Satellite Meteorology.', time: '2026-09-17 14:22' },
+  { title: 'NWP course resource library updated.', time: '2026-09-16 11:05' },
+  { title: 'Amit Kumar earned competency certificate CC-2026-NWP-0001.', time: '2026-09-15 16:30' }
+];
+const pendingActionsData = true;
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {

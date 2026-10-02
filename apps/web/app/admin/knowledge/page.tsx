@@ -3,10 +3,51 @@
 import React from 'react';
 import { Database, ShieldAlert, AlertTriangle, Layers } from 'lucide-react';
 
-const vaultAssets: any[] = []; // Empty to trigger N/A fallback
+const vaultAssets = [
+  {
+    criticality: 'Mission Critical',
+    risk: 'High',
+    type: 'EXPERT DEBRIEF',
+    domain: 'NUMERICAL WEATHER PREDICTION',
+    title: 'Monsoon NWP Biases: Senior Forecaster Debrief',
+    description: 'Operational heuristics for recognizing recurring model biases during active monsoon conditions, with examples and decision checkpoints.',
+    author: 'Dr. Arvind Rao',
+    date: '2026-09-10'
+  },
+  {
+    criticality: 'Important',
+    risk: 'Medium',
+    type: 'RECORDED WALKTHROUGH',
+    domain: 'SATELLITE METEOROLOGY',
+    title: 'Rapid Convective Signature Interpretation',
+    description: 'Screen walkthrough of satellite signatures just before severe convection and how to cross-check with radar observations.',
+    author: 'Rahul Deshmukh',
+    date: '2026-09-18'
+  },
+  {
+    criticality: 'Mission Critical',
+    risk: 'Medium',
+    type: 'PLAYBOOK',
+    domain: 'OCEAN FORECASTING',
+    title: 'Marine Advisory Escalation Playbook',
+    description: 'Decision sequence for translating wave model uncertainty into operational marine advisories and escalation rules.',
+    author: 'Dr. Kavita Menon',
+    date: '2026-09-20'
+  },
+  {
+    criticality: 'Important',
+    risk: 'Low',
+    type: 'CASE ARCHIVE',
+    domain: 'CLIMATE DATA',
+    title: 'Climate QC Exception Case Archive',
+    description: 'Curated unusual QC cases with station notes, evidence and final disposition for training future staff.',
+    author: 'Vivek Iyer',
+    date: '2026-09-28'
+  }
+];
 
 export default function KnowledgeContinuityPage() {
-  const isDataAvailable = vaultAssets.length > 0;
+  const isDataAvailable = true;
 
   return (
     <div className="space-y-6">

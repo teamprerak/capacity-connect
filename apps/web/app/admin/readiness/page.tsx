@@ -3,11 +3,34 @@
 import React from 'react';
 import { Target, AlertTriangle, ShieldCheck, TrendingUp, CheckCircle2 } from 'lucide-react';
 
-const personnelReadiness: any[] = []; // Empty triggers N/A
-const departmentHeatmap: any[] = []; // Empty triggers N/A
+const personnelReadiness = [
+  { initials: 'AK', name: 'Amit Kumar', role: 'Meteorologist A - Regional Meteorological Centre', status: 'Operationally Ready', score: 75 },
+  { initials: 'PS', name: 'Pooja Sharma', role: 'Project Scientist - Climate Research', status: 'Needs Development', score: 54 },
+  { initials: 'NS', name: 'Neha Singh', role: 'Scientific Assistant - Meteorological Centre Patna', status: 'Needs Development', score: 22 },
+  { initials: 'NB', name: 'Nitin Bose', role: 'Technical Officer - Ocean Information', status: 'Needs Development', score: 0 },
+  { initials: 'RS', name: 'Ritu Shah', role: 'Scientific Assistant - Agrometeorology', status: 'Needs Development', score: 0 },
+  { initials: 'SD', name: 'S. K. Das', role: 'Meteorologist B - Forecasting', status: 'Needs Development', score: 0 },
+  { initials: 'FA', name: 'Farah Ali', role: 'Research Associate - Training Division', status: 'Needs Development', score: 0 },
+  { initials: 'MT', name: 'Manish Tiwari', role: 'Technical Assistant - Radar Operations', status: 'Needs Development', score: 0 },
+  { initials: 'LJ', name: 'Leena Joseph', role: 'Scientist D - Hydrology', status: 'Needs Development', score: 0 },
+  { initials: 'HG', name: 'Harsh Gupta', role: 'Scientific Assistant - Data Services', status: 'Needs Development', score: 0 }
+];
+
+const departmentHeatmap = [
+  { dept: 'Meteorological Centre Patna', nwp: '13%', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Regional Meteorological Centre', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Climate Research', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Ocean Information', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Agrometeorology', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Forecasting', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Training Division', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Radar Operations', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Hydrology', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
+  { dept: 'Data Services', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' }
+];
 
 export default function ReadinessCommandPage() {
-  const isDataAvailable = personnelReadiness.length > 0;
+  const isDataAvailable = true;
 
   return (
     <div className="space-y-6">

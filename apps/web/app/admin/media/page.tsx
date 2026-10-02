@@ -3,7 +3,43 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 
-const mediaData: any[] = []; // Empty array triggers N/A fallback
+const mediaData = [
+  {
+    title: 'NWP Guidance Interpretation', subtitle: 'Numerical Weather Prediction - General',
+    mappingType: 'Shared Library', mappingDetails: 'No module - No lesson',
+    trainer: 'Dr. Arvind Rao',
+    mediaType: 'Recorded Lecture', mediaLang: 'English',
+    status: 'Published'
+  },
+  {
+    title: 'Convective Cloud Signatures', subtitle: 'Satellite Meteorology - General',
+    mappingType: 'Shared Library', mappingDetails: 'No module - No lesson',
+    trainer: 'Rahul Deshmukh',
+    mediaType: 'Presentation', mediaLang: 'English',
+    status: 'Published'
+  },
+  {
+    title: 'Marine Wave Model Primer', subtitle: 'Ocean Forecasting - General',
+    mappingType: 'Shared Library', mappingDetails: 'No module - No lesson',
+    trainer: 'Dr. Kavita Menon',
+    mediaType: 'PDF', mediaLang: 'English',
+    status: 'Published'
+  },
+  {
+    title: 'Rainfall to Flood Guidance', subtitle: 'Hydrometeorology - General',
+    mappingType: 'Shared Library', mappingDetails: 'No module - No lesson',
+    trainer: 'Dr. Sana Khan',
+    mediaType: 'Video', mediaLang: 'English',
+    status: 'Published'
+  },
+  {
+    title: 'Climate Data QC Checklist', subtitle: 'Climate Data - General',
+    mappingType: 'Shared Library', mappingDetails: 'No module - No lesson',
+    trainer: 'Vivek Iyer',
+    mediaType: 'Notes', mediaLang: 'English',
+    status: 'Published'
+  }
+];
 
 export default function MediaGovernancePage() {
   return (

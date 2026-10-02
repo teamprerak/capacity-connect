@@ -32,11 +32,11 @@ export default function LoginPage() {
         await register(email, password, role);
         toast.success('Account created! Signing you in...');
         await login(email, password);
-        router.push('/');
+        // Redirect handled by AuthContext
       } else {
         await login(email, password);
         toast.success('Signed in successfully');
-        router.push('/');
+        // Redirect handled by AuthContext
       }
     } catch (err: any) {
       toast.error(err.message || 'Authentication failed');

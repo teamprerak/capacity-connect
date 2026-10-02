@@ -7,7 +7,7 @@
     "lint": "turbo lint",
     "test": "turbo test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start:api": "node apps/api/dist/src/main"
+    "start:api": "npm run db:deploy -w @repo/db && node apps/api/dist/src/main"
   },
   "devDependencies": {
     "prettier": "^3.3.3",

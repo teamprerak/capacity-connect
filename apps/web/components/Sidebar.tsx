@@ -15,6 +15,13 @@ import {
   Sparkles,
   ChevronRight,
   LogOut,
+  UserCheck,
+  Video,
+  Target,
+  BarChart3,
+  ShieldAlert,
+  Database,
+  Bell
 } from 'lucide-react';
 import { LogoutConfirmModal } from './LogoutConfirmModal';
 
@@ -38,10 +45,16 @@ export function Sidebar({ role }: SidebarProps) {
       { href: '/trainer/assessments/new', label: 'MCQ Authoring', icon: FileText },
     ],
     admin: [
-      { href: '/admin/dashboard', label: 'Executive Analytics', icon: LayoutDashboard },
-      { href: '/admin/users', label: 'User & Verification', icon: Users },
-      { href: '/admin/courses', label: 'Course Moderation', icon: CheckCircle },
-      { href: '/admin/audit-logs', label: 'Audit Log Stream', icon: ShieldCheck },
+      { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+      { href: '/admin/users', label: 'User Approval', icon: UserCheck },
+      { href: '/admin/trainers', label: 'Trainer Management', icon: Users },
+      { href: '/admin/courses', label: 'Course Management', icon: BookOpen },
+      { href: '/admin/media', label: 'Media Governance', icon: Video },
+      { href: '/admin/competencies', label: 'Competencies', icon: Target },
+      { href: '/admin/reports', label: 'Reports & Analytics', icon: BarChart3 },
+      { href: '/admin/readiness', label: 'Readiness Command', icon: ShieldAlert },
+      { href: '/admin/knowledge', label: 'Knowledge Continuity', icon: Database },
+      { href: '/admin/content-notifications', label: 'Content & Notifications', icon: Bell },
     ],
   };
 

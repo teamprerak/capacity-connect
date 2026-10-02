@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
 import { UpdateTrainerProfileDto } from './dto/update-trainer-profile.dto';
@@ -145,7 +145,7 @@ export class TrainerService {
 
   // --- Student Approval Methods ---
 
-  async getStudents(status?: string) {
+  async getStudents(status?: string): Promise<any> {
     const whereClause: any = {
       userRoles: { some: { role: { name: 'trainee' } } },
     };
@@ -162,7 +162,7 @@ export class TrainerService {
         suspendedBy: true,
         createdAt: true,
         traineeProfile: {
-          select: { fullName: true, mobileNumber: true }
+          select: { id: true }
         }
       },
       orderBy: { createdAt: 'desc' }

@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { TrainerService } from './trainer.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -68,7 +68,7 @@ export class TrainerController {
 
   @Get('students')
   @Roles('trainer')
-  async getStudents(@Query('status') status?: string) {
+  async getStudents(@Query('status') status?: string): Promise<any> {
     return this.trainerService.getStudents(status);
   }
 

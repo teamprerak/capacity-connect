@@ -14,35 +14,38 @@ import {
 } from 'recharts';
 import { Printer, Download } from 'lucide-react';
 
-const participationData = [
-  { name: 'Forecasting', value: 90 },
-  { name: 'Climate', value: 65 },
-  { name: 'Satellite', value: 55 },
-  { name: 'Ocean', value: 48 },
-  { name: 'Hydrology', value: 42 },
-];
+// Real mechanism not yet implemented on backend, showing N/A fallback as requested.
+const participationData: any[] = [];
 
-const competencyData = [
-  { name: 'Jun', value: 45 },
-  { name: 'Jul', value: 53 },
-  { name: 'Aug', value: 62 },
-  { name: 'Sep', value: 75 },
-];
+const competencyData: any[] = [];
 
+// Fallback logic applied to KPI data
 const kpiData = [
-  { title: 'COURSE COMPLETION', value: '78%', subtext: 'Across active prototype enrollments' },
-  { title: 'PRE - POST IMPROVEMENT', value: '+50 pts', subtext: 'Average verified learning uplift' },
-  { title: 'TRAINER EFFECTIVENESS', value: '4.7 / 5', subtext: 'Average verified trainer rating' },
-  { title: 'OPERATIONAL READINESS', value: '10%', subtext: 'Personnel at ORI 70 or above' },
-  { title: 'EVIDENCE VERIFICATION', value: '75%', subtext: 'Operational evidence received' },
-  { title: 'KNOWLEDGE CONTINUITY', value: '4', subtext: 'Expert assets preserved' },
-  { title: 'CERTIFICATES ISSUED', value: '2', subtext: 'Verification-backed certificates' },
-  { title: 'TRAINING PARTICIPATION', value: '82%', subtext: 'Sample reporting indicator' },
+  { title: 'COURSE COMPLETION', value: participationData.length ? '78%' : 'N/A', subtext: 'Across active prototype enrollments' },
+  { title: 'PRE - POST IMPROVEMENT', value: participationData.length ? '+50 pts' : 'N/A', subtext: 'Average verified learning uplift' },
+  { title: 'TRAINER EFFECTIVENESS', value: participationData.length ? '4.7 / 5' : 'N/A', subtext: 'Average verified trainer rating' },
+  { title: 'OPERATIONAL READINESS', value: participationData.length ? '10%' : 'N/A', subtext: 'Personnel at ORI 70 or above' },
+  { title: 'EVIDENCE VERIFICATION', value: participationData.length ? '75%' : 'N/A', subtext: 'Operational evidence received' },
+  { title: 'KNOWLEDGE CONTINUITY', value: participationData.length ? '4' : 'N/A', subtext: 'Expert assets preserved' },
+  { title: 'CERTIFICATES ISSUED', value: participationData.length ? '2' : 'N/A', subtext: 'Verification-backed certificates' },
+  { title: 'TRAINING PARTICIPATION', value: participationData.length ? '82%' : 'N/A', subtext: 'Sample reporting indicator' },
 ];
 
-const assessmentData = [
-  { name: 'Operational NWP', preTest: 50, postTest: 100 },
-];
+const assessmentData: any[] = [];
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-card text-card-foreground border border-border p-3 rounded-lg shadow-md z-50">
+        <p className="text-sm font-semibold mb-1">{label}</p>
+        <p className="text-sm" style={{ color: payload[0].color || 'hsl(var(--primary))' }}>
+          Value: {payload[0].value}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
 export default function ReportsAnalyticsPage() {
   return (
@@ -75,28 +78,31 @@ export default function ReportsAnalyticsPage() {
           </div>
           <div className="flex-1 min-h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={participationData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }} 
-                  dy={10}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-                  domain={[0, 100]}
-                  ticks={[0, 25, 50, 75, 100]}
-                />
-                <RechartsTooltip 
-                  cursor={{ fill: 'hsl(var(--accent))' }}
-                  contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
-                />
-                <Bar dataKey="value" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
-              </BarChart>
+              {participationData.length > 0 ? (
+                <BarChart data={participationData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fontSize: 12, fill: 'currentColor' }} 
+                    className="text-muted-foreground"
+                    dy={10}
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fontSize: 12, fill: 'currentColor' }}
+                    className="text-muted-foreground"
+                    domain={[0, 100]}
+                    ticks={[0, 25, 50, 75, 100]}
+                  />
+                  <RechartsTooltip cursor={{ fill: 'hsl(var(--accent))' }} content={<CustomTooltip />} />
+                  <Bar dataKey="value" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
+                </BarChart>
+              ) : (
+                <div className="flex h-full items-center justify-center text-muted-foreground text-sm">N/A</div>
+              )}
             </ResponsiveContainer>
           </div>
         </div>
@@ -109,34 +115,38 @@ export default function ReportsAnalyticsPage() {
           </div>
           <div className="flex-1 min-h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={competencyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-                  dy={10}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-                  domain={[0, 100]}
-                  ticks={[0, 25, 50, 75, 100]}
-                />
-                <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
-                />
-                <Line 
-                  type="linear" 
-                  dataKey="value" 
-                  stroke="#3b82f6" 
-                  strokeWidth={3}
-                  dot={{ r: 4, fill: 'hsl(var(--background))', stroke: '#3b82f6', strokeWidth: 2 }}
-                  activeDot={{ r: 6, fill: '#3b82f6', stroke: 'hsl(var(--background))', strokeWidth: 2 }}
-                />
-              </LineChart>
+              {competencyData.length > 0 ? (
+                <LineChart data={competencyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fontSize: 12, fill: 'currentColor' }}
+                    className="text-muted-foreground"
+                    dy={10}
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fontSize: 12, fill: 'currentColor' }}
+                    className="text-muted-foreground"
+                    domain={[0, 100]}
+                    ticks={[0, 25, 50, 75, 100]}
+                  />
+                  <RechartsTooltip content={<CustomTooltip />} />
+                  <Line 
+                    type="linear" 
+                    dataKey="value" 
+                    stroke="#3b82f6" 
+                    strokeWidth={3}
+                    dot={{ r: 4, fill: 'hsl(var(--background))', stroke: '#3b82f6', strokeWidth: 2 }}
+                    activeDot={{ r: 6, fill: '#3b82f6', stroke: 'hsl(var(--background))', strokeWidth: 2 }}
+                  />
+                </LineChart>
+              ) : (
+                <div className="flex h-full items-center justify-center text-muted-foreground text-sm">N/A</div>
+              )}
             </ResponsiveContainer>
           </div>
         </div>
@@ -163,7 +173,7 @@ export default function ReportsAnalyticsPage() {
         </div>
 
         <div className="space-y-5">
-          {assessmentData.map((item, idx) => (
+          {assessmentData.length > 0 ? assessmentData.map((item, idx) => (
             <div key={idx} className="flex flex-col">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium text-foreground">{item.name}</span>
@@ -200,7 +210,9 @@ export default function ReportsAnalyticsPage() {
                 )}
               </div>
             </div>
-          ))}
+          )) : (
+            <div className="text-sm text-muted-foreground">N/A</div>
+          )}
         </div>
       </div>
     </div>

@@ -39,12 +39,12 @@ export default function KnowledgeContinuityPage() {
       </div>
 
       {/* Retention Engine Hero */}
-      <div className="bg-gradient-to-r from-primary/90 to-emerald-600/90 rounded-xl p-8 text-primary-foreground shadow-sm">
-        <h3 className="text-[10px] font-bold uppercase tracking-widest mb-3 opacity-90">Knowledge Retention Engine</h3>
-        <p className="text-xl sm:text-2xl font-semibold mb-3 leading-tight">
+      <div className="bg-gradient-to-r from-primary/90 to-emerald-600/90 rounded-xl p-8 text-white shadow-sm">
+        <h3 className="text-[10px] font-bold uppercase tracking-widest mb-3 opacity-90 text-white">Knowledge Retention Engine</h3>
+        <p className="text-xl sm:text-2xl font-semibold mb-3 leading-tight text-white">
           Training content tells people what to learn. The Vault preserves how experts actually work.
         </p>
-        <p className="text-sm opacity-90 max-w-4xl leading-relaxed">
+        <p className="text-sm opacity-90 max-w-4xl leading-relaxed text-white">
           Expert debriefs, case archives and operational playbooks become reusable institutional knowledge, tagged by criticality and succession risk.
         </p>
       </div>

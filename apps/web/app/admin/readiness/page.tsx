@@ -23,7 +23,7 @@ export default function ReadinessCommandPage() {
       <div className="bg-gradient-to-r from-blue-900 to-teal-800 rounded-xl p-8 text-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="max-w-3xl">
           <h3 className="text-[10px] font-bold uppercase tracking-widest mb-2 text-blue-200">Key Performance Indicator</h3>
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-3">Operational Readiness Index (ORI)</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-3 text-white">Operational Readiness Index (ORI)</h2>
           <p className="text-sm text-blue-100/90 leading-relaxed">
             Readiness combines competency assessment, learning completion, post-test performance, trainer-verified evidence and scenario performance. No single course completion metric can mark a learner ready.
           </p>

@@ -106,8 +106,8 @@ export default function OnboardingQuiz({
               onClick={() => handleAnswerChange(rating)}
               className={`w-14 h-14 rounded-full text-lg font-semibold transition-all ${
                 currentAnswer === rating
-                  ? "bg-primary text-primary-foreground shadow-lg scale-110"
-                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  ? "bg-blue-600 text-white shadow-lg scale-110"
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
               }`}
             >
               {rating}
@@ -129,17 +129,17 @@ export default function OnboardingQuiz({
               key={option}
               className={`flex items-center p-4 border rounded-xl cursor-pointer transition-colors ${
                 (currentAnswer || []).includes(option)
-                  ? "border-primary bg-primary/5"
-                  : "border-border bg-card hover:bg-accent"
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                  : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800"
               }`}
             >
               <input
                 type="checkbox"
-                className="w-5 h-5 text-primary rounded border-input focus:ring-primary accent-primary"
+                className="w-5 h-5 text-blue-600 rounded border-slate-300 dark:border-slate-600 focus:ring-blue-500 accent-blue-600"
                 checked={(currentAnswer || []).includes(option)}
                 onChange={() => handleMultiSelectChange(option)}
               />
-              <span className="ml-3 text-foreground">{option}</span>
+              <span className="ml-3 text-slate-900 dark:text-slate-100">{option}</span>
             </label>
           ))}
           {(currentAnswer || []).includes("Other") && (
@@ -147,7 +147,7 @@ export default function OnboardingQuiz({
               value={currentOtherText}
               onChange={(e) => setOtherText({ ...otherText, [question.id]: e.target.value })}
               placeholder="Please specify..."
-              className="w-full mt-3 p-3 text-foreground bg-background border border-input rounded-xl focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
+              className="w-full mt-3 p-3 text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none transition-all resize-none"
               rows={2}
             />
           )}
@@ -167,18 +167,18 @@ export default function OnboardingQuiz({
               key={option}
               className={`flex items-center p-4 border rounded-xl cursor-pointer transition-colors ${
                 currentAnswer === option
-                  ? "border-primary bg-primary/5"
-                  : "border-border bg-card hover:bg-accent"
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                  : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800"
               }`}
             >
               <input
                 type="radio"
                 name={`q-${question.id}`}
-                className="w-5 h-5 text-primary border-input focus:ring-primary accent-primary"
+                className="w-5 h-5 text-blue-600 border-slate-300 dark:border-slate-600 focus:ring-blue-500 accent-blue-600"
                 checked={currentAnswer === option}
                 onChange={() => handleAnswerChange(option)}
               />
-              <span className="ml-3 text-foreground">{option}</span>
+              <span className="ml-3 text-slate-900 dark:text-slate-100">{option}</span>
             </label>
           ))}
           {currentAnswer === "Other" && (
@@ -186,7 +186,7 @@ export default function OnboardingQuiz({
               value={currentOtherText}
               onChange={(e) => setOtherText({ ...otherText, [question.id]: e.target.value })}
               placeholder="Please specify..."
-              className="w-full mt-3 p-3 text-foreground bg-background border border-input rounded-xl focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
+              className="w-full mt-3 p-3 text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none transition-all resize-none"
               rows={2}
             />
           )}
@@ -201,7 +201,7 @@ export default function OnboardingQuiz({
           value={currentAnswer || ""}
           onChange={(e) => handleAnswerChange(e.target.value)}
           placeholder="Type your answer here..."
-          className="w-full min-h-[120px] p-4 text-foreground bg-background border border-input rounded-xl focus:ring-1 focus:ring-primary outline-none transition-all resize-y"
+          className="w-full min-h-[120px] p-4 text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none transition-all resize-y"
           autoFocus
         />
       </div>
@@ -209,11 +209,11 @@ export default function OnboardingQuiz({
   };
 
   return (
-    <div className="fixed inset-0 bg-background z-[100] flex flex-col items-center justify-center font-sans overflow-y-auto py-10">
+    <div className="fixed inset-0 bg-white dark:bg-slate-950 z-[100] flex flex-col items-center justify-center font-sans overflow-y-auto py-10">
       <div className="w-full absolute top-0 left-0">
-        <div className="h-2 bg-muted w-full">
+        <div className="h-2 bg-slate-100 dark:bg-slate-800 w-full">
           <div
-            className="h-2 bg-primary transition-all duration-300 ease-in-out"
+            className="h-2 bg-blue-600 transition-all duration-300 ease-in-out"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -223,19 +223,19 @@ export default function OnboardingQuiz({
         <div className="absolute top-6 right-6">
           <button
             onClick={onSkip}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
           >
             I will answer the quiz later
           </button>
         </div>
       )}
 
-      <div className="w-full max-w-2xl px-6 py-8 bg-card border border-border shadow-2xl rounded-2xl mx-4 my-auto">
+      <div className="w-full max-w-2xl px-6 py-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-2xl mx-4 my-auto">
         <div className="mb-8">
-          <p className="text-sm font-medium text-muted-foreground mb-2">
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">
             Question {currentStep + 1} of {questions.length}
           </p>
-          <h2 className="text-2xl font-semibold text-foreground">
+          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
             {question.question}
           </h2>
         </div>
@@ -244,14 +244,14 @@ export default function OnboardingQuiz({
           {renderInput()}
         </div>
 
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-border">
+        <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
           <button
             onClick={handleBack}
             disabled={currentStep === 0 || isSubmitting}
             className={`flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
               currentStep === 0 || isSubmitting
-                ? "text-muted-foreground opacity-50 cursor-not-allowed"
-                : "text-foreground hover:bg-accent"
+                ? "text-slate-400 dark:text-slate-600 cursor-not-allowed"
+                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             }`}
           >
             <ChevronLeft className="w-5 h-5 mr-1" />
@@ -263,8 +263,8 @@ export default function OnboardingQuiz({
             disabled={!hasAnswer || isSubmitting}
             className={`flex items-center px-6 py-2.5 text-sm font-semibold rounded-lg transition-all ${
               !hasAnswer || isSubmitting
-                ? "bg-muted text-muted-foreground cursor-not-allowed"
-                : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg"
+                ? "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg"
             }`}
           >
             {isSubmitting ? (

@@ -35,7 +35,7 @@ import { api } from '@/lib/api-client';
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-card text-card-foreground border border-border p-3 rounded-lg shadow-md z-50">
+      <div className="surface-card text-foreground p-3 shadow-md z-50">
         <p className="text-sm font-semibold mb-1">{label}</p>
         <p className="text-sm" style={{ color: payload[0].color || 'hsl(var(--primary))' }}>
           Value: {payload[0].value}

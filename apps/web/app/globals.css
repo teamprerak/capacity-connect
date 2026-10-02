@@ -293,3 +293,5 @@
 #reader { border: none !important; background: black !important; }
 #reader video { width: 100% !important; height: auto !important; max-height: 320px !important; object-fit: cover !important; border-radius: 0.75rem !important; display: block !important; }
 #reader a, #reader img { display: none !important; }
+. r e c h a r t s - t o o l t i p - w r a p p e r   {   b a c k g r o u n d :   t r a n s p a r e n t   ! i m p o r t a n t ;   b o r d e r :   n o n e   ! i m p o r t a n t ;   b o x - s h a d o w :   n o n e   ! i m p o r t a n t ;   }  
+ 

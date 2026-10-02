@@ -71,7 +71,8 @@ export default function MatchWizardPage() {
         domainSkillIds: Array.from(selectedSkillIds),
       });
       const data = res?.data || res;
-      setMatches(data?.matches || []);
+      const matchesArray = Array.isArray(data?.matches) ? data.matches : (data?.matches?.matches || []);
+      setMatches(matchesArray);
       setStep(2);
     } catch (err: any) {
       setSubmitError(err?.message || 'Something went wrong. Please try again.');
@@ -122,12 +123,14 @@ export default function MatchWizardPage() {
 
       // Update matches with new result
       if (data.matches) {
-        setMatches(data.matches);
+        const newMatches = Array.isArray(data.matches) ? data.matches : (data.matches.matches || []);
+        setMatches(newMatches);
       } else {
         // Fallback: re-fetch matches
         const matchesRes = await api.get('/trainee/wizard/my-matches');
         const matchesData = matchesRes?.data || matchesRes;
-        setMatches(matchesData);
+        const fallbackMatches = Array.isArray(matchesData) ? matchesData : (matchesData?.matches || []);
+        setMatches(fallbackMatches);
       }
 
       toast.success('Matches updated based on your verified skills!');

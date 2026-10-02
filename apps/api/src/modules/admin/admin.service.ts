@@ -273,4 +273,43 @@ export class AdminService {
       date: a.createdAt
     }));
   }
+
+  async createAnnouncement(dto: any, adminId: string): Promise<any> {
+    const announcement = await this.prisma.announcement.create({
+      data: {
+        title: dto.title,
+        body: dto.message,
+        type: dto.type || 'announcement',
+        audience: dto.audience || 'all',
+        createdById: adminId,
+        publishedAt: new Date(),
+      },
+    });
+
+    // Find target users
+    const whereClause: any = { status: 'active' };
+    if (announcement.audience === 'trainees') {
+      whereClause.traineeProfile = { isNot: null };
+    } else if (announcement.audience === 'trainers') {
+      whereClause.trainerProfile = { isNot: null };
+    }
+
+    const users = await this.prisma.user.findMany({
+      where: whereClause,
+      select: { id: true },
+    });
+
+    // Push notifications
+    for (const user of users) {
+      await this.notifications.push({
+        userId: user.id,
+        type: 'announcement',
+        title: announcement.title,
+        message: announcement.body,
+        link: '/announcements', // Assuming there's an announcements page or similar
+      });
+    }
+
+    return announcement;
+  }
 }

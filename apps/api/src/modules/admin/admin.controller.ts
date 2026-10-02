@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Param, Body, Query, UseGuards, ParseUUIDPipe, Req } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Body, Query, UseGuards, ParseUUIDPipe, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { AdminService } from './admin.service';
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
@@ -8,6 +8,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
+import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateTrainerVerificationDto } from './dto/update-trainer-verification.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -69,5 +70,13 @@ export class AdminController {
   @Get('announcements')
   getAnnouncements(): Promise<any> {
     return this.adminService.getAnnouncements();
+  }
+
+  @Post('announcements')
+  createAnnouncement(
+    @Body() createAnnouncementDto: CreateAnnouncementDto,
+    @CurrentUser('id') adminId: string,
+  ): Promise<any> {
+    return this.adminService.createAnnouncement(createAnnouncementDto, adminId);
   }
 }

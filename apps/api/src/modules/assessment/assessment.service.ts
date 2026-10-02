@@ -4,13 +4,15 @@ import {
   ForbiddenException,
   BadRequestException,
 } from '@nestjs/common';
-import { AssessmentType } from '@repo/db';
+import { AssessmentType, EvidenceType } from '@repo/db';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { AddQuestionDto } from './dto/add-question.dto';
 import { SubmitAttemptDto } from './dto/submit-attempt.dto';
 import { NotificationsService } from '../notifications/notifications.service';
+import { EvidenceService } from '../competency/evidence.service';
+import { MatchingService } from '../matching/matching.service';
 
 @Injectable()
 export class AssessmentService {
@@ -18,6 +20,8 @@ export class AssessmentService {
     private readonly prisma: PrismaService,
     private readonly auditService: AuditService,
     private readonly notifications: NotificationsService,
+    private readonly evidenceService: EvidenceService,
+    private readonly matchingService: MatchingService,
   ) {}
 
   // ─── Assessment CRUD ──────────────────────────────────────────────────────────
@@ -244,7 +248,17 @@ export class AssessmentService {
         assessmentId,
         traineeId: traineeProfile.id,
       },
-      include: { assessment: true },
+      include: { 
+        assessment: {
+          include: {
+            course: {
+              include: {
+                courseSkills: true,
+              }
+            }
+          }
+        } 
+      },
     });
     if (!attempt) throw new NotFoundException('Attempt not found');
     if (attempt.submittedAt) {
@@ -301,7 +315,7 @@ export class AssessmentService {
     const passed = scorePct >= attempt.assessment.passScorePct;
     const submittedAt = new Date();
 
-    return this.prisma.$transaction(async (tx) => {
+    const result = await this.prisma.$transaction(async (tx) => {
       await tx.assessmentAnswer.createMany({ data: answerRecords });
       await tx.assessmentAttempt.update({
         where: { id: attemptId },
@@ -348,6 +362,52 @@ export class AssessmentService {
         submittedAt,
       };
     });
+
+    let level = 5;
+    if (scorePct < 20) level = 1;
+    else if (scorePct < 40) level = 2;
+    else if (scorePct < 60) level = 3;
+    else if (scorePct < 80) level = 4;
+
+    const courseSkills = attempt.assessment.course?.courseSkills;
+    if (courseSkills && courseSkills.length > 0) {
+      const skillIds = courseSkills.map((cs: any) => cs.skillId);
+      
+      const traineeCompetencies = await this.prisma.traineeCompetency.findMany({
+        where: {
+          traineeProfileId: traineeProfile.id,
+          competency: {
+            competencySkills: {
+              some: {
+                skillId: { in: skillIds }
+              }
+            }
+          }
+        }
+      });
+
+      if (traineeCompetencies.length > 0) {
+        const evidenceItems = traineeCompetencies.map((tc: any) => ({
+          traineeCompetencyId: tc.id,
+          type: EvidenceType.ASSESSED,
+          level,
+          sourceRefId: attempt.assessment.id,
+        }));
+        await this.evidenceService.recordEvidenceBatch(evidenceItems);
+      }
+    }
+
+    let matches = [];
+    try {
+      matches = await this.matchingService.computeMatchesForTrainee(traineeUserId);
+    } catch (e) {
+      console.error('Failed to compute matches after attempt submission', e);
+    }
+
+    return {
+      ...result,
+      matches,
+    };
   }
 
   async getMyAttempts(

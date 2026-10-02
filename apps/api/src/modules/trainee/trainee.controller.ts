@@ -56,4 +56,9 @@ export class TraineeController {
   getMyMatches(@CurrentUser('id') userId: string) {
     return this.traineeService.getMyMatches(userId);
   }
+
+  @Get('wizard/recommended-assessment')
+  getRecommendedAssessment() {
+    return this.traineeService.getRecommendedAssessment();
+  }
 }

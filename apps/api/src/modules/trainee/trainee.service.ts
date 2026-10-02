@@ -215,4 +215,18 @@ export class TraineeService {
   async getMyMatches(userId: string): Promise<any> {
     return this.matchingService.computeMatchesForTrainee(userId);
   }
+
+  async getRecommendedAssessment() {
+    const assessment = await this.prisma.assessment.findFirst({
+      include: { 
+        course: true,
+        questions: {
+          include: {
+            options: true
+          }
+        }
+      }
+    });
+    return assessment;
+  }
 }

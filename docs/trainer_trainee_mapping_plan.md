@@ -35,10 +35,28 @@ Based on a meticulous final architectural and security review, this implementati
 - **Action:** Build `recordEvidence()` and `recomputeCompetency()`. (Use batching: upsert all evidence, then recompute each distinct skill in a single `prisma.$transaction`. Execute the matcher API call *after* the transaction commits to prevent timeout freezes).
 
 ### Phase 2: Cold Start & Target Testing
+
+Execution order: **2A → 2B + 2C (parallel) → 2D**
+
+#### Sub-Phase 2A — Critical Matching Reorder Test (FIRST)
+- **Model:** Opus 4.6 (Thinking) — hardest reasoning in the plan.
+- **Action (CRITICAL TEST):** Write `test-matching-reorder.ts` plus the small fixture of seed trainers it needs. The matcher's behavior (valuing a gap of 4 vs a gap of 1) means we must carefully tune our seed trainers. This test will mathematically assert that taking a trainee from Level 1 to Level 4 in Seismology guarantees a specific advanced trainer rises to rank #1.
+- **Guardrail:** Run it before building the wizard. If it fails, tune the trainer fixtures, not the engine.
+
+#### Sub-Phase 2B — Quiz-to-Skill Mapping & Onboarding Wiring
+- **Model:** Sonnet 4.6 (Thinking)
 - **Action:** Define static quiz-to-skill constant mapping. Wire Onboarding to `recordEvidence(..., type: 'QUIZ_INFERRED')`.
-- **Action:** Build "Match Your Trainer" dashboard wizard (handles inserts, stable IDs, and deletes for `SELF_REPORTED`).
-- **Action:** Update Course Builder UI/API for Hybrid modules (Video/Text). Fix Admin "N/A" placeholders explicitly.
-- **Action (CRITICAL TEST):** Write `test-matching-reorder.ts`. The matcher's behavior (valuing a gap of 4 vs a gap of 1) means we must carefully tune our seed trainers. This test will mathematically assert that taking a trainee from Level 1 to Level 4 in Seismology guarantees a specific advanced trainer rises to rank #1.
+- **Guardrail:** Must use the stable `quiz:onboarding` reference ID. Batch the upserts, then recompute each distinct skill once.
+
+#### Sub-Phase 2C — Match Your Trainer Wizard
+- **Model:** Sonnet 4.6 (Thinking) — many edge cases, but each is well specified in V5.
+- **Action:** Build "Match Your Trainer" dashboard wizard (handles inserts, stable `wizard:<skillId>` IDs, and deletes for `SELF_REPORTED`). `requiredLevel = 5`, `level = 1` written server-side.
+- **Guardrail:** Test by hand that the endpoint ignores client-supplied `level`, `weight`, and `type`, and that re-submitting with fewer domains removes the old rows.
+
+#### Sub-Phase 2D — Course Builder Hybrid Modules & Admin Fixes
+- **Model:** Gemini — routine UI and API work that doesn't touch the engine.
+- **Action:** Update Course Builder UI/API for Hybrid modules (Video/Text/Hybrid). Fix Admin "N/A" placeholders explicitly.
+- **Guardrail:** Do NOT modify the engine, matcher, or evidence files.
 
 ### Phase 3: Seed Data & The Demo Assets
 - **Action:** Generate 20+ specialized MoES courses and 100+ modules (Video, Text, Hybrid). Generate Earth Science `CourseSkill` mappings.

@@ -24,6 +24,11 @@ export default function OnboardingGuard({ children }: { children: React.ReactNod
       }
 
       try {
+        if (sessionStorage.getItem('skip_onboarding_session') === 'true') {
+          setNeedsOnboarding(false);
+          return;
+        }
+
         const { onboardingCompleted } = await api.get('/onboarding/status');
         
         if (!onboardingCompleted) {
@@ -43,6 +48,11 @@ export default function OnboardingGuard({ children }: { children: React.ReactNod
 
     checkStatus();
   }, [user]);
+
+  const handleSkip = () => {
+    sessionStorage.setItem('skip_onboarding_session', 'true');
+    setNeedsOnboarding(false);
+  };
 
   const handleSubmit = async (answers: Record<string, any>) => {
     setIsSubmitting(true);
@@ -65,6 +75,7 @@ export default function OnboardingGuard({ children }: { children: React.ReactNod
           questions={questions}
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
+          onSkip={handleSkip}
         />
       )}
     </>

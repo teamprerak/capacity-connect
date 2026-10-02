@@ -14,12 +14,14 @@ interface OnboardingQuizProps {
   questions: Question[];
   onSubmit: (answers: Record<string, any>) => void;
   isSubmitting: boolean;
+  onSkip?: () => void;
 }
 
 export default function OnboardingQuiz({
   questions,
   onSubmit,
   isSubmitting,
+  onSkip,
 }: OnboardingQuizProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
@@ -207,7 +209,7 @@ export default function OnboardingQuiz({
   };
 
   return (
-    <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-[100] flex flex-col items-center justify-center font-sans overflow-y-auto py-10">
+    <div className="fixed inset-0 bg-background z-[100] flex flex-col items-center justify-center font-sans overflow-y-auto py-10">
       <div className="w-full absolute top-0 left-0">
         <div className="h-2 bg-muted w-full">
           <div
@@ -217,7 +219,18 @@ export default function OnboardingQuiz({
         </div>
       </div>
 
-      <div className="w-full max-w-2xl px-6 py-8 bg-card border border-border shadow-xl rounded-2xl mx-4 my-auto">
+      {onSkip && (
+        <div className="absolute top-6 right-6">
+          <button
+            onClick={onSkip}
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            I will answer the quiz later
+          </button>
+        </div>
+      )}
+
+      <div className="w-full max-w-2xl px-6 py-8 bg-card border border-border shadow-2xl rounded-2xl mx-4 my-auto">
         <div className="mb-8">
           <p className="text-sm font-medium text-muted-foreground mb-2">
             Question {currentStep + 1} of {questions.length}

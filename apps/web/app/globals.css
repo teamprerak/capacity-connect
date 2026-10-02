@@ -330,3 +330,18 @@
   to { opacity: 1; transform: translateX(0); }
 }
 
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin 30s linear infinite;
+  }
+  .animate-reverse-spin-slow {
+    animation: reverse-spin 30s linear infinite;
+  }
+}
+
+@keyframes reverse-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+

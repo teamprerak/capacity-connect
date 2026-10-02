@@ -9,6 +9,7 @@ import {
   LogIn, UserPlus, Mail, Lock, ChevronRight, 
   Sparkles, Eye, EyeOff, ArrowLeft 
 } from 'lucide-react';
+import { CapabilityNetwork } from '@/components/CapabilityNetwork';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -55,12 +56,11 @@ export default function LoginPage() {
     <div className="min-h-screen w-full flex flex-col md:flex-row bg-background overflow-hidden">
       {/* LEFT PANE - Branding / Info */}
       <div className="w-full md:w-1/2 bg-[#0B3B59] text-white p-8 md:p-16 flex flex-col justify-center relative min-h-[40vh] md:min-h-screen">
-        {/* Subtle Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-20 bg-cover bg-center mix-blend-overlay"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')" }}
-        />
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0B3B59]/50 via-transparent to-[#0B3B59]" />
+        {/* Very subtle background depth */}
+        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_70%_80%,rgba(56,189,248,0.05),transparent_50%)]" />
+
+        {/* The 3D Capability Network Ecosystem */}
+        <CapabilityNetwork />
 
         <div className="relative z-10 w-full animate-fade-in-up">
           <Link 

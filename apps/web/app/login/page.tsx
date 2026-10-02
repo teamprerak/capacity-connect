@@ -76,7 +76,7 @@ export default function LoginPage() {
           <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-sky-400 mb-3">
             CAPACITY CONNECT
           </div>
-          <h1 className="text-3xl md:text-5xl font-semibold leading-tight mb-4 tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-semibold leading-tight mb-4 tracking-tight text-white">
             Accelerate Meteorological Capability.
           </h1>
           <p className="text-white/80 text-sm mb-12 max-w-sm leading-relaxed">

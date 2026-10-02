@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Param, Body, Query, UseGuards, ParseUUIDPipe, Req } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Patch, Param, Body, Query, UseGuards, ParseUUIDPipe, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { AdminService } from './admin.service';
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
@@ -78,6 +78,11 @@ export class AdminController {
     @CurrentUser('id') adminId: string,
   ): Promise<any> {
     return this.adminService.createAnnouncement(createAnnouncementDto, adminId);
+  }
+
+  @Delete('announcements/:id')
+  deleteAnnouncement(@Param('id') id: string): Promise<void> {
+    return this.adminService.deleteAnnouncement(id);
   }
 
   @Post('reset-demo')

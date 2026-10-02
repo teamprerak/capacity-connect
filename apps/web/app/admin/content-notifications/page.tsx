@@ -4,6 +4,8 @@ import React from 'react';
 
 import { api } from '@/lib/api-client';
 
+import { Trash2 } from 'lucide-react';
+
 export default function ContentNotificationsPage() {
   const [publishedContent, setPublished] = React.useState<any[]>([]);
   
@@ -20,6 +22,16 @@ export default function ContentNotificationsPage() {
   React.useEffect(() => {
     fetchAnnouncements();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this announcement?')) return;
+    try {
+      await api.delete(`/admin/announcements/${id}`);
+      fetchAnnouncements();
+    } catch (error) {
+      console.error('Failed to delete announcement:', error);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,7 +136,7 @@ export default function ContentNotificationsPage() {
 
           <div className="space-y-4">
             {publishedContent.length > 0 ? publishedContent.map((item, idx) => (
-              <div key={idx} className="pb-4 border-b border-border last:border-0 last:pb-0">
+              <div key={item.id || idx} className="pb-4 border-b border-border last:border-0 last:pb-0 relative group">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded bg-primary/10 text-primary">
                     {item.type}
@@ -135,9 +147,20 @@ export default function ContentNotificationsPage() {
                 </div>
                 <h4 className="text-sm font-semibold text-foreground mb-1">{item.title}</h4>
                 <p className="text-xs text-muted-foreground mb-2 leading-relaxed">{item.message}</p>
-                <span className="text-[10px] text-muted-foreground">
-                  {item.date ? new Date(item.date).toLocaleDateString() : ''}
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-muted-foreground">
+                    {item.date ? new Date(item.date).toLocaleDateString() : ''}
+                  </span>
+                  {item.id && (
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="opacity-0 group-hover:opacity-100 p-1.5 text-muted-foreground hover:text-error transition-all rounded-md hover:bg-error/10"
+                      title="Delete announcement"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
             )) : (
               <div className="text-center py-10 text-sm text-muted-foreground">

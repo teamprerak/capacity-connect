@@ -379,4 +379,27 @@ export class AdminService {
 
     return announcement;
   }
+
+  async deleteAnnouncement(id: string): Promise<void> {
+    const announcement = await this.prisma.announcement.findUnique({
+      where: { id },
+    });
+
+    if (!announcement) {
+      throw new NotFoundException(`Announcement with ID ${id} not found`);
+    }
+
+    await this.prisma.$transaction([
+      // Delete the announcement
+      this.prisma.announcement.delete({ where: { id } }),
+      // Also delete the individual notifications pushed to users (heuristic match)
+      this.prisma.notification.deleteMany({
+        where: {
+          title: announcement.title,
+          body: { contains: announcement.body },
+          type: 'announcement',
+        },
+      }),
+    ]);
+  }
 }

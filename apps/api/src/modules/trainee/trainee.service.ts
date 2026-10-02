@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
 import { EvidenceService } from '../competency/evidence.service';
 import { MatchingService } from '../matching/matching.service';
+import { EvidenceType } from '@repo/db';
 import { UpdateTraineeProfileDto } from './dto/update-trainee-profile.dto';
 import { CreateInterestDto } from './dto/create-interest.dto';
 import { CreateWorkExperienceDto } from './dto/create-work-experience.dto';
@@ -202,7 +203,6 @@ export class TraineeService {
 
     // Record batch evidence
     if (evidenceItems.length > 0) {
-      const { EvidenceType } = await import('@repo/db');
       const typedItems = evidenceItems.map(i => ({ ...i, type: EvidenceType.SELF_REPORTED }));
       await this.evidenceService.recordEvidenceBatch(typedItems);
     }

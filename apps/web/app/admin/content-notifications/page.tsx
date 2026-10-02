@@ -2,13 +2,7 @@
 
 import React from 'react';
 
-const publishedContent = [
-  { type: 'Course', audience: 'All', title: 'New NWP training batch published', message: 'Operational NWP course is open for eligible trainers.', date: '2026-09-15' },
-  { type: 'Deadline', audience: 'Trainer', title: 'Trainer verification window', message: 'Pending trainers should complete profile verifications by 20 September.', date: '2026-09-14' },
-  { type: 'Achievement', audience: 'All', title: 'Learning milestone reached', message: 'Completion rate crossed 75% in the latest capacity building cycle.', date: '2026-09-12' },
-  { type: 'Resource', audience: 'All', title: 'Satellite interpretation resource added', margin: 'New case-based presentation is available in the Trainer library.', date: '2026-09-10' }
-];
-
+const publishedContent: any[] = [];
 export default function ContentNotificationsPage() {
   return (
     <div className="space-y-6">

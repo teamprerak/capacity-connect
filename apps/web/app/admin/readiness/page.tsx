@@ -3,34 +3,11 @@
 import React from 'react';
 import { Target, AlertTriangle, ShieldCheck, TrendingUp, CheckCircle2 } from 'lucide-react';
 
-const personnelReadiness = [
-  { initials: 'AK', name: 'Amit Kumar', role: 'Meteorologist A - Regional Meteorological Centre', status: 'Operationally Ready', score: 75 },
-  { initials: 'PS', name: 'Pooja Sharma', role: 'Project Scientist - Climate Research', status: 'Needs Development', score: 54 },
-  { initials: 'NS', name: 'Neha Singh', role: 'Scientific Assistant - Meteorological Centre Patna', status: 'Needs Development', score: 22 },
-  { initials: 'NB', name: 'Nitin Bose', role: 'Technical Officer - Ocean Information', status: 'Needs Development', score: 0 },
-  { initials: 'RS', name: 'Ritu Shah', role: 'Scientific Assistant - Agrometeorology', status: 'Needs Development', score: 0 },
-  { initials: 'SD', name: 'S. K. Das', role: 'Meteorologist B - Forecasting', status: 'Needs Development', score: 0 },
-  { initials: 'FA', name: 'Farah Ali', role: 'Research Associate - Training Division', status: 'Needs Development', score: 0 },
-  { initials: 'MT', name: 'Manish Tiwari', role: 'Technical Assistant - Radar Operations', status: 'Needs Development', score: 0 },
-  { initials: 'LJ', name: 'Leena Joseph', role: 'Scientist D - Hydrology', status: 'Needs Development', score: 0 },
-  { initials: 'HG', name: 'Harsh Gupta', role: 'Scientific Assistant - Data Services', status: 'Needs Development', score: 0 }
-];
-
-const departmentHeatmap = [
-  { dept: 'Meteorological Centre Patna', nwp: '13%', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Regional Meteorological Centre', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Climate Research', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Ocean Information', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Agrometeorology', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Forecasting', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Training Division', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Radar Operations', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Hydrology', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' },
-  { dept: 'Data Services', nwp: 'No data', satellite: 'No data', ocean: 'No data', hydro: 'No data' }
-];
+const personnelReadiness: any[] = [];
+const departmentHeatmap: any[] = [];
 
 export default function ReadinessCommandPage() {
-  const isDataAvailable = true;
+  const isDataAvailable = personnelReadiness.length > 0;
 
   return (
     <div className="space-y-6">
@@ -43,17 +20,17 @@ export default function ReadinessCommandPage() {
       </div>
 
       {/* Hero KPI Banner */}
-      <div className="bg-gradient-to-r from-blue-900 to-teal-800 rounded-xl p-8 text-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div className="surface-card rounded-xl p-8 shadow-sm border border-border flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="max-w-3xl">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest mb-2 text-blue-200">Key Performance Indicator</h3>
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-3 text-white">Operational Readiness Index (ORI)</h2>
-          <p className="text-sm text-blue-100/90 leading-relaxed">
+          <h3 className="text-[10px] font-bold uppercase tracking-widest mb-2 text-primary">Key Performance Indicator</h3>
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-3 text-foreground">Operational Readiness Index (ORI)</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
             Readiness combines competency assessment, learning completion, post-test performance, trainer-verified evidence and scenario performance. No single course completion metric can mark a learner ready.
           </p>
         </div>
-        <div className="bg-white/10 border border-white/20 backdrop-blur-sm rounded-xl p-6 text-center min-w-[200px] shrink-0">
-          <div className="text-4xl sm:text-5xl font-bold mb-1">{isDataAvailable ? '13' : 'N/A'}</div>
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-blue-200">Organizational ORI</div>
+        <div className="bg-accent/50 border border-border rounded-xl p-6 text-center min-w-[200px] shrink-0">
+          <div className="text-4xl sm:text-5xl font-bold mb-1 text-foreground">{isDataAvailable ? '13' : 'N/A'}</div>
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Organizational ORI</div>
         </div>
       </div>
 

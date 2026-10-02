@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api-client';
 import { Sidebar } from '@/components/Sidebar';
-import { TopNav } from '@/components/TopNav';
+import { Navbar } from '@/components/Navbar';
 import { Loader2, Save, User } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -62,12 +62,12 @@ export default function ProfileSettingsPage() {
   };
 
   return (
-    <div className="flex h-screen bg-background font-sans overflow-hidden">
-      <Sidebar role={role as any} />
-      <div className="flex-1 flex flex-col min-w-0">
-        <TopNav title="My Profile" />
+    <div className="min-h-screen flex flex-col bg-background">
+      <Navbar />
+      <div className="flex flex-1 max-w-7xl mx-auto w-full">
+        <Sidebar role={role as any} />
         
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
           <div className="max-w-2xl mx-auto bg-card border border-border rounded-lg shadow-sm">
             <div className="p-6 border-b border-border">
               <div className="flex items-center gap-3">

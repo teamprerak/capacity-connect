@@ -15,7 +15,6 @@ export interface AppNotification {
   read?: boolean;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 const MAX_NOTIFICATIONS = 50;
 
 export function useNotifications() {
@@ -52,7 +51,9 @@ export function useNotifications() {
 
     // SSE doesn't support custom headers natively in browsers.
     // We pass the token as a query param (server validates it as a JWT).
-    const url = `${API_BASE}/notifications/stream?token=${encodeURIComponent(token)}`;
+    // Use the correct api/v1 path if NEXT_PUBLIC_API_URL doesn't include it, or just use the same base as api-client
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
+    const url = `${baseUrl}/notifications/stream?token=${encodeURIComponent(token)}`;
     const es = new EventSource(url);
     esRef.current = es;
 

@@ -16,7 +16,7 @@ import { Observable, map } from 'rxjs';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
-@Controller('notifications')
+@Controller('api/v1/notifications')
 export class NotificationsController {
   constructor(
     private readonly notificationsService: NotificationsService,

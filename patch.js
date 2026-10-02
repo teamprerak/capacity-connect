@@ -1,44 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+const fs = require('fs');
+const file = 'apps/api/src/modules/onboarding/onboarding.service.ts';
+let content = fs.readFileSync(file, 'utf8');
 
-@Injectable()
-export class OnboardingService {
-  constructor(private readonly prisma: PrismaService) {}
-
-  async submitOnboarding(userId: string, onboardingData: any): Promise<any> {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    // Process and store the answers
-    const updatedUser = await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        onboardingCompleted: true,
-        onboardingData, // JSON containing all questions and answers
-      },
-    });
-
-    return updatedUser;
-  }
-
-  async getOnboardingStatus(userId: string): Promise<any> {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-      select: { onboardingCompleted: true, onboardingData: true },
-    });
-    
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    return user;
-  }
-
-  getOnboardingQuestions(role: 'trainee' | 'trainer'): any[] {
+const newMethod = \  getOnboardingQuestions(role: 'trainee' | 'trainer'): any[] {
     if (role === 'trainee') {
       return [
         { id: 'tq1', question: 'What are your primary responsibilities or the type of work you currently perform?', type: 'multiple_choice_other', options: ['Administrative', 'Technical', 'Management', 'Operations', 'Field Work'] },
@@ -55,7 +19,7 @@ export class OnboardingService {
     } else {
       return [
         { id: 'tr1', question: 'What type of learners or professional roles do you have experience training?', type: 'multi_select_other', options: ['Entry-level staff', 'Mid-level professionals', 'Senior management', 'Technical specialists', 'General audience'] },
-        { id: 'tr2', question: 'How would you assess a trainee\'s current competency before starting a training program?', type: 'scenario_mcq_short', options: ['Pre-assessment quiz', 'One-on-one interview', 'Reviewing past work', 'Self-assessment survey'] },
+        { id: 'tr2', question: 'How would you assess a trainee\\'s current competency before starting a training program?', type: 'scenario_mcq_short', options: ['Pre-assessment quiz', 'One-on-one interview', 'Reviewing past work', 'Self-assessment survey'] },
         { id: 'tr3', question: 'How confident are you in explaining complex concepts to people with different levels of knowledge?', type: 'rating_1_5' },
         { id: 'tr4', question: 'How do you identify the specific skills a trainee is struggling with?', type: 'mcq_short', options: ['Observation during tasks', 'Reviewing quiz scores', 'Direct feedback from trainee', 'Peer reviews'] },
         { id: 'tr5', question: 'A trainee understands a concept theoretically but struggles to apply it in practice. What would you do?', type: 'scenario_mcq', options: ['Provide more theory', 'Demonstrate the practical application', 'Give a guided hands-on exercise', 'Pair them with an experienced peer'] },
@@ -66,6 +30,7 @@ export class OnboardingService {
         { id: 'tr10', question: 'What outcomes do you believe a successful training program should achieve for a trainee?', type: 'short_answer' },
       ];
     }
-  }
-}
+  }\;
 
+content = content.replace(/getOnboardingQuestions\\(role: 'trainee' \\| 'trainer'\\): any\\[\\] \\{[\\s\\S]*?\\n  \\}/, newMethod);
+fs.writeFileSync(file, content);

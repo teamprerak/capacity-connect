@@ -141,5 +141,86 @@ export class TrainerService {
       });
       return deleted;
     });
+}
+
+  // --- Student Approval Methods ---
+
+  async getStudents(status?: string) {
+    const whereClause: any = {
+      userRoles: { some: { role: { name: 'trainee' } } },
+    };
+    if (status && ['pending', 'active', 'suspended'].includes(status)) {
+      whereClause.status = status;
+    }
+    
+    return this.prisma.user.findMany({
+      where: whereClause,
+      select: {
+        id: true,
+        email: true,
+        status: true,
+        suspendedBy: true,
+        createdAt: true,
+        traineeProfile: {
+          select: { fullName: true, mobileNumber: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+  }
+
+  async updateStudentStatus(studentId: string, status: 'pending' | 'active' | 'suspended', trainerId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: studentId },
+      include: { userRoles: { include: { role: true } } }
+    });
+
+    if (!user) {
+      throw new NotFoundException('Student not found');
+    }
+
+    const isTrainee = user.userRoles.some((ur) => ur.role.name === 'trainee');
+    const isAdminOrTrainer = user.userRoles.some((ur) => ur.role.name === 'admin' || ur.role.name === 'trainer');
+
+    if (!isTrainee || isAdminOrTrainer) {
+      throw new ForbiddenException('You can only approve or suspend trainee accounts');
+    }
+
+    if (user.suspendedBy === 'admin' && (status === 'active' || status === 'pending')) {
+      throw new ForbiddenException('Only admin can reactivate this trainee');
+    }
+
+    let suspendedBy = user.suspendedBy;
+    if (status === 'suspended' && user.suspendedBy !== 'admin') {
+      suspendedBy = 'trainer';
+    } else if (status === 'active') {
+      suspendedBy = null;
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      const updatedUser = await tx.user.update({
+        where: { id: studentId },
+        data: {
+          status,
+          suspendedBy,
+          statusUpdatedBy: trainerId,
+          statusUpdatedAt: new Date()
+        },
+        select: { id: true, email: true, status: true, suspendedBy: true }
+      });
+
+      await this.auditService.log({
+        actorUserId: trainerId,
+        action: 'trainer.student_status_updated',
+        entityType: 'User',
+        entityId: studentId,
+        ipAddress: null,
+        metadata: { status, suspendedBy },
+        prisma: tx,
+      });
+
+      return updatedUser;
+    });
   }
 }
+

@@ -66,8 +66,13 @@ export class AdminService {
     return this.prisma.$transaction(async (tx) => {
       const updatedUser = await tx.user.update({
         where: { id },
-        data: { status },
-        select: { id: true, email: true, status: true }
+        data: {
+          status,
+          suspendedBy: status === 'suspended' ? 'admin' : null,
+          statusUpdatedBy: adminId,
+          statusUpdatedAt: new Date(),
+        },
+        select: { id: true, email: true, status: true, suspendedBy: true }
       });
 
       await this.auditService.log({

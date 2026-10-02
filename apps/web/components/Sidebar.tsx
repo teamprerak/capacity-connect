@@ -46,6 +46,7 @@ export function Sidebar({ role }: SidebarProps) {
       { href: '/trainer/courses/new', label: 'Course Builder', icon: PlusCircle },
       { href: '/trainer/assessments/new', label: 'MCQ Authoring', icon: FileText },
       { href: '/profile', label: 'My Profile', icon: User },
+      { href: '/trainer/students', label: 'Student Approval', icon: Users },
     ],
     admin: [
       { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },

@@ -63,4 +63,22 @@ export class TrainerController {
   ) {
     return this.trainerService.deleteExpertise(userId, expertiseId);
   }
+
+  // --- Student Approval Endpoints ---
+
+  @Get('students')
+  @Roles('trainer')
+  async getStudents(@Query('status') status?: string) {
+    return this.trainerService.getStudents(status);
+  }
+
+  @Patch('students/:id/status')
+  @Roles('trainer')
+  async updateStudentStatus(
+    @Param('id') studentId: string,
+    @Body('status') status: 'pending' | 'active' | 'suspended',
+    @CurrentUser('id') trainerId: string,
+  ) {
+    return this.trainerService.updateStudentStatus(studentId, status, trainerId);
+  }
 }

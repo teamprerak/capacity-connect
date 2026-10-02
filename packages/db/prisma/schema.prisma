@@ -24,6 +24,10 @@ model User {
   lockedUntil              DateTime?
   onboardingCompleted      Boolean   @default(false)
   onboardingData           Json?
+  
+  suspendedBy              String?   // "admin" | "trainer" | null
+  statusUpdatedBy          String?   // User ID of the person who updated status
+  statusUpdatedAt          DateTime?
   createdAt                DateTime  @default(now())
   updatedAt                DateTime  @updatedAt
 

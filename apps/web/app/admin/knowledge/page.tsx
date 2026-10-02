@@ -59,7 +59,7 @@ export default function KnowledgeContinuityPage() {
       {/* Assets Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {isDataAvailable ? (
-          vaultAssets.map((asset, idx) => (
+          vaultAssets.map((asset: any, idx: number) => (
             <div key={idx} className="surface-card p-6 rounded-xl border border-border flex flex-col justify-between hover:border-primary/50 transition-colors cursor-pointer">
               <div>
                 <div className="flex justify-between items-start mb-4">

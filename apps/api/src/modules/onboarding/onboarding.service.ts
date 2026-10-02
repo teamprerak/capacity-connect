@@ -1,27 +1,30 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { EvidenceService } from '../competency/evidence.service';
+import { EvidenceType } from '@repo/db';
+import { ONBOARDING_QUIZ_SKILL_MAP } from './quiz-skill-map';
 
 @Injectable()
 export class OnboardingService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly evidenceService: EvidenceService,
+  ) {}
 
   async submitOnboarding(userId: string, onboardingData: any): Promise<any> {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found');
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    // Process and store the answers
+    // 1. Save the raw onboarding answers
     const updatedUser = await this.prisma.user.update({
       where: { id: userId },
-      data: {
-        onboardingCompleted: true,
-        onboardingData, // JSON containing all questions and answers
-      },
+      data: { onboardingCompleted: true, onboardingData },
     });
+
+    // 2. After commit, process QUIZ_INFERRED evidence (non-blocking)
+    this._processQuizEvidence(userId, onboardingData).catch((err) =>
+      console.error('[Onboarding] Evidence processing failed:', err),
+    );
 
     return updatedUser;
   }
@@ -31,10 +34,7 @@ export class OnboardingService {
       where: { id: userId },
       select: { onboardingCompleted: true, onboardingData: true },
     });
-    
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
@@ -67,5 +67,101 @@ export class OnboardingService {
       ];
     }
   }
-}
 
+  // ─── Private: Process quiz answers into QUIZ_INFERRED evidence ───────────────
+
+  private async _processQuizEvidence(
+    userId: string,
+    onboardingData: Record<string, any>,
+  ): Promise<void> {
+    // Ensure trainee profile exists
+    let traineeProfile = await this.prisma.traineeProfile.findUnique({ where: { userId } });
+    if (!traineeProfile) return; // Not a trainee — skip
+
+    const evidenceItems: Array<{
+      traineeCompetencyId: string;
+      type: EvidenceType;
+      level: number;
+      sourceRefId: string;
+    }> = [];
+
+    for (const mapping of ONBOARDING_QUIZ_SKILL_MAP) {
+      const rawAnswer = onboardingData[mapping.questionId];
+      if (rawAnswer === undefined || rawAnswer === null) continue;
+
+      if (mapping.type === 'multi_select') {
+        // rawAnswer is an array of selected options
+        const selected: string[] = Array.isArray(rawAnswer) ? rawAnswer : [rawAnswer];
+        for (const option of selected) {
+          const skillName = mapping.optionSkillMap?.[option];
+          if (!skillName) continue;
+          const item = await this._buildEvidenceItem(traineeProfile.id, skillName, 2);
+          if (item) evidenceItems.push(item);
+        }
+      } else if (mapping.type === 'rating') {
+        const level = Math.min(5, Math.max(1, parseInt(String(rawAnswer), 10)));
+        if (isNaN(level)) continue;
+        for (const skillName of (mapping.skillNames || [])) {
+          const item = await this._buildEvidenceItem(traineeProfile.id, skillName, level);
+          if (item) evidenceItems.push(item);
+        }
+      } else if (mapping.type === 'mcq') {
+        const level = mapping.mcqLevelMap?.[String(rawAnswer)] ?? mapping.fixedLevel ?? 2;
+        for (const skillName of (mapping.skillNames || [])) {
+          const item = await this._buildEvidenceItem(traineeProfile.id, skillName, level);
+          if (item) evidenceItems.push(item);
+        }
+      }
+    }
+
+    if (evidenceItems.length > 0) {
+      await this.evidenceService.recordEvidenceBatch(evidenceItems);
+    }
+  }
+
+  private async _buildEvidenceItem(
+    traineeProfileId: string,
+    skillName: string,
+    level: number,
+  ): Promise<{ traineeCompetencyId: string; type: EvidenceType; level: number; sourceRefId: string } | null> {
+    // 1. Find skill by name
+    const skill = await this.prisma.skill.findFirst({
+      where: { name: { equals: skillName, mode: 'insensitive' } },
+    });
+    if (!skill) return null;
+
+    // 2. Find competency that includes this skill
+    const compSkill = await this.prisma.competencySkill.findFirst({
+      where: { skillId: skill.id },
+      include: { competency: true },
+    });
+    if (!compSkill) return null;
+
+    // 3. Upsert TraineeCompetency
+    let tc = await this.prisma.traineeCompetency.findUnique({
+      where: {
+        traineeProfileId_competencyId: {
+          traineeProfileId,
+          competencyId: compSkill.competencyId,
+        },
+      },
+    });
+    if (!tc) {
+      tc = await this.prisma.traineeCompetency.create({
+        data: {
+          traineeProfileId,
+          competencyId: compSkill.competencyId,
+          currentLevel: 1,
+          requiredLevel: 3,
+        },
+      });
+    }
+
+    return {
+      traineeCompetencyId: tc.id,
+      type: EvidenceType.QUIZ_INFERRED,
+      level,
+      sourceRefId: 'quiz:onboarding',
+    };
+  }
+}

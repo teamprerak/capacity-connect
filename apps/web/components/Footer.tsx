@@ -92,16 +92,6 @@ export function Footer() {
                   <Shield className="w-3.5 h-3.5 text-primary" /> Security Architecture
                 </Link>
               </li>
-              <li>
-                <a
-                  href="https://github.com/teamprerak/capacity-connect"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-foreground transition-colors flex items-center gap-1"
-                >
-                  GitHub Repository <ArrowUpRight className="w-3 h-3" />
-                </a>
-              </li>
             </ul>
           </div>
 

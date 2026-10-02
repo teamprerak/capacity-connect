@@ -567,6 +567,7 @@ export class CourseService {
           sequenceOrder: dto.sequenceOrder,
           videoUrl: dto.videoUrl || null,
           documentUrl: dto.documentUrl || null,
+          textContent: dto.textContent || null,
         },
       });
 
@@ -612,6 +613,7 @@ export class CourseService {
       if (dto.sequenceOrder !== undefined && dto.sequenceOrder !== mod.sequenceOrder) hasChanges = true;
       if (dto.videoUrl !== undefined && dto.videoUrl !== mod.videoUrl) hasChanges = true;
       if (dto.documentUrl !== undefined && dto.documentUrl !== mod.documentUrl) hasChanges = true;
+      if (dto.textContent !== undefined && dto.textContent !== mod.textContent) hasChanges = true;
 
       if (!hasChanges) {
         return mod;
@@ -619,7 +621,13 @@ export class CourseService {
 
       const updatedModule = await tx.courseModule.update({
         where: { id: moduleId },
-        data: dto,
+        data: {
+          ...(dto.title !== undefined ? { title: dto.title } : {}),
+          ...(dto.sequenceOrder !== undefined ? { sequenceOrder: dto.sequenceOrder } : {}),
+          ...(dto.videoUrl !== undefined ? { videoUrl: dto.videoUrl } : {}),
+          ...(dto.documentUrl !== undefined ? { documentUrl: dto.documentUrl } : {}),
+          ...(dto.textContent !== undefined ? { textContent: dto.textContent } : {}),
+        },
       });
 
       if (requiresReview) {

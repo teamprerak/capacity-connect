@@ -97,7 +97,7 @@ export default function AdminUsersPage() {
       accessor: (user: any) => {
         const profile = user.trainerProfile || user.traineeProfile;
         if (!profile || (!profile.jobTitle && (!profile.specialtyTags || profile.specialtyTags.length === 0))) {
-          return <span className="text-muted-foreground text-[10px]">N/A</span>;
+          return <span className="text-muted-foreground text-xs">—</span>;
         }
         
         return (

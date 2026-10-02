@@ -100,7 +100,7 @@ export default function TrainerManagementPage() {
         ) : (
           <div className="col-span-full surface-card p-12 rounded-xl border border-border flex flex-col items-center justify-center text-center">
             <h3 className="text-sm font-semibold text-foreground mb-1">No trainers available</h3>
-            <p className="text-xs text-muted-foreground">N/A</p>
+            <p className="text-xs text-muted-foreground">No trainer records to display. Trainers will appear here once they have been verified.</p>
           </div>
         )}
       </div>

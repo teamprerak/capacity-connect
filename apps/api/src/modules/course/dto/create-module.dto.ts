@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsInt, Min, Max, MinLength, MaxLength, IsUrl, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsInt, Min, Max, MinLength, MaxLength, IsUrl, IsOptional, IsIn } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { sanitizeString } from '../../../common/utils/sanitize';
 
@@ -14,6 +14,15 @@ export class CreateModuleDto {
   @Min(1)
   @Max(200)
   sequenceOrder: number;
+
+  @IsOptional()
+  @IsIn(['video', 'text', 'hybrid'])
+  moduleType?: 'video' | 'text' | 'hybrid';
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(50000)
+  textContent?: string;
 
   @IsOptional()
   @IsUrl()
@@ -38,6 +47,15 @@ export class UpdateModuleDto {
   @Min(1)
   @Max(200)
   sequenceOrder?: number;
+
+  @IsOptional()
+  @IsIn(['video', 'text', 'hybrid'])
+  moduleType?: 'video' | 'text' | 'hybrid';
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(50000)
+  textContent?: string;
 
   @IsOptional()
   @IsUrl()

@@ -1,228 +1,232 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { StatCard } from '@/components/StatCard';
-import { api } from '@/lib/api-client';
+import React from 'react';
 import {
   Users,
+  GraduationCap,
+  Clock,
   BookOpen,
-  Award,
-  AlertTriangle,
-  Flame,
   CheckCircle,
-  BrainCircuit,
   FileText,
+  Award,
+  Activity,
+  ShieldCheck,
+  Database,
+  CloudLightning,
+  Radar,
+  Satellite,
+  CloudRain,
+  AlertTriangle,
 } from 'lucide-react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+} from 'recharts';
 
-export default function AdminDashboardPage() {
-  const [overview, setOverview] = useState<any>(null);
-  const [criticalFeed, setCriticalFeed] = useState<any[]>([]);
-  const [difficultQuizzes, setDifficultQuizzes] = useState<any[]>([]);
-  const [heatmapData, setHeatmapData] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+// Empty arrays to trigger N/A fallback state as requested
+const competencyData: any[] = [];
+const participationData: any[] = [];
+const recentActivityData: any[] = [];
+const pendingActionsData: any = null;
 
-  useEffect(() => {
-    Promise.all([
-      api.get('/analytics/admin-dashboard').catch(() => null),
-      api.get('/analytics/critical-gap-feed').catch(() => []),
-      api.get('/analytics/difficult-assessments').catch(() => []),
-      api.get('/analytics/heatmap').catch(() => []),
-    ]).then(([ovData, feedData, quizData, htData]) => {
-      setOverview(ovData);
-      setCriticalFeed(feedData || []);
-      setDifficultQuizzes(quizData || []);
-      setHeatmapData(htData || []);
-      setIsLoading(false);
-    });
-  }, []);
-
-  // Compute unique skills for the heatmap header
-  const allSkills = Array.from(
-    new Set(heatmapData.flatMap((dept) => dept.skills.map((s: any) => s.skill)))
-  );
-
-  return (
-    <div className="space-y-8 animate-in fade-in duration-300">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-          Executive Analytics & Intelligence Console
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Real-time organization-wide competency heatmaps, critical gap feeds, and assessment difficulty detectors.
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-card text-card-foreground border border-border p-3 rounded-lg shadow-md z-50">
+        <p className="text-sm font-semibold mb-1">{label}</p>
+        <p className="text-sm" style={{ color: payload[0].color || 'hsl(var(--primary))' }}>
+          Value: {payload[0].value}
         </p>
       </div>
+    );
+  }
+  return null;
+};
 
-      {/* Overview Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-5">
-        <StatCard
-          title="Total Platform Users"
-          value={(overview?.users?.trainees || 0) + (overview?.users?.trainers || 0)}
-          subtitle="Registered accounts"
-          icon={Users}
-          color="blue"
-        />
-        <StatCard
-          title="Published Courses"
-          value={overview?.courses?.published || 0}
-          subtitle="Capacity modules"
-          icon={BookOpen}
-          color="purple"
-        />
-        <StatCard
-          title="Overall Pass Rate"
-          value={`${Math.round(overview?.enrollments?.completionRate || 0)}%`}
-          subtitle="Assessment efficacy"
-          icon={Award}
-          color="emerald"
-        />
-        <StatCard
-          title="Critical Gap Alerts"
-          value={criticalFeed.length}
-          subtitle="Urgent intervention needed"
-          icon={AlertTriangle}
-          color="rose"
-        />
+export default function AdminDashboardPage() {
+  const isDataAvailable = participationData.length > 0;
+
+  const categories = [
+    { name: 'Weather Forecasting', icon: CloudLightning },
+    { name: 'Doppler Weather Radar', icon: Radar },
+    { name: 'Satellite Meteorology', icon: Satellite },
+    { name: 'Monsoon & Hydromet', icon: CloudRain },
+    { name: 'Warnings & Services', icon: AlertTriangle },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Admin Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Organization-wide training, competency and governance overview.
+          </p>
+        </div>
+        <button className="btn-secondary px-4 py-2 text-sm font-medium">
+          Reset demo data
+        </button>
       </div>
 
-      {/* Heatmap Section */}
-      <div className="bg-card border border-border shadow-sm rounded-md p-6 sm:p-8 border border-border space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Flame className="w-5 h-5 text-amber-700" />
-            <h2 className="text-xl font-bold text-foreground">Department Competency Heatmap</h2>
+      {/* Category Pills */}
+      <div className="flex flex-wrap gap-3">
+        {categories.map((cat, idx) => (
+          <div key={idx} className="surface-card border border-border px-4 py-2.5 rounded-xl flex items-center gap-3">
+            <cat.icon className="w-5 h-5 text-primary" />
+            <span className="text-sm font-semibold text-foreground">{cat.name}</span>
           </div>
-          <span className="text-xs font-semibold text-muted-foreground">Department &times; Skill Matrix</span>
+        ))}
+      </div>
+
+      {/* Primary KPI Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { title: 'TOTAL TRAINEES', val: isDataAvailable ? '10' : 'N/A', sub: 'Approved profiles', icon: Users },
+          { title: 'TOTAL TRAINERS', val: isDataAvailable ? '5' : 'N/A', sub: 'Certified', icon: GraduationCap },
+          { title: 'PENDING APPROVALS', val: isDataAvailable ? '2' : 'N/A', sub: 'Requires review', icon: Clock },
+          { title: 'ACTIVE COURSES', val: isDataAvailable ? '5' : 'N/A', sub: 'Published', icon: BookOpen },
+          { title: 'ENROLLMENTS', val: isDataAvailable ? '5' : 'N/A', sub: 'Active', icon: CheckCircle },
+          { title: 'ASSESSMENTS', val: isDataAvailable ? '2' : 'N/A', sub: 'Live', icon: FileText },
+          { title: 'CERTIFICATES', val: isDataAvailable ? '2' : 'N/A', sub: 'Issued', icon: Award },
+          { title: 'COMPLETION RATE', val: isDataAvailable ? '40%' : 'N/A', sub: 'Prototype sample', icon: Activity },
+        ].map((kpi, idx) => (
+          <div key={idx} className="surface-card p-5 rounded-xl border border-border flex items-start gap-4">
+            <div className="p-2.5 bg-primary/10 rounded-lg text-primary mt-1">
+              <kpi.icon className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{kpi.title}</h4>
+              <div className="text-2xl font-bold text-foreground mt-0.5">{kpi.val}</div>
+              <p className="text-[11px] text-muted-foreground mt-0.5">{kpi.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Secondary KPI Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          { title: 'OPERATIONAL READINESS', val: isDataAvailable ? '13/100' : 'N/A', sub: '13% personnel ready', icon: ShieldCheck },
+          { title: 'VERIFIED EVIDENCE', val: isDataAvailable ? '3' : 'N/A', sub: '15% evidence verified', icon: CheckCircle },
+          { title: 'KNOWLEDGE ASSETS', val: isDataAvailable ? '4' : 'N/A', sub: 'Institutional memory', icon: Database },
+        ].map((kpi, idx) => (
+          <div key={idx} className="surface-card p-5 rounded-xl border border-border flex items-start gap-4">
+            <div className="p-2.5 bg-primary/10 rounded-lg text-primary mt-1">
+              <kpi.icon className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{kpi.title}</h4>
+              <div className="text-2xl font-bold text-foreground mt-0.5">{kpi.val}</div>
+              <p className="text-[11px] text-muted-foreground mt-0.5">{kpi.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="surface-card p-5 rounded-xl border border-border flex flex-col">
+          <div className="mb-6 flex justify-between items-start">
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Competency improvement</h3>
+              <p className="text-xs text-muted-foreground">Average verified score trend</p>
+            </div>
+            <span className="text-xs font-semibold px-2 py-1 bg-emerald-500/10 text-emerald-500 rounded-md">+50 Pts</span>
+          </div>
+          <div className="flex-1 min-h-[250px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              {competencyData.length > 0 ? (
+                <LineChart data={competencyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'currentColor' }} className="text-muted-foreground" dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'currentColor' }} className="text-muted-foreground" domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} />
+                  <RechartsTooltip content={<CustomTooltip />} />
+                  <Line type="linear" dataKey="value" stroke="#3b82f6" strokeWidth={3} dot={{ r: 4, fill: 'hsl(var(--background))', stroke: '#3b82f6', strokeWidth: 2 }} activeDot={{ r: 6, fill: '#3b82f6', stroke: 'hsl(var(--background))', strokeWidth: 2 }} />
+                </LineChart>
+              ) : (
+                <div className="flex h-full items-center justify-center text-muted-foreground text-sm">N/A (No data)</div>
+              )}
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        <div className="overflow-x-auto pt-2">
-          {heatmapData.length > 0 ? (
-            <table className="w-full text-left text-xs text-muted-foreground">
-              <thead className="bg-background font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
-                <tr>
-                  <th className="px-4 py-3">Department</th>
-                  {allSkills.map((skill) => (
-                    <th key={skill} className="px-4 py-3">{skill}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border font-semibold">
-                {heatmapData.map((deptData) => (
-                  <tr key={deptData.department}>
-                    <td className="px-4 py-3 text-foreground font-bold">{deptData.department}</td>
-                    {allSkills.map((skillName) => {
-                      const skill = deptData.skills.find((s: any) => s.skill === skillName);
-                      if (!skill) {
-                        return <td key={skillName} className="px-4 py-3 text-muted-foreground">N/A</td>;
-                      }
-                      
-                      const lvl = skill.avgCurrentLevel;
-                      let colorClass = 'text-muted-foreground bg-slate-100';
-                      let label = 'Unknown';
-                      
-                      if (lvl >= 4) {
-                        colorClass = 'text-emerald-700 bg-emerald-100';
-                        label = 'Advanced';
-                      } else if (lvl >= 3) {
-                        colorClass = 'text-primary bg-primary/10';
-                        label = 'Intermediate';
-                      } else if (lvl >= 2) {
-                        colorClass = 'text-amber-700 bg-amber-100';
-                        label = 'Beginner';
-                      } else {
-                        colorClass = 'text-rose-700 bg-rose-100';
-                        label = 'Novice';
-                      }
+        <div className="surface-card p-5 rounded-xl border border-border flex flex-col">
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-foreground">Department participation</h3>
+            <p className="text-xs text-muted-foreground">Active learners by training area</p>
+          </div>
+          <div className="flex-1 min-h-[250px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              {participationData.length > 0 ? (
+                <BarChart data={participationData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'currentColor' }} className="text-muted-foreground" dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'currentColor' }} className="text-muted-foreground" domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} />
+                  <RechartsTooltip cursor={{ fill: 'hsl(var(--accent))' }} content={<CustomTooltip />} />
+                  <Bar dataKey="value" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
+                </BarChart>
+              ) : (
+                <div className="flex h-full items-center justify-center text-muted-foreground text-sm">N/A (No data)</div>
+              )}
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
 
-                      return (
-                        <td key={skillName} className={`px-4 py-3 ${colorClass}`}>
-                          Level {lvl.toFixed(1)} ({label})
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Bottom Lists Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="surface-card p-5 rounded-xl border border-border">
+          <h3 className="text-sm font-semibold text-foreground mb-1">Recent activity</h3>
+          <p className="text-xs text-muted-foreground mb-6">Latest workflow events</p>
+          <div className="space-y-4">
+            {recentActivityData.length > 0 ? recentActivityData.map((event, idx) => (
+              <div key={idx} className="flex gap-3">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">{event.title}</p>
+                  <p className="text-[10px] text-muted-foreground">{event.time}</p>
+                </div>
+              </div>
+            )) : (
+              <div className="text-sm text-muted-foreground">N/A (No recent activity)</div>
+            )}
+          </div>
+        </div>
+
+        <div className="surface-card p-5 rounded-xl border border-border">
+          <h3 className="text-sm font-semibold text-foreground mb-1">Pending actions</h3>
+          <p className="text-xs text-muted-foreground mb-6">Basic reporting governance review</p>
+          
+          {pendingActionsData ? (
+            <div className="space-y-3">
+              <div className="flex justify-between items-center py-2 border-b border-border">
+                <span className="text-sm font-medium text-foreground">User registrations</span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">2</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-border">
+                <span className="text-sm font-medium text-foreground">Course proposals</span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">1</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-border">
+                <span className="text-sm font-medium text-foreground">Enrollment requests</span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">1</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-border">
+                <span className="text-sm font-medium text-foreground">Unverified trainers</span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-accent text-muted-foreground">0</span>
+              </div>
+            </div>
           ) : (
-            <div className="text-center py-8 text-muted-foreground text-sm">
-              {isLoading ? 'Loading heatmap data...' : 'No competency data available yet.'}
-            </div>
+            <div className="text-sm text-muted-foreground">N/A (No pending actions)</div>
           )}
-        </div>
-      </div>
-
-      {/* Critical Gap Intervention Feed & Difficult Quizzes Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Critical Gap Urgent Feed */}
-        <div className="surface-card p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-error" />
-              <h3 className="text-base font-semibold text-foreground">Critical Gap Urgent Feed</h3>
-            </div>
-            <span className="badge-error text-xs font-semibold px-2 py-0.5 rounded">
-              ≥3 Level Gaps
-            </span>
-          </div>
-
-          <div className="space-y-3">
-            {criticalFeed.length > 0 ? (
-              criticalFeed.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="p-3.5 rounded-lg bg-background border border-border text-xs flex items-center justify-between"
-                >
-                  <div>
-                    <span className="font-semibold text-foreground block">{item.trainee?.user?.email}</span>
-                    <span className="text-muted-foreground">{item.traineeCompetency?.competency?.name}</span>
-                  </div>
-                  <span className="font-mono font-semibold text-error bg-error/10 px-2 py-1 rounded border border-error/20">
-                    Gap: -{item.gapValue}
-                  </span>
-                </div>
-              ))
-            ) : (
-              <div className="text-xs text-muted-foreground text-center py-4">
-                No active critical gap interventions required.
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Difficult Assessment Detector */}
-        <div className="surface-card p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-warning" />
-              <h3 className="text-base font-semibold text-foreground">Low Pass-Rate Assessments</h3>
-            </div>
-            <span className="badge-warning text-xs font-semibold px-2 py-0.5 rounded">
-              Pass Rate &lt; 50%
-            </span>
-          </div>
-
-          <div className="space-y-3">
-            {difficultQuizzes.length > 0 ? (
-              difficultQuizzes.map((quiz, idx) => (
-                <div
-                  key={idx}
-                  className="p-3.5 rounded-lg bg-background border border-border text-xs flex items-center justify-between"
-                >
-                  <div>
-                    <span className="font-semibold text-foreground block">{quiz.subject}</span>
-                    <span className="text-muted-foreground">{quiz.course?.title}</span>
-                  </div>
-                  <span className="font-mono font-semibold text-warning bg-warning/10 px-2 py-1 rounded border border-warning/20">
-                    {quiz.passRatePct}% Pass Rate
-                  </span>
-                </div>
-              ))
-            ) : (
-              <div className="text-xs text-muted-foreground text-center py-4">
-                All active assessments meet standard pass rate thresholds.
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>

@@ -93,6 +93,28 @@ export default function AdminUsersPage() {
       ),
     },
     {
+      header: 'Specialty / Tags',
+      accessor: (user: any) => {
+        const profile = user.trainerProfile || user.traineeProfile;
+        if (!profile || (!profile.jobTitle && (!profile.specialtyTags || profile.specialtyTags.length === 0))) {
+          return <span className="text-muted-foreground text-[10px]">N/A</span>;
+        }
+        
+        return (
+          <div>
+            {profile.jobTitle && <div className="font-semibold text-[10px] text-foreground mb-0.5">{profile.jobTitle}</div>}
+            <div className="flex flex-wrap gap-1">
+              {profile.specialtyTags?.map((tag: string, idx: number) => (
+                <span key={idx} className="bg-slate-100 border border-slate-200 text-slate-700 px-1.5 py-0.5 rounded text-[10px]">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      },
+    },
+    {
       header: 'Actions',
       accessor: (user: any) => {
         const isAdminUser = user.userRoles?.some((ur: any) => ur.role?.name === 'admin');

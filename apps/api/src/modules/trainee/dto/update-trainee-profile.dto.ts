@@ -30,4 +30,19 @@ export class UpdateTraineeProfileDto {
   @Min(0)
   @Max(100)
   profileCompletionPct?: number;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(120)
+  @Transform(({ value }) => sanitizeString(value))
+  jobTitle?: string;
+
+  @IsOptional()
+  specialtyTags?: string[];
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(3000)
+  @Transform(({ value }) => sanitizeString(value))
+  detailedJobContext?: string;
 }

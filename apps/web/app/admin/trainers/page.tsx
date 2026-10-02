@@ -48,7 +48,8 @@ export default function TrainerManagementPage() {
                     </div>
                     <div>
                       <h3 className="text-sm font-semibold text-foreground">{trainer.name}</h3>
-                      <p className="text-xs text-muted-foreground">{trainer.department}</p>
+                      <p className="text-xs text-foreground font-medium">{trainer.title}</p>
+                      <p className="text-[10px] text-muted-foreground">{trainer.department}</p>
                     </div>
                   </div>
                   <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-2 py-1 rounded">

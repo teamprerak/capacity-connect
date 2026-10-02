@@ -25,8 +25,8 @@ export class AdminService {
           status: true,
           createdAt: true,
           userRoles: { select: { role: { select: { name: true } } } },
-          traineeProfile: { select: { id: true } },
-          trainerProfile: { select: { id: true, verificationStatus: true } },
+          traineeProfile: { select: { id: true, jobTitle: true, specialtyTags: true } },
+          trainerProfile: { select: { id: true, verificationStatus: true, jobTitle: true, specialtyTags: true } },
         }
       }),
       this.prisma.user.count(),
@@ -198,12 +198,12 @@ export class AdminService {
         id: t.id,
         initials: names.map(n => n.charAt(0).toUpperCase()).join(''),
         name: names.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(' '),
-        department: t.department?.name || 'General',
+        title: t.jobTitle || 'Trainer', department: t.department?.name || 'General',
         rating: Number(t.trainerRatingAvg) || 4.5, // Dummy default if 0
         years: t.yearsExperience,
         level: t.yearsExperience > 10 ? 'Advanced' : 'Intermediate',
-        description: t.bio || 'Specialist in training.',
-        tags: t.expertise.map(e => e.skill.name),
+        description: t.detailedJobContext || t.bio || 'Specialist in training.',
+        tags: [...t.expertise.map(e => e.skill.name), ...(t.specialtyTags || [])],
         verificationStatus: t.verificationStatus,
       };
     });

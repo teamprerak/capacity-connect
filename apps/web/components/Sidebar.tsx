@@ -21,7 +21,8 @@ import {
   BarChart3,
   ShieldAlert,
   Database,
-  Bell
+  Bell,
+  User
 } from 'lucide-react';
 import { LogoutConfirmModal } from './LogoutConfirmModal';
 
@@ -38,11 +39,13 @@ export function Sidebar({ role }: SidebarProps) {
       { href: '/trainee', label: 'My Dashboard', icon: LayoutDashboard },
       { href: '/trainee/courses', label: 'Course Catalog', icon: BookOpen },
       { href: '/trainee/certificates', label: 'Certificate Vault', icon: Award },
+      { href: '/profile', label: 'My Profile', icon: User },
     ],
     trainer: [
       { href: '/trainer', label: 'Trainer Studio', icon: LayoutDashboard },
       { href: '/trainer/courses/new', label: 'Course Builder', icon: PlusCircle },
       { href: '/trainer/assessments/new', label: 'MCQ Authoring', icon: FileText },
+      { href: '/profile', label: 'My Profile', icon: User },
     ],
     admin: [
       { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },

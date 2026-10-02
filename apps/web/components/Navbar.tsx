@@ -9,7 +9,6 @@ import {
   ShieldCheck, User, LogOut, QrCode, BookOpen, Layers,
   LayoutDashboard, Loader2, Moon, Sun, KeyRound
 } from 'lucide-react';
-import { AuthModal } from './AuthModal';
 import { QRScannerModal } from './QRScannerModal';
 import { LogoutConfirmModal } from './LogoutConfirmModal';
 import { NotificationBell } from './NotificationBell';
@@ -160,19 +159,19 @@ export function Navbar() {
             ) : (
               <>
                 <div className="w-px h-5 bg-border mx-0.5" />
-                <button
-                  onClick={() => setIsAuthOpen(true)}
+                <Link
+                  href="/login"
                   className="btn-primary text-sm px-4 py-1.5"
                 >
                   Sign In
-                </button>
+                </Link>
               </>
             )}
           </div>
         </div>
       </header>
 
-      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      {/* Removing AuthModal as we now use /login */}
       <QRScannerModal isOpen={isQROpen} onClose={() => setIsQROpen(false)} />
       <LogoutConfirmModal isOpen={isLogoutOpen} onClose={() => setIsLogoutOpen(false)} />
       <ChangePasswordModal isOpen={isChangePasswordOpen} onClose={() => setIsChangePasswordOpen(false)} />

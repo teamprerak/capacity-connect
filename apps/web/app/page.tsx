@@ -16,7 +16,6 @@ import {
   VolumeX,
   Maximize
 } from 'lucide-react';
-import { AuthModal } from '@/components/AuthModal';
 import { Footer } from '@/components/Footer';
 import { AnimatedPeopleBackground } from '@/components/AnimatedPeopleBackground';
 
@@ -103,12 +102,12 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={() => setIsAuthOpen(true)}
-                className="btn-primary px-6 py-2.5 text-sm"
+              <Link
+                href="/login"
+                className="btn-primary px-6 py-2.5 text-sm inline-flex items-center justify-center gap-2"
               >
                 Launch Platform Portal <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
               <Link
                 href="/trainee/courses"
                 className="btn-secondary px-6 py-2.5 text-sm"
@@ -244,12 +243,12 @@ export default function LandingPage() {
               </span>
               <h2 className="text-xl font-semibold text-foreground">Enterprise Analytics Matrix</h2>
             </div>
-            <button
-              onClick={() => setIsAuthOpen(true)}
-              className="btn-primary text-xs px-4 py-2 shrink-0"
+            <Link
+              href="/login"
+              className="btn-primary text-xs px-4 py-2 shrink-0 inline-flex items-center justify-center"
             >
               Access Full Console
-            </button>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -324,7 +323,7 @@ export default function LandingPage() {
       {/* Footer */}
       <Footer />
 
-      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      {/* Removed AuthModal as we use /login now */}
     </div>
   );
 }

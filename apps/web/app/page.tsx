@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { AuthModal } from '@/components/AuthModal';
 import { Footer } from '@/components/Footer';
+import { AnimatedPeopleBackground } from '@/components/AnimatedPeopleBackground';
 
 const VIDEO_CHAPTERS = [
   { label: 'Introduction', start: 0 },
@@ -78,13 +79,14 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="min-h-screen flex flex-col bg-background text-foreground overflow-x-hidden">
       <Navbar />
 
       {/* Hero Section */}
       <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10">
-          <div className="max-w-3xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10 relative">
+          <AnimatedPeopleBackground />
+          <div className="max-w-3xl relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent border border-border text-muted-foreground text-xs font-medium mb-6">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span>Industrial Capacity Building &amp; LMS Platform</span>
@@ -116,7 +118,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 w-full h-full justify-center">
+          <div className="flex flex-col gap-4 w-full h-full justify-center relative z-10">
             {/* Premium Native HTML5 Player with Custom Controls */}
             <div 
               className="relative w-full aspect-video rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-border bg-black group"

@@ -24,65 +24,60 @@ export function AnimatedPeopleBackground() {
         >
           <defs>
             <g id="crowd-segment">
-              {/* Figure 1: Scientist with glasses */}
-              <g transform="translate(10, 30)">
-                <circle cx="30" cy="20" r="12" stroke="currentColor" strokeWidth="2" />
-                <path d="M22,18 h16 M22,18 a4,4 0 0,0 0,8 a4,4 0 0,0 0,-8 M38,18 a4,4 0 0,0 0,8 a4,4 0 0,0 0,-8" stroke="currentColor" strokeWidth="1.5" />
-                <path d="M15,40 C20,32 40,32 45,40 L55,120 L5,120 Z" stroke="currentColor" strokeWidth="2" />
-                <path d="M20,42 L25,70 L40,65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <rect x="38" y="55" width="6" height="14" rx="3" stroke="currentColor" strokeWidth="1.5" />
+              {/* Figure 1: Educator & Board (Warli Style) */}
+              <g transform="translate(20, 20)">
+                <circle cx="20" cy="15" r="10" fill="currentColor" />
+                <path d="M20,55 L5,30 L35,30 Z M20,55 L5,80 L35,80 Z" fill="currentColor" />
+                <path d="M 12,80 L 12,110 M 28,80 L 28,110" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 5,30 L -5,45 L 5,60 M 35,30 L 55,20 L 75,15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <rect x="70" y="-5" width="45" height="55" fill="none" stroke="currentColor" strokeWidth="2.5" />
+                <path d="M 75,45 L 85,30 L 95,35 L 105,15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </g>
 
-              {/* Figure 2: Person with Laptop (sitting) */}
-              <g transform="translate(110, 50)">
-                <circle cx="25" cy="15" r="11" stroke="currentColor" strokeWidth="2" />
-                <path d="M12,35 C20,30 35,32 40,45 L45,100 L10,100 Z" stroke="currentColor" strokeWidth="2" />
-                <path d="M45,65 L60,65 L55,50 Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                <path d="M25,40 C30,55 40,60 45,62" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              {/* Figure 2: Working on Laptop (Warli Style) */}
+              <g transform="translate(180, 40)">
+                <circle cx="20" cy="15" r="10" fill="currentColor" />
+                <path d="M20,55 L5,30 L35,30 Z M20,55 L5,80 L35,80 Z" fill="currentColor" />
+                <path d="M 5,80 L -10,90 L 15,90 M 35,80 L 50,90 L 25,90" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 35,30 L 50,45 L 40,65 M 5,30 L -5,45 L 10,60" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 35,75 L 55,75 L 45,55 L 60,55" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </g>
 
-              {/* Figure 3: Professional standing with tablet */}
-              <g transform="translate(200, 20)">
-                <circle cx="25" cy="15" r="10" stroke="currentColor" strokeWidth="2" />
-                <path d="M12,32 C18,26 32,26 38,32 L42,130 L8,130 Z" stroke="currentColor" strokeWidth="2" />
-                <g transform="translate(40, 60) rotate(-15)">
-                  <rect x="-8" y="-11" width="16" height="22" rx="2" stroke="currentColor" strokeWidth="2" />
-                </g>
-                <path d="M15,38 L35,55" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              {/* Figure 3: Industry / Gear (Warli Style) */}
+              <g transform="translate(320, 20)">
+                <circle cx="20" cy="15" r="10" fill="currentColor" />
+                <path d="M20,55 L5,30 L35,30 Z M20,55 L5,80 L35,80 Z" fill="currentColor" />
+                <path d="M 10,80 L -5,95 L -5,110 M 30,80 L 45,95 L 35,110" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 5,30 L -10,10 L 0,0 M 35,30 L 50,10 L 40,0" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <circle cx="20" cy="-5" r="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeDasharray="6 4" />
+                <circle cx="20" cy="-5" r="6" fill="none" stroke="currentColor" strokeWidth="2" />
               </g>
 
-              {/* Figure 4: Woman pointing / presenting */}
-              <g transform="translate(300, 35)">
-                <circle cx="25" cy="15" r="11" stroke="currentColor" strokeWidth="2" />
-                <path d="M14,15 C14,0 36,0 36,15 L38,25 C30,28 20,28 12,25 Z" stroke="currentColor" strokeWidth="2" />
-                <path d="M15,35 C20,30 30,30 35,35 L42,115 L8,115 Z" stroke="currentColor" strokeWidth="2" />
-                <path d="M28,35 L55,20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              {/* Figure 4: Collaboration (Two Warli People) */}
+              <g transform="translate(460, 20)">
+                {/* Person A */}
+                <circle cx="15" cy="15" r="10" fill="currentColor" />
+                <path d="M15,55 L0,30 L30,30 Z M15,55 L0,80 L30,80 Z" fill="currentColor" />
+                <path d="M 5,80 L -5,110 M 25,80 L 35,110" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 0,30 L -10,45 L 0,60" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 30,30 L 50,25 L 65,35" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+
+                {/* Person B */}
+                <circle cx="105" cy="15" r="10" fill="currentColor" />
+                <path d="M105,55 L90,30 L120,30 Z M105,55 L90,80 L120,80 Z" fill="currentColor" />
+                <path d="M 95,80 L 85,110 M 115,80 L 125,110" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 120,30 L 130,45 L 120,60" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 90,30 L 70,25 L 65,35" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </g>
 
-              {/* Figure 5: Person reading */}
-              <g transform="translate(410, 45)">
-                <circle cx="25" cy="15" r="10" stroke="currentColor" strokeWidth="2" />
-                <path d="M12,35 C20,28 30,30 38,40 L45,105 L5,105 Z" stroke="currentColor" strokeWidth="2" />
-                <path d="M35,55 L55,50 L60,70 L40,75 Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                <path d="M38,60 L52,56" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-              </g>
-
-              {/* Figure 6: Professional with tie */}
-              <g transform="translate(500, 25)">
-                <circle cx="25" cy="15" r="12" stroke="currentColor" strokeWidth="2" />
-                <path d="M10,35 C18,28 32,28 40,35 L48,125 L2,125 Z" stroke="currentColor" strokeWidth="2" />
-                <path d="M25,30 L28,50 L25,55 L22,50 Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                <path d="M12,45 L35,50 M38,45 L15,52" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </g>
-
-              {/* Figure 7: Two people talking */}
-              <g transform="translate(600, 40)">
-                <circle cx="15" cy="15" r="9" stroke="currentColor" strokeWidth="2" />
-                <path d="M5,32 C10,28 20,28 25,32 L28,110 L2,110 Z" stroke="currentColor" strokeWidth="2" />
-                
-                <circle cx="45" cy="10" r="10" stroke="currentColor" strokeWidth="2" />
-                <path d="M35,28 C40,22 50,22 55,28 L60,110 L30,110 Z" stroke="currentColor" strokeWidth="2" />
-                <path d="M40,35 L25,45" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              {/* Figure 5: Reading / Book (Warli Style) */}
+              <g transform="translate(640, 20)">
+                <circle cx="20" cy="15" r="10" fill="currentColor" />
+                <path d="M20,55 L5,30 L35,30 Z M20,55 L5,80 L35,80 Z" fill="currentColor" />
+                <path d="M 10,80 L 5,110 M 30,80 L 35,110" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 5,30 L -10,45 L 10,55 M 35,30 L 50,45 L 30,55" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <path d="M 20,45 L 35,52 L 20,60 L 5,52 Z" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M 20,45 L 20,60" stroke="currentColor" strokeWidth="1.5" />
               </g>
             </g>
           </defs>

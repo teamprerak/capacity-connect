@@ -38,7 +38,6 @@ export default function OnboardingQuiz({
   const currentAnswer = answers[question.id];
   const currentOtherText = otherText[question.id] || "";
 
-  // Validation logic
   let hasAnswer = false;
   if (question.type === "rating_1_5") {
     hasAnswer = currentAnswer !== undefined;
@@ -53,7 +52,6 @@ export default function OnboardingQuiz({
       hasAnswer = currentOtherText.trim() !== "";
     }
   } else {
-    // short_answer
     hasAnswer = currentAnswer !== undefined && currentAnswer.trim() !== "";
   }
 
@@ -61,7 +59,6 @@ export default function OnboardingQuiz({
     if (hasAnswer && !isLastStep) {
       setCurrentStep((prev) => prev + 1);
     } else if (hasAnswer && isLastStep) {
-      // Merge "Other" text into answers if needed
       const finalAnswers = { ...answers };
       for (const key in finalAnswers) {
         if (Array.isArray(finalAnswers[key]) && finalAnswers[key].includes("Other")) {
@@ -99,15 +96,15 @@ export default function OnboardingQuiz({
   const renderInput = () => {
     if (question.type === "rating_1_5") {
       return (
-        <div className="flex justify-center gap-4 mt-6">
+        <div className="flex justify-center gap-4 mt-4">
           {[1, 2, 3, 4, 5].map((rating) => (
             <button
               key={rating}
               onClick={() => handleAnswerChange(rating)}
-              className={`w-14 h-14 rounded-full text-lg font-semibold transition-all ${
+              className={`w-12 h-12 rounded-full text-lg font-semibold transition-all ${
                 currentAnswer === rating
-                  ? "bg-blue-600 text-white shadow-lg scale-110"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  ? "bg-primary text-primary-foreground shadow-lg scale-110"
+                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
               }`}
             >
               {rating}
@@ -123,23 +120,23 @@ export default function OnboardingQuiz({
       const allOptions = hasOtherOption && !options.includes("Other") ? [...options, "Other"] : options;
 
       return (
-        <div className="mt-6 space-y-3">
+        <div className="mt-4 space-y-2">
           {allOptions.map((option) => (
             <label
               key={option}
-              className={`flex items-center p-4 border rounded-xl cursor-pointer transition-colors ${
+              className={`flex items-center p-3 border rounded-xl cursor-pointer transition-colors ${
                 (currentAnswer || []).includes(option)
-                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                  : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  ? "border-primary bg-primary/5"
+                  : "border-border bg-card hover:bg-accent"
               }`}
             >
               <input
                 type="checkbox"
-                className="w-5 h-5 text-blue-600 rounded border-slate-300 dark:border-slate-600 focus:ring-blue-500 accent-blue-600"
+                className="w-4 h-4 text-primary rounded border-input focus:ring-primary accent-primary"
                 checked={(currentAnswer || []).includes(option)}
                 onChange={() => handleMultiSelectChange(option)}
               />
-              <span className="ml-3 text-slate-900 dark:text-slate-100">{option}</span>
+              <span className="ml-3 text-sm font-medium text-foreground">{option}</span>
             </label>
           ))}
           {(currentAnswer || []).includes("Other") && (
@@ -147,7 +144,7 @@ export default function OnboardingQuiz({
               value={currentOtherText}
               onChange={(e) => setOtherText({ ...otherText, [question.id]: e.target.value })}
               placeholder="Please specify..."
-              className="w-full mt-3 p-3 text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none transition-all resize-none"
+              className="w-full mt-2 p-2.5 text-sm text-foreground bg-background border border-input rounded-xl focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
               rows={2}
             />
           )}
@@ -161,24 +158,24 @@ export default function OnboardingQuiz({
       const allOptions = hasOtherOption && !options.includes("Other") ? [...options, "Other"] : options;
 
       return (
-        <div className="mt-6 space-y-3">
+        <div className="mt-4 space-y-2">
           {allOptions.map((option) => (
             <label
               key={option}
-              className={`flex items-center p-4 border rounded-xl cursor-pointer transition-colors ${
+              className={`flex items-center p-3 border rounded-xl cursor-pointer transition-colors ${
                 currentAnswer === option
-                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                  : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  ? "border-primary bg-primary/5"
+                  : "border-border bg-card hover:bg-accent"
               }`}
             >
               <input
                 type="radio"
                 name={`q-${question.id}`}
-                className="w-5 h-5 text-blue-600 border-slate-300 dark:border-slate-600 focus:ring-blue-500 accent-blue-600"
+                className="w-4 h-4 text-primary border-input focus:ring-primary accent-primary"
                 checked={currentAnswer === option}
                 onChange={() => handleAnswerChange(option)}
               />
-              <span className="ml-3 text-slate-900 dark:text-slate-100">{option}</span>
+              <span className="ml-3 text-sm font-medium text-foreground">{option}</span>
             </label>
           ))}
           {currentAnswer === "Other" && (
@@ -186,7 +183,7 @@ export default function OnboardingQuiz({
               value={currentOtherText}
               onChange={(e) => setOtherText({ ...otherText, [question.id]: e.target.value })}
               placeholder="Please specify..."
-              className="w-full mt-3 p-3 text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none transition-all resize-none"
+              className="w-full mt-2 p-2.5 text-sm text-foreground bg-background border border-input rounded-xl focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
               rows={2}
             />
           )}
@@ -194,14 +191,13 @@ export default function OnboardingQuiz({
       );
     }
 
-    // Default: Short Answer / Textarea
     return (
-      <div className="mt-6">
+      <div className="mt-4">
         <textarea
           value={currentAnswer || ""}
           onChange={(e) => handleAnswerChange(e.target.value)}
           placeholder="Type your answer here..."
-          className="w-full min-h-[120px] p-4 text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none transition-all resize-y"
+          className="w-full min-h-[80px] p-3 text-sm text-foreground bg-background border border-input rounded-xl focus:ring-1 focus:ring-primary outline-none transition-all resize-y"
           autoFocus
         />
       </div>
@@ -209,52 +205,52 @@ export default function OnboardingQuiz({
   };
 
   return (
-    <div className="fixed inset-0 bg-white dark:bg-slate-950 z-[100] flex flex-col items-center justify-center font-sans overflow-y-auto py-10">
+    <div className="fixed inset-0 bg-background z-[100] flex flex-col items-center justify-center font-sans overflow-y-auto py-6">
       <div className="w-full absolute top-0 left-0">
-        <div className="h-2 bg-slate-100 dark:bg-slate-800 w-full">
+        <div className="h-1.5 bg-muted w-full">
           <div
-            className="h-2 bg-blue-600 transition-all duration-300 ease-in-out"
+            className="h-1.5 bg-primary transition-all duration-300 ease-in-out"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
       {onSkip && (
-        <div className="absolute top-6 right-6">
+        <div className="absolute top-4 right-6">
           <button
             onClick={onSkip}
-            className="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             I will answer the quiz later
           </button>
         </div>
       )}
 
-      <div className="w-full max-w-2xl px-6 py-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-2xl mx-4 my-auto">
-        <div className="mb-8">
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">
+      <div className="w-full max-w-2xl px-6 py-6 bg-card border border-border shadow-2xl rounded-2xl mx-4 my-auto">
+        <div className="mb-6">
+          <p className="text-xs font-semibold text-muted-foreground mb-1 tracking-wide uppercase">
             Question {currentStep + 1} of {questions.length}
           </p>
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+          <h2 className="text-xl font-semibold text-foreground leading-tight">
             {question.question}
           </h2>
         </div>
 
-        <div className="min-h-[150px] mb-8">
+        <div className="min-h-[120px] mb-6">
           {renderInput()}
         </div>
 
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between mt-6 pt-5 border-t border-border">
           <button
             onClick={handleBack}
             disabled={currentStep === 0 || isSubmitting}
             className={`flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
               currentStep === 0 || isSubmitting
-                ? "text-slate-400 dark:text-slate-600 cursor-not-allowed"
-                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                ? "text-muted-foreground opacity-50 cursor-not-allowed"
+                : "text-foreground hover:bg-accent"
             }`}
           >
-            <ChevronLeft className="w-5 h-5 mr-1" />
+            <ChevronLeft className="w-4 h-4 mr-1" />
             Back
           </button>
 
@@ -263,24 +259,24 @@ export default function OnboardingQuiz({
             disabled={!hasAnswer || isSubmitting}
             className={`flex items-center px-6 py-2.5 text-sm font-semibold rounded-lg transition-all ${
               !hasAnswer || isSubmitting
-                ? "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed"
-                : "bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg"
+                ? "bg-muted text-muted-foreground cursor-not-allowed"
+                : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg"
             }`}
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Submitting...
               </>
             ) : isLastStep ? (
               <>
                 Submit
-                <Check className="w-5 h-5 ml-2" />
+                <Check className="w-4 h-4 ml-1.5" />
               </>
             ) : (
               <>
                 Next
-                <ChevronRight className="w-5 h-5 ml-2" />
+                <ChevronRight className="w-4 h-4 ml-1.5" />
               </>
             )}
           </button>

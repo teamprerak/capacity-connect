@@ -76,14 +76,6 @@ export default function AdminDashboardPage() {
   }));
   const pendingActionsData = pending;
 
-  const categories = [
-    { name: 'Weather Forecasting', icon: CloudLightning },
-    { name: 'Doppler Weather Radar', icon: Radar },
-    { name: 'Satellite Meteorology', icon: Satellite },
-    { name: 'Monsoon & Hydromet', icon: CloudRain },
-    { name: 'Warnings & Services', icon: AlertTriangle },
-  ];
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -94,22 +86,7 @@ export default function AdminDashboardPage() {
             Organization-wide training, competency and governance overview.
           </p>
         </div>
-        <button className="btn-secondary px-4 py-2 text-sm font-medium">
-          Reset demo data
-        </button>
-      </div>
-
-      {/* Category Pills */}
-      <div className="flex flex-wrap gap-3">
-        {categories.map((cat, idx) => (
-          <div key={idx} className="surface-card border border-border px-4 py-2.5 rounded-xl flex items-center gap-3">
-            <cat.icon className="w-5 h-5 text-primary" />
-            <span className="text-sm font-semibold text-foreground">{cat.name}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Primary KPI Grid */}
+      </div>      {/* Primary KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { title: 'TOTAL TRAINEES', val: isDataAvailable ? metrics.users.trainees : 'N/A', sub: 'Approved profiles', icon: Users },
@@ -137,9 +114,9 @@ export default function AdminDashboardPage() {
       {/* Secondary KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
-          { title: 'OPERATIONAL READINESS', val: isDataAvailable ? '13/100' : 'N/A', sub: 'Based on ORI calculation', icon: ShieldCheck },
-          { title: 'VERIFIED EVIDENCE', val: isDataAvailable ? '15%' : 'N/A', sub: 'Scenarios verified', icon: CheckCircle },
-          { title: 'KNOWLEDGE ASSETS', val: isDataAvailable ? (metrics.knowledgeCount ?? 4) : 'N/A', sub: 'Institutional memory', icon: Database },
+          { title: 'OPERATIONAL READINESS', val: isDataAvailable ? (metrics.operationalReadiness ?? 'N/A') : 'N/A', sub: 'Based on ORI calculation', icon: ShieldCheck },
+          { title: 'VERIFIED EVIDENCE', val: isDataAvailable ? (metrics.verifiedEvidence ?? 'N/A') : 'N/A', sub: 'Scenarios verified', icon: CheckCircle },
+          { title: 'KNOWLEDGE ASSETS', val: isDataAvailable ? (metrics.knowledgeAssets ?? 'N/A') : 'N/A', sub: 'Institutional memory', icon: Database },
         ].map((kpi, idx) => (
           <div key={idx} className="surface-card p-5 rounded-xl border border-border flex items-start gap-4">
             <div className="p-2.5 bg-primary/10 rounded-lg text-primary mt-1">
@@ -232,19 +209,19 @@ export default function AdminDashboardPage() {
             <div className="space-y-3">
               <div className="flex justify-between items-center py-2 border-b border-border">
                 <span className="text-sm font-medium text-foreground">User registrations</span>
-                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">2</span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">{pendingActionsData?.pendingUsers ?? 'N/A'}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-border">
                 <span className="text-sm font-medium text-foreground">Course proposals</span>
-                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">1</span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">{pendingActionsData?.pendingCourses ?? 'N/A'}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-border">
                 <span className="text-sm font-medium text-foreground">Enrollment requests</span>
-                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">1</span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">N/A</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-border">
                 <span className="text-sm font-medium text-foreground">Unverified trainers</span>
-                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-accent text-muted-foreground">0</span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-accent text-muted-foreground">{pendingActionsData?.pendingTrainers ?? 'N/A'}</span>
               </div>
             </div>
           ) : (

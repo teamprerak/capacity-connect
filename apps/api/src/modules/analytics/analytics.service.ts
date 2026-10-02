@@ -51,7 +51,18 @@ export class AnalyticsService {
       },
       certificates: totalCertificates,
       skillGaps: topGaps,
+      knowledgeAssets: await this.prisma.knowledgeHubItem.count(),
+      verifiedEvidence: await this.getVerifiedEvidencePercentage(),
     };
+  }
+
+  private async getVerifiedEvidencePercentage(): Promise<string | null> {
+    const total = await this.prisma.traineeCompetency.count();
+    if (total === 0) return null;
+    const verified = await this.prisma.traineeCompetency.count({
+      where: { evidenceUrl: { not: null } }
+    });
+    return `${Math.round((verified / total) * 100)}%`;
   }
 
   /**
@@ -250,28 +261,17 @@ export class AnalyticsService {
   }
 
   async getDashboardCharts(): Promise<any> {
-    // Competency progress over time
-    const competencyData = [
-      { name: 'Jun', value: 45 },
-      { name: 'Jul', value: 55 },
-      { name: 'Aug', value: 65 },
-      { name: 'Sep', value: 76 }
-    ];
-    // Dept participation
-    const participationData = [
-      { name: 'Forecasting', value: 85 },
-      { name: 'Climate', value: 65 },
-      { name: 'Satellite', value: 55 },
-      { name: 'Ocean', value: 45 },
-      { name: 'Hydrology', value: 40 }
-    ];
+    // Return empty arrays instead of dummy data to mark as N/A but keep capacity
+    const competencyData: any[] = [];
+    const participationData: any[] = [];
     return { competencyData, participationData };
   }
 
   async getPendingActions(): Promise<any> {
     const pendingTrainers = await this.prisma.trainerProfile.count({ where: { verificationStatus: 'pending' } });
-    const pendingCourses = await this.prisma.course.count({ where: { status: 'draft' } });
-    return { pendingTrainers, pendingCourses };
+    const pendingCourses = await this.prisma.course.count({ where: { status: 'pending_approval' } });
+    const pendingUsers = await this.prisma.user.count({ where: { status: 'pending' } });
+    return { pendingTrainers, pendingCourses, pendingUsers };
   }
 
   async getReadinessPersonnel(): Promise<any> {

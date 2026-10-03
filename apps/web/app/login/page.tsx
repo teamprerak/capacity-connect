@@ -49,7 +49,7 @@ export default function LoginPage() {
     if (!isDemoMode) return;
     if (demoRole === 'admin') setEmail('admin@capacityconnect.org');
     else if (demoRole === 'trainer') setEmail('trainer.devops@capacityconnect.org');
-    else setEmail('trainee1@capacityconnect.org');
+    else setEmail('demo.trainee@capacityconnect.org');
     setPassword('Password123!');
   };
 
@@ -250,3 +250,4 @@ export default function LoginPage() {
     </PageTransition>
   );
 }
+

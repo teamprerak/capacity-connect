@@ -678,5 +678,15 @@
   "course_proposals": "Course Publishing Proposals",
   "enrollment_requests": "Enrollment Requests",
   "unverified_trainers": "Unverified Trainer Applications",
-  "n_a__no_pending_actions_": "No pending actions."
+  "n_a__no_pending_actions_": "No pending actions.",
+  "verifying_certificate_authenti": "Verifying Certificate Authenticity...",
+  "official_verifiable_digital_ce": "Official Verifiable Digital Certificate",
+  "certificate_of_capacity_accomp": "Certificate of Capacity Accomplishment",
+  "serial_no_": "SERIAL NO:",
+  "recipient_trainee": "Recipient / Trainee",
+  "certified_skill_course": "Certified Skill / Course",
+  "instructing_trainer": "Instructing Trainer",
+  "official_issue_date": "Official Issue Date",
+  "cryptographically_verified_on_": "Cryptographically verified cryptographic signature.",
+  "verification_failed": "Verification Failed"
 }

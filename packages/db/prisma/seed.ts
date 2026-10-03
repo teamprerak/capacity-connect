@@ -1,5 +1,5 @@
 if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = 'postgresql://ccuser:ccpassword@localhost:5433/capacityconnect';
+  
 }
 
 import {
@@ -1030,3 +1030,5 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+

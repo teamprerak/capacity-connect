@@ -6,8 +6,10 @@ import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { Clock, BarChart, User, CheckCircle, BookOpen, Layers, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from "react-i18next";
 
 export default function CourseDetailPage() {
+    const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
@@ -42,16 +44,14 @@ export default function CourseDetailPage() {
   if (isLoading) {
     return (
       <div className="bg-card border border-border shadow-sm p-12 rounded-md text-center text-muted-foreground">
-        Loading syllabus details...
-      </div>
+         {t("loading_syllabus_details___")} </div>
     );
   }
 
   if (!course) {
     return (
       <div className="bg-card border border-border shadow-sm p-12 rounded-md text-center text-muted-foreground">
-        Course not found.
-      </div>
+         {t("course_not_found_")} </div>
     );
   }
 
@@ -61,8 +61,7 @@ export default function CourseDetailPage() {
         href="/trainee/courses"
         className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="w-3.5 h-3.5" /> Back to Catalog
-      </Link>
+        <ArrowLeft className="w-3.5 h-3.5" />  {t("back_to_catalog")} </Link>
 
       {/* Course header card */}
       <div className="surface-card p-7 space-y-5">
@@ -87,15 +86,15 @@ export default function CourseDetailPage() {
         <div className="flex flex-wrap gap-5 pt-4 border-t border-border text-xs font-medium text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5" />
-            <span>Duration: {Math.floor(course.durationMinutes / 60)}h {course.durationMinutes % 60 > 0 ? `${course.durationMinutes % 60}m` : ''}</span>
+            <span> {t("duration_")} {Math.floor(course.durationMinutes / 60)}h {course.durationMinutes % 60 > 0 ? `${course.durationMinutes % 60}m` : ''}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <User className="w-3.5 h-3.5" />
-            <span>Trainer: {course.trainer?.user?.email}</span>
+            <span> {t("trainer_")} {course.trainer?.user?.email}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5" />
-            <span>Modules: {course.modules?.length || 0}</span>
+            <span> {t("modules_")} {course.modules?.length || 0}</span>
           </div>
         </div>
 
@@ -114,7 +113,7 @@ export default function CourseDetailPage() {
 
       {/* Syllabus */}
       <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-foreground">Course Syllabus &amp; Curriculum</h2>
+        <h2 className="text-lg font-semibold text-foreground"> {t("course_syllabus__amp__curricul")} </h2>
         {course.modules?.length > 0 ? (
           <div className="space-y-2">
             {course.modules.map((mod: any, idx: number) => (
@@ -128,17 +127,16 @@ export default function CourseDetailPage() {
                   </span>
                   <div>
                     <h4 className="text-sm font-medium text-foreground">{mod.title}</h4>
-                    <span className="text-xs text-muted-foreground">{mod.resources?.length || 0} resources</span>
+                    <span className="text-xs text-muted-foreground">{mod.resources?.length || 0}  {t("resources")} </span>
                   </div>
                 </div>
-                <span className="text-xs text-muted-foreground">Module {mod.sequenceOrder}</span>
+                <span className="text-xs text-muted-foreground"> {t("module")} {mod.sequenceOrder}</span>
               </div>
             ))}
           </div>
         ) : (
           <div className="surface-card px-5 py-8 text-center text-sm text-muted-foreground">
-            Syllabus modules are not yet published for this course.
-          </div>
+             {t("syllabus_modules_are_not_yet_p")} </div>
         )}
       </div>
     </div>

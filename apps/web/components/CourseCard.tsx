@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Clock, BookOpen, CheckCircle } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 interface CourseCardProps {
   id: string;
@@ -23,6 +24,7 @@ export function CourseCard({
   enrolled,
   status,
 }: CourseCardProps) {
+    const { t } = useTranslation();
   // All difficulty badges use one neutral base — label is the only differentiator
   const difficultyLabel: Record<string, string> = {
     beginner: 'Beginner',
@@ -63,9 +65,9 @@ export function CourseCard({
           }`}
         >
           {enrolled ? (
-            <><CheckCircle className="w-3.5 h-3.5" /> Continue</>
+            <><CheckCircle className="w-3.5 h-3.5" />  {t("continue")} </>
           ) : (
-            <><BookOpen className="w-3.5 h-3.5" /> View Syllabus</>
+            <><BookOpen className="w-3.5 h-3.5" />  {t("view_syllabus")} </>
           )}
         </Link>
       </div>

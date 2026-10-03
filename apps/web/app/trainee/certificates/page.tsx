@@ -7,8 +7,10 @@ import { Spinner } from '@/components/Spinner';
 import { QRCodeSVG } from 'qrcode.react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { useTranslation } from "react-i18next";
 
 export default function CertificateVaultPage() {
+    const { t } = useTranslation();
   const [certificates, setCertificates] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -48,16 +50,14 @@ export default function CertificateVaultPage() {
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-          Verifiable Certificate Vault
-        </h1>
+           {t("verifiable_certificate_vault")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Your officially issued capacity building accomplishments backed by cryptographic verification tokens.
-        </p>
+           {t("your_officially_issued_capacit")} </p>
       </div>
 
       {isLoading ? (
         <div className="py-12">
-          <Spinner size="lg" label="Loading certificate vault..." />
+          <Spinner size="lg" label={t("loading_certificate_vault___")} />
         </div>
       ) : certificates.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -75,17 +75,17 @@ export default function CertificateVaultPage() {
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-foreground leading-snug">{cert.course?.title}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">Trainer: {cert.trainer?.user?.email}</p>
+                      <p className="text-sm text-muted-foreground mt-1"> {t("trainer_")} {cert.trainer?.user?.email}</p>
                     </div>
                   </div>
                   
                   <div className="flex flex-col space-y-2">
                     <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                       <Calendar className="w-4 h-4" />
-                      <span>Issued: {new Date(cert.issuedAt).toLocaleDateString()}</span>
+                      <span> {t("issued_")} {new Date(cert.issuedAt).toLocaleDateString()}</span>
                     </div>
                     <span className="text-sm font-mono font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200 self-start">
-                      No: {cert.certificateNumber}
+                       {t("no_")} {cert.certificateNumber}
                     </span>
                   </div>
                 </div>
@@ -95,8 +95,7 @@ export default function CertificateVaultPage() {
                     <QRCodeSVG value={cert.verificationToken} size={90} />
                   </div>
                   <p className="text-[10px] text-muted-foreground max-w-[100px] leading-tight">
-                    To verify authenticity, visit our platform and use the QR Scanner.
-                  </p>
+                     {t("to_verify_authenticity__visit_")} </p>
                 </div>
               </div>
 
@@ -107,10 +106,10 @@ export default function CertificateVaultPage() {
                     target="_blank"
                     rel="noreferrer"
                     className="px-3 py-2 rounded-md bg-card text-muted-foreground hover:text-foreground hover:bg-slate-700 transition-colors flex items-center gap-2 border border-border"
-                    title="Public Verification Link"
+                    title={t("public_verification_link")}
                   >
                     <ExternalLink className="w-4 h-4" />
-                    <span>Verify</span>
+                    <span> {t("verify")} </span>
                   </a>
                   
                   <button
@@ -118,7 +117,7 @@ export default function CertificateVaultPage() {
                     className="px-3 py-2 rounded-md bg-emerald-500 text-white hover:bg-emerald-600 transition-colors flex items-center gap-2"
                   >
                     <Download className="w-4 h-4" />
-                    <span>Download PDF</span>
+                    <span> {t("download_pdf")} </span>
                   </button>
                 </div>
               </div>
@@ -127,8 +126,7 @@ export default function CertificateVaultPage() {
         </div>
       ) : (
         <div className="bg-card border border-border shadow-sm rounded-md p-12 text-center text-muted-foreground">
-          No certificates issued yet. Complete a course and pass its final assessment to earn your certificate!
-        </div>
+           {t("no_certificates_issued_yet__co")} </div>
       )}
     </div>
   );

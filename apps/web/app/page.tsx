@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Footer } from '@/components/Footer';
 import { AnimatedPeopleBackground } from '@/components/AnimatedPeopleBackground';
+import { useTranslation } from "react-i18next";
 
 const VIDEO_CHAPTERS = [
   { label: 'Introduction', start: 0 },
@@ -29,6 +30,7 @@ const VIDEO_CHAPTERS = [
 ];
 
 export default function LandingPage() {
+    const { t } = useTranslation();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeChapter, setActiveChapter] = useState<number>(0);
@@ -88,32 +90,28 @@ export default function LandingPage() {
           <div className="max-w-3xl relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent border border-border text-muted-foreground text-xs font-medium mb-6">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span>Industrial Capacity Building &amp; LMS Platform</span>
+              <span> {t("industrial_capacity_building__")} </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.15] mb-5 text-foreground">
-              Automate Competency Growth<br className="hidden sm:block" />
-              {' '}with AI-Driven Learning
-            </h1>
+               {t("automate_competency_growth")} <br className="hidden sm:block" />
+              {' '} {t("with_ai_driven_learning")} </h1>
 
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-8 leading-relaxed font-normal">
-              Bridge workforce skill gaps automatically. Match trainees with expert trainers, author
-              interactive assessments, and issue cryptographically verifiable QR certificates.
-            </p>
+               {t("bridge_workforce_skill_gaps_au")} </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/login"
                 className="btn-primary px-6 py-2.5 text-sm inline-flex items-center justify-center gap-2"
               >
-                Launch Platform Portal <ArrowRight className="w-4 h-4" />
+                 {t("launch_platform_portal")} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/trainee/courses"
                 className="btn-secondary px-6 py-2.5 text-sm"
               >
-                Explore Catalog
-              </Link>
+                 {t("explore_catalog")} </Link>
             </div>
           </div>
 
@@ -183,8 +181,7 @@ export default function LandingPage() {
             <div className="surface-card p-5 rounded-xl border border-border shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
-                  Video Navigation
-                </span>
+                   {t("video_navigation")} </span>
                 
                 {/* Watch on YouTube Redirect Button */}
                 <a
@@ -193,8 +190,7 @@ export default function LandingPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-red-500 bg-red-500/10 hover:bg-red-500/20 transition-colors"
                 >
-                  <Play className="w-3.5 h-3.5" /> Watch on YouTube
-                </a>
+                  <Play className="w-3.5 h-3.5" />  {t("watch_on_youtube")} </a>
               </div>
 
               <div className="flex flex-wrap gap-2.5">
@@ -239,27 +235,25 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-5 mb-5 border-b border-border">
             <div>
               <span className="text-xs font-semibold uppercase tracking-wider text-primary block mb-1">
-                Live Interactive Intelligence
-              </span>
-              <h2 className="text-xl font-semibold text-foreground">Enterprise Analytics Matrix</h2>
+                 {t("live_interactive_intelligence")} </span>
+              <h2 className="text-xl font-semibold text-foreground"> {t("enterprise_analytics_matrix")} </h2>
             </div>
             <Link
               href="/login"
               className="btn-primary text-xs px-4 py-2 shrink-0 inline-flex items-center justify-center"
             >
-              Access Full Console
-            </Link>
+               {t("access_full_console")} </Link>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             {/* Skill Gap chart */}
             <div className="p-4 rounded-lg bg-background border border-border">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-4">Skill Gap Priority Distribution</span>
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-4"> {t("skill_gap_priority_distributio")} </span>
               <div className="space-y-3">
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-error">Critical Gap (≥3 levels)</span>
-                    <span className="text-muted-foreground">18%</span>
+                    <span className="text-error"> {t("critical_gap___3_levels_")} </span>
+                    <span className="text-muted-foreground"> {t("18_")} </span>
                   </div>
                   <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
                     <div className="h-full bg-error/70 w-[18%] rounded-full" />
@@ -267,8 +261,8 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-warning">High Priority (2 levels)</span>
-                    <span className="text-muted-foreground">42%</span>
+                    <span className="text-warning"> {t("high_priority__2_levels_")} </span>
+                    <span className="text-muted-foreground"> {t("42_")} </span>
                   </div>
                   <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
                     <div className="h-full bg-warning/70 w-[42%] rounded-full" />
@@ -276,8 +270,8 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-success">On Track / Mastered</span>
-                    <span className="text-muted-foreground">40%</span>
+                    <span className="text-success"> {t("on_track___mastered")} </span>
+                    <span className="text-muted-foreground"> {t("40_")} </span>
                   </div>
                   <div className="h-1.5 w-full bg-accent rounded-full overflow-hidden">
                     <div className="h-full bg-success/70 w-[40%] rounded-full" />
@@ -288,7 +282,7 @@ export default function LandingPage() {
 
             {/* Match scores */}
             <div className="p-4 rounded-lg bg-background border border-border">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-4">Top Matched Competency Units</span>
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-4"> {t("top_matched_competency_units")} </span>
               <ul className="space-y-2">
                 {[
                   { name: 'Cloud Microservices Architecture', score: '94.5%' },
@@ -297,7 +291,7 @@ export default function LandingPage() {
                 ].map(({ name, score }) => (
                   <li key={name} className="flex items-center justify-between p-2.5 rounded-md bg-card border border-border">
                     <span className="text-xs font-medium text-foreground">{name}</span>
-                    <span className="badge-neutral ml-2 shrink-0">{score} Match</span>
+                    <span className="badge-neutral ml-2 shrink-0">{score}  {t("match")} </span>
                   </li>
                 ))}
               </ul>
@@ -306,14 +300,13 @@ export default function LandingPage() {
             {/* Verification Engine */}
             <div className="p-4 rounded-lg bg-background border border-border flex flex-col justify-between gap-4">
               <div>
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-2">Verification Engine</span>
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide block mb-2"> {t("verification_engine")} </span>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Validate any issued certificate using its public cryptographic verification token.
-                </p>
+                   {t("validate_any_issued_certificat")} </p>
               </div>
               <div className="p-3 rounded-md bg-card border border-border text-xs font-mono text-foreground flex items-center justify-between">
-                <span>CC-20260823-0001</span>
-                <span className="badge-success text-xs font-semibold ml-2">VERIFIED</span>
+                <span> {t("cc_20260823_0001")} </span>
+                <span className="badge-success text-xs font-semibold ml-2"> {t("verified")} </span>
               </div>
             </div>
           </div>

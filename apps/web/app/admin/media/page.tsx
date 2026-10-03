@@ -4,8 +4,10 @@ import React from 'react';
 import { Search } from 'lucide-react';
 
 import { api } from '@/lib/api-client';
+import { useTranslation } from "react-i18next";
 
 export default function MediaGovernancePage() {
+    const { t } = useTranslation();
   const [mediaData, setMediaData] = React.useState<any[]>([]);
 
   const fetchMedia = () => {
@@ -31,10 +33,9 @@ export default function MediaGovernancePage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Media Governance & Learning Repository</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground"> {t("media_governance___learning_re")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Review trainer uploads and verify that every IMD learning asset is mapped to the right course, lesson and competency.
-        </p>
+           {t("review_trainer_uploads_and_ver")} </p>
       </div>
 
       {/* Filters */}
@@ -43,14 +44,14 @@ export default function MediaGovernancePage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input 
             type="text" 
-            placeholder="Search media, subject or competency" 
+            placeholder={t("search_media__subject_or_compe")} 
             className="w-full pl-9 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
         </div>
         <select className="px-4 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none">
-          <option>All statuses</option>
-          <option>Published</option>
-          <option>Pending</option>
+          <option> {t("all_statuses")} </option>
+          <option> {t("published")} </option>
+          <option> {t("pending")} </option>
         </select>
       </div>
 
@@ -60,12 +61,12 @@ export default function MediaGovernancePage() {
           <table className="w-full text-sm text-left">
             <thead className="text-[10px] uppercase text-muted-foreground bg-accent/50">
               <tr>
-                <th className="px-5 py-3 font-semibold">RESOURCE</th>
-                <th className="px-5 py-3 font-semibold">MAPPING</th>
-                <th className="px-5 py-3 font-semibold">TRAINER</th>
-                <th className="px-5 py-3 font-semibold">MEDIA</th>
-                <th className="px-5 py-3 font-semibold">STATUS</th>
-                <th className="px-5 py-3 font-semibold text-right">GOVERNANCE</th>
+                <th className="px-5 py-3 font-semibold"> {t("resource")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("mapping")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("trainer")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("media")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("status")} </th>
+                <th className="px-5 py-3 font-semibold text-right"> {t("governance")} </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -95,16 +96,14 @@ export default function MediaGovernancePage() {
                         onClick={() => handleDelete(row.id)}
                         className="px-3 py-1.5 text-xs font-medium border border-border rounded-md hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors"
                       >
-                        Delete
-                      </button>
+                         {t("delete")} </button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td colSpan={6} className="px-5 py-12 text-center text-muted-foreground">
-                    N/A (No media uploads found)
-                  </td>
+                     {t("n_a__no_media_uploads_found_")} </td>
                 </tr>
               )}
             </tbody>

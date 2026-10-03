@@ -5,8 +5,10 @@ import { DataTable } from '@/components/DataTable';
 import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { Users, AlertTriangle } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 export default function TrainerStudentsPage() {
+    const { t } = useTranslation();
   const [students, setStudents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'pending' | 'active' | 'suspended'>('pending');
@@ -44,7 +46,7 @@ export default function TrainerStudentsPage() {
           </span>
           <span className="text-xs text-muted-foreground block">{user.email}</span>
           {user.traineeProfile?.mobileNumber && (
-            <span className="text-[10px] text-muted-foreground">Phone: {user.traineeProfile.mobileNumber}</span>
+            <span className="text-[10px] text-muted-foreground"> {t("phone_")} {user.traineeProfile.mobileNumber}</span>
           )}
         </div>
       ),
@@ -74,8 +76,7 @@ export default function TrainerStudentsPage() {
           </span>
           {user.status === 'suspended' && user.suspendedBy === 'admin' && (
             <span className="text-[10px] font-semibold text-rose-600 flex items-center gap-1 mt-1">
-              <AlertTriangle className="w-3 h-3" /> Suspended by Admin
-            </span>
+              <AlertTriangle className="w-3 h-3" />  {t("suspended_by_admin")} </span>
           )}
         </div>
       ),
@@ -94,8 +95,7 @@ export default function TrainerStudentsPage() {
                 className="btn-secondary text-xs px-2.5 py-1 text-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 title={isAdminSuspended ? 'Cannot approve an admin-suspended account' : 'Approve Trainee'}
               >
-                Approve
-              </button>
+                 {t("approve")} </button>
             )}
             {user.status === 'suspended' && (
               <button
@@ -104,16 +104,14 @@ export default function TrainerStudentsPage() {
                 className="btn-secondary text-xs px-2.5 py-1 text-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 title={isAdminSuspended ? 'Only admin can reactivate this trainee' : 'Activate Trainee'}
               >
-                Activate
-              </button>
+                 {t("activate")} </button>
             )}
             {user.status === 'active' && (
               <button
                 onClick={() => handleUpdateStatus(user.id, 'suspended')}
                 className="btn-secondary text-xs px-2.5 py-1 text-rose-600"
               >
-                Suspend
-              </button>
+                 {t("suspend")} </button>
             )}
           </div>
         );
@@ -126,11 +124,9 @@ export default function TrainerStudentsPage() {
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Users className="w-6 h-6 text-primary" />
-          Student Approval &amp; Management
-        </h1>
+           {t("student_approval__amp__managem")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Approve new trainee registrations and manage their account status.
-        </p>
+           {t("approve_new_trainee_registrati")} </p>
       </div>
 
       <div className="flex items-center gap-2 border-b border-border mb-4">
@@ -142,8 +138,7 @@ export default function TrainerStudentsPage() {
               : 'border-transparent text-muted-foreground hover:text-foreground'
           }`}
         >
-          Pending Registrations
-        </button>
+           {t("pending_registrations")} </button>
         <button
           onClick={() => setActiveTab('active')}
           className={`px-4 py-2 text-sm font-semibold transition-colors border-b-2 ${
@@ -152,8 +147,7 @@ export default function TrainerStudentsPage() {
               : 'border-transparent text-muted-foreground hover:text-foreground'
           }`}
         >
-          Active Trainees
-        </button>
+           {t("active_trainees")} </button>
         <button
           onClick={() => setActiveTab('suspended')}
           className={`px-4 py-2 text-sm font-semibold transition-colors border-b-2 ${
@@ -162,22 +156,19 @@ export default function TrainerStudentsPage() {
               : 'border-transparent text-muted-foreground hover:text-foreground'
           }`}
         >
-          Suspended
-        </button>
+           {t("suspended")} </button>
       </div>
 
       <div className="surface-card p-6 rounded-lg border border-border shadow-sm">
         {isLoading ? (
           <div className="py-12 text-center text-muted-foreground text-sm flex flex-col items-center">
             <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin mb-4" />
-            Loading trainees...
-          </div>
+             {t("loading_trainees___")} </div>
         ) : students.length > 0 ? (
           <DataTable columns={columns} data={students} />
         ) : (
           <div className="py-12 text-center text-muted-foreground text-sm bg-accent/30 rounded-lg border border-dashed border-border">
-            No trainees found in this category.
-          </div>
+             {t("no_trainees_found_in_this_cate")} </div>
         )}
       </div>
     </div>

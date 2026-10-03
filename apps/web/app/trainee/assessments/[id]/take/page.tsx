@@ -5,8 +5,10 @@ import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { Clock, CheckCircle, AlertTriangle, ArrowRight, Award, HelpCircle } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 export default function TakeAssessmentPage() {
+    const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
   const assessmentId = params.id as string;
@@ -74,8 +76,7 @@ export default function TakeAssessmentPage() {
   if (isLoading) {
     return (
       <div className="bg-card border border-border shadow-sm p-12 rounded-md text-center text-muted-foreground">
-        Initializing assessment questions...
-      </div>
+         {t("initializing_assessment_questi")} </div>
     );
   }
 
@@ -107,17 +108,15 @@ export default function TakeAssessmentPage() {
             {result.passed ? 'PASSED ASSESSMENT' : 'FAILED - RETAKE REQUIRED'}
           </span>
 
-          <h2 className="text-3xl font-extrabold text-foreground mb-2">Final Score: {result.scorePct}%</h2>
+          <h2 className="text-3xl font-extrabold text-foreground mb-2"> {t("final_score_")} {result.scorePct}%</h2>
           <p className="text-xs text-muted-foreground mb-6">
-            Earned {result.earnedPoints} out of {result.totalPoints} points (Pass Mark: {result.passScorePct}%)
-          </p>
+             {t("earned")} {result.earnedPoints}  {t("out_of")} {result.totalPoints}  {t("points__pass_mark_")} {result.passScorePct} {t("__")} </p>
 
           <button
             onClick={() => router.push('/trainee')}
             className="px-6 py-3 rounded-md bg-primary hover:bg-blue-500 font-bold text-xs text-foreground shadow-sm transition-all"
           >
-            Return to Dashboard
-          </button>
+             {t("return_to_dashboard")} </button>
         </div>
       </div>
     );
@@ -126,8 +125,7 @@ export default function TakeAssessmentPage() {
   if (!attemptData || !attemptData.questions || attemptData.questions.length === 0) {
     return (
       <div className="bg-card border border-border shadow-sm p-12 rounded-md text-center text-muted-foreground">
-        No questions available for this assessment.
-      </div>
+         {t("no_questions_available_for_thi")} </div>
     );
   }
 
@@ -141,13 +139,13 @@ export default function TakeAssessmentPage() {
         <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
           <HelpCircle className="w-4 h-4 text-primary" />
           <span>
-            Question {currentIdx + 1} of {attemptData.totalQuestions}
+             {t("question")} {currentIdx + 1}  {t("of")} {attemptData.totalQuestions}
           </span>
         </div>
 
         <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-background border border-border text-xs font-mono text-amber-700">
           <Clock className="w-3.5 h-3.5" />
-          <span>{attemptData.timeLimitMinutes ?? 30} mins remaining</span>
+          <span>{attemptData.timeLimitMinutes ?? 30}  {t("mins_remaining")} </span>
         </div>
       </div>
 
@@ -157,7 +155,7 @@ export default function TakeAssessmentPage() {
           <span className="text-[11px] font-bold uppercase tracking-wider text-purple-700 bg-purple-100 px-2.5 py-1 rounded-full border border-purple-200">
             {currentQ.questionType.replace('_', ' ')}
           </span>
-          <span className="text-xs font-semibold text-muted-foreground">{currentQ.points} Points</span>
+          <span className="text-xs font-semibold text-muted-foreground">{currentQ.points}  {t("points")} </span>
         </div>
 
         <h3 className="text-xl font-bold text-foreground leading-snug">{currentQ.questionText}</h3>
@@ -192,8 +190,7 @@ export default function TakeAssessmentPage() {
           onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
           className="px-5 py-2.5 rounded-md text-xs font-bold text-muted-foreground bg-card hover:bg-slate-700 disabled:opacity-40 transition-all"
         >
-          Previous Question
-        </button>
+           {t("previous_question")} </button>
 
         {currentIdx === attemptData.questions.length - 1 ? (
           <button
@@ -208,7 +205,7 @@ export default function TakeAssessmentPage() {
             onClick={() => setCurrentIdx((i) => Math.min(attemptData.questions.length - 1, i + 1))}
             className="px-6 py-2.5 rounded-md text-xs font-bold bg-primary hover:bg-blue-500 text-foreground shadow-sm shadow-blue-500/20 transition-all flex items-center gap-1.5"
           >
-            Next Question <ArrowRight className="w-4 h-4" />
+             {t("next_question")} <ArrowRight className="w-4 h-4" />
           </button>
         )}
       </div>

@@ -6,8 +6,10 @@ import { api } from '@/lib/api-client';
 import { useAuth } from '@/lib/auth-context';
 import { toast } from 'sonner';
 import { Users, CheckCircle, XCircle, ShieldCheck, UserCheck } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 export default function AdminUsersPage() {
+    const { t } = useTranslation();
   const { user: currentUser } = useAuth();
   const [users, setUsers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +53,7 @@ export default function AdminUsersPage() {
       accessor: (user: any) => (
         <div>
           <span className="font-bold text-foreground block">{user.email}</span>
-          <span className="text-[10px] text-muted-foreground font-mono">ID: {user.id}</span>
+          <span className="text-[10px] text-muted-foreground font-mono"> {t("id_")} {user.id}</span>
         </div>
       ),
     },
@@ -133,15 +135,13 @@ export default function AdminUsersPage() {
                 onClick={() => handleUpdateStatus(user.id, 'suspended')}
                 className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-rose-100 text-rose-700 border border-rose-200 hover:bg-rose-200 transition-colors"
               >
-                Suspend
-              </button>
+                 {t("suspend")} </button>
             ) : (
               <button
                 onClick={() => handleUpdateStatus(user.id, 'active')}
                 className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200 transition-colors"
               >
-                Activate
-              </button>
+                 {t("activate")} </button>
             )}
 
             {user.trainerProfile && !isAdminUser && (
@@ -149,8 +149,7 @@ export default function AdminUsersPage() {
                 onClick={() => handleVerifyTrainer(user.trainerProfile.id, 'verified')}
                 className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-100 text-purple-700 border border-purple-200 hover:bg-purple-200 transition-colors"
               >
-                Verify Trainer
-              </button>
+                 {t("verify_trainer")} </button>
             )}
           </div>
         );
@@ -162,11 +161,9 @@ export default function AdminUsersPage() {
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-          User & Trainer Verification Management
-        </h1>
+           {t("user___trainer_verification_ma")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Manage system users, activate/suspend accounts, and moderate trainer verification applications.
-        </p>
+           {t("manage_system_users__activate_")} </p>
       </div>
 
       <DataTable columns={columns} data={users} isLoading={isLoading} />

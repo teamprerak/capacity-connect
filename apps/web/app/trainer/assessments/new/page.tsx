@@ -6,8 +6,10 @@ import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { FileText, PlusCircle, Trash2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from "react-i18next";
 
 export default function AssessmentAuthoringPage() {
+    const { t } = useTranslation();
   const router = useRouter();
   const [courses, setCourses] = useState<any[]>([]);
   const [courseId, setCourseId] = useState('');
@@ -96,34 +98,29 @@ export default function AssessmentAuthoringPage() {
         href="/trainer"
         className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" /> Back to Trainer Studio
-      </Link>
+        <ArrowLeft className="w-4 h-4" />  {t("back_to_trainer_studio")} </Link>
 
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-          MCQ Question Bank Authoring
-        </h1>
+           {t("mcq_question_bank_authoring")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Create server-graded pre/post test assessments and configure options with secure answer key validation.
-        </p>
+           {t("create_server_graded_pre_post_")} </p>
       </div>
 
       <form onSubmit={handleSubmit} className="bg-card border border-border shadow-sm rounded-md p-8 border border-border space-y-6">
         <h3 className="text-base font-bold text-foreground border-b border-border pb-3">
-          1. Assessment Metadata
-        </h3>
+           {t("1__assessment_metadata")} </h3>
 
         {courses.length > 0 && (
           <div>
             <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-              Linked Course (Optional)
-            </label>
+               {t("linked_course__optional_")} </label>
             <select
               value={courseId}
               onChange={(e) => setCourseId(e.target.value)}
               className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             >
-              <option value="">-- No specific course --</option>
+              <option value=""> {t("___no_specific_course___")} </option>
               {courses.map((c) => (
                 <option key={c.id} value={c.id}>{c.title}</option>
               ))}
@@ -134,49 +131,45 @@ export default function AssessmentAuthoringPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-              Subject Title
-            </label>
+               {t("subject_title")} </label>
             <input
               type="text"
               required
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              placeholder="e.g. Microservices Architecture Final Test"
+              placeholder={t("e_g__microservices_architectur")}
               className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-              Assessment Type
-            </label>
+               {t("assessment_type")} </label>
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
               className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             >
-              <option value="pre_test">Pre-Test (Baseline)</option>
-              <option value="post_test">Post-Test (Evaluation)</option>
-              <option value="module_quiz">Module Quiz</option>
-              <option value="final">Final Exam</option>
+              <option value="pre_test"> {t("pre_test__baseline_")} </option>
+              <option value="post_test"> {t("post_test__evaluation_")} </option>
+              <option value="module_quiz"> {t("module_quiz")} </option>
+              <option value="final"> {t("final_exam")} </option>
             </select>
           </div>
         </div>
 
         <h3 className="text-base font-bold text-foreground border-b border-border pb-3 pt-4">
-          2. Question Bank Entry
-        </h3>
+           {t("2__question_bank_entry")} </h3>
 
         <div>
           <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-            Question Prompt
-          </label>
+             {t("question_prompt")} </label>
           <input
             type="text"
             required
             value={questionText}
             onChange={(e) => setQuestionText(e.target.value)}
-            placeholder="e.g. Which protocol is used for synchronous microservices gRPC communication?"
+            placeholder={t("e_g__which_protocol_is_used_fo")}
             className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
         </div>
@@ -184,8 +177,7 @@ export default function AssessmentAuthoringPage() {
         {/* Options Builder */}
         <div className="space-y-3 pt-2">
           <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-            Options (Toggle Checkbox for Correct Answer)
-          </label>
+             {t("options__toggle_checkbox_for_c")} </label>
 
           {options.map((opt, idx) => (
             <div key={idx} className="flex items-center gap-3">
@@ -194,7 +186,7 @@ export default function AssessmentAuthoringPage() {
                 checked={opt.isCorrect}
                 onChange={() => handleCorrectToggle(idx)}
                 className="w-5 h-5 rounded accent-blue-600 bg-background border-border cursor-pointer"
-                title="Mark as correct answer"
+                title={t("mark_as_correct_answer")}
               />
               <input
                 type="text"
@@ -221,8 +213,7 @@ export default function AssessmentAuthoringPage() {
             onClick={handleAddOption}
             className="text-xs font-semibold text-primary hover:text-blue-300 pt-1 block"
           >
-            + Add Option Choice
-          </button>
+             {t("__add_option_choice")} </button>
         </div>
 
         <button

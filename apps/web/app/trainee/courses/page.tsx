@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { api } from '@/lib/api-client';
 import { CourseCard } from '@/components/CourseCard';
 import { Search, Filter, BookOpen } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 export default function CourseCatalogPage() {
+    const { t } = useTranslation();
   const [courses, setCourses] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [search, setSearch] = useState('');
@@ -35,11 +37,9 @@ export default function CourseCatalogPage() {
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-          Industrial Course Catalog
-        </h1>
+           {t("industrial_course_catalog")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Filter multi-module capacity building courses by difficulty, technology domain, and prerequisite skills.
-        </p>
+           {t("filter_multi_module_capacity_b")} </p>
       </div>
 
       {/* Filter Bar */}
@@ -49,7 +49,7 @@ export default function CourseCatalogPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search courses, skills, topics..."
+            placeholder={t("search_courses__skills__topics")}
             className="w-full pl-10 pr-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm placeholder-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
           <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-3.5" />
@@ -61,7 +61,7 @@ export default function CourseCatalogPage() {
             onChange={(e) => setSelectedCategory(e.target.value)}
             className="px-3 py-2.5 rounded-md bg-background border border-border text-muted-foreground text-xs font-semibold"
           >
-            <option value="">All Categories</option>
+            <option value=""> {t("all_categories")} </option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
@@ -74,10 +74,10 @@ export default function CourseCatalogPage() {
             onChange={(e) => setSelectedDifficulty(e.target.value)}
             className="px-3 py-2.5 rounded-md bg-background border border-border text-muted-foreground text-xs font-semibold"
           >
-            <option value="">All Difficulties</option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
+            <option value=""> {t("all_difficulties")} </option>
+            <option value="beginner"> {t("beginner")} </option>
+            <option value="intermediate"> {t("intermediate")} </option>
+            <option value="advanced"> {t("advanced")} </option>
           </select>
         </div>
       </div>
@@ -104,8 +104,7 @@ export default function CourseCatalogPage() {
         </div>
       ) : (
         <div className="bg-card border border-border shadow-sm rounded-lg p-12 text-center text-muted-foreground">
-          No courses matching your filter criteria.
-        </div>
+           {t("no_courses_matching_your_filte")} </div>
       )}
     </div>
   );

@@ -5,6 +5,7 @@ import { api } from '@/lib/api-client';
 import { Sparkles, CheckCircle2, ChevronRight, ChevronLeft, Users, Star, AlertCircle, FileQuestion, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import { useTranslation } from "react-i18next";
 
 interface Skill {
   id: string;
@@ -27,6 +28,7 @@ interface TrainerMatch {
 }
 
 export default function MatchWizardPage() {
+    const { t } = useTranslation();
   const [step, setStep] = useState<1 | 2>(1);
   const [skillGroups, setSkillGroups] = useState<SkillGroup[]>([]);
   const [selectedSkillIds, setSelectedSkillIds] = useState<Set<string>>(new Set());
@@ -158,25 +160,21 @@ export default function MatchWizardPage() {
         <div className="flex items-center gap-2 mb-1">
           <Sparkles className="w-6 h-6 text-primary" />
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Match Your Trainer
-          </h1>
+             {t("match_your_trainer")} </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Select the skill domains you want to develop. We'll find the best-matched trainers for you.
-        </p>
+           {t("select_the_skill_domains_you_w")} </p>
       </div>
 
       {/* Step Indicator */}
       <div className="flex items-center gap-3">
         <div className={`flex items-center gap-1.5 text-sm font-semibold ${step === 1 ? 'text-primary' : 'text-muted-foreground'}`}>
           <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${step === 1 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>1</span>
-          Select Skills
-        </div>
+           {t("select_skills")} </div>
         <ChevronRight className="w-4 h-4 text-muted-foreground" />
         <div className={`flex items-center gap-1.5 text-sm font-semibold ${step === 2 ? 'text-primary' : 'text-muted-foreground'}`}>
           <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>2</span>
-          Your Matches
-        </div>
+           {t("your_matches")} </div>
       </div>
 
       {/* Step 1: Skill Selection */}
@@ -190,8 +188,7 @@ export default function MatchWizardPage() {
             </div>
           ) : skillGroups.length === 0 ? (
             <div className="bg-card border border-border rounded-lg p-12 text-center text-muted-foreground">
-              No skills available yet.
-            </div>
+               {t("no_skills_available_yet_")} </div>
           ) : (
             <div className="space-y-8">
               {skillGroups.map((group) => (
@@ -241,8 +238,7 @@ export default function MatchWizardPage() {
 
           <div className="flex items-center justify-between pt-2">
             <span className="text-sm text-muted-foreground">
-              {selectedSkillIds.size} skill{selectedSkillIds.size !== 1 ? 's' : ''} selected
-            </span>
+              {selectedSkillIds.size}  {t("skill")} {selectedSkillIds.size !== 1 ? 's' : ''}  {t("selected")} </span>
             <button
               onClick={handleSubmit}
               disabled={selectedSkillIds.size === 0 || isSubmitting}
@@ -251,12 +247,10 @@ export default function MatchWizardPage() {
               {isSubmitting ? (
                 <>
                   <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                  Finding matches…
-                </>
+                   {t("finding_matches_")} </>
               ) : (
                 <>
-                  Find My Trainer
-                  <ChevronRight className="w-4 h-4" />
+                   {t("find_my_trainer")} <ChevronRight className="w-4 h-4" />
                 </>
               )}
             </button>
@@ -279,8 +273,7 @@ export default function MatchWizardPage() {
               className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
-              Adjust Skills
-            </button>
+               {t("adjust_skills")} </button>
           </div>
 
           {/* Assessment Banner */}
@@ -291,8 +284,8 @@ export default function MatchWizardPage() {
                   <FileQuestion className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground text-sm">Want better matches?</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">Take a quick assessment to prove your skills and reorder your trainers.</p>
+                  <h3 className="font-semibold text-foreground text-sm"> {t("want_better_matches_")} </h3>
+                  <p className="text-xs text-muted-foreground mt-0.5"> {t("take_a_quick_assessment_to_pro")} </p>
                 </div>
               </div>
               <button
@@ -317,8 +310,7 @@ export default function MatchWizardPage() {
                   onClick={() => setActiveAssessment(null)}
                   className="text-muted-foreground hover:text-foreground text-sm"
                 >
-                  Cancel
-                </button>
+                   {t("cancel")} </button>
               </div>
 
               <div className="space-y-8">
@@ -376,11 +368,9 @@ export default function MatchWizardPage() {
             <div className="bg-card border border-border rounded-lg p-12 text-center space-y-3">
               <Users className="w-10 h-10 text-muted-foreground mx-auto" />
               <p className="text-muted-foreground text-sm">
-                No trainers matched your selected skills yet. Try selecting different or more skill areas.
-              </p>
+                 {t("no_trainers_matched_your_selec")} </p>
               <button onClick={() => setStep(1)} className="btn-primary mt-2">
-                Go Back & Adjust
-              </button>
+                 {t("go_back___adjust")} </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -417,7 +407,7 @@ export default function MatchWizardPage() {
                             <Star className="w-4 h-4 fill-primary" />
                             {pct}%
                           </div>
-                          <p className="text-xs text-muted-foreground">match score</p>
+                          <p className="text-xs text-muted-foreground"> {t("match_score")} </p>
                         </div>
                       </div>
 
@@ -438,8 +428,7 @@ export default function MatchWizardPage() {
                         <div className="mt-5 pt-4 border-t border-border">
                           <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-primary" />
-                            Why this match?
-                          </h4>
+                             {t("why_this_match_")} </h4>
                           <div className="bg-primary/5 rounded-lg p-3.5 border border-primary/10">
                             <ul className="space-y-3">
                               {match.reasons.map((reason, rIdx) => (

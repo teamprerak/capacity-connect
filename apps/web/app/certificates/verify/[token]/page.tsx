@@ -5,8 +5,10 @@ import { useParams } from 'next/navigation';
 import { api } from '@/lib/api-client';
 import { Navbar } from '@/components/Navbar';
 import { ShieldCheck, AlertTriangle, Calendar, User, BookOpen, Award, CheckCircle } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 export default function CertificateVerifyPage() {
+    const { t } = useTranslation();
   const params = useParams();
   const token = params.token as string;
   const [data, setData] = useState<any>(null);
@@ -31,7 +33,7 @@ export default function CertificateVerifyPage() {
         {isLoading ? (
           <div className="surface-card p-12 flex flex-col items-center justify-center text-center gap-4 w-full">
             <div className="w-8 h-8 border-[3px] border-primary border-t-transparent rounded-full animate-spin" />
-            <span className="text-sm text-muted-foreground">Verifying certificate authenticity…</span>
+            <span className="text-sm text-muted-foreground"> {t("verifying_certificate_authenti")} </span>
           </div>
 
         ) : data && data.valid ? (
@@ -48,14 +50,12 @@ export default function CertificateVerifyPage() {
 
               {/* Official badge */}
               <span className="badge-success text-[11px] uppercase tracking-widest font-semibold mb-4 inline-flex">
-                Official Verifiable Digital Certificate
-              </span>
+                 {t("official_verifiable_digital_ce")} </span>
 
               <h1 className="text-2xl font-semibold text-foreground mt-3 mb-1 tracking-tight">
-                Certificate of Capacity Accomplishment
-              </h1>
+                 {t("certificate_of_capacity_accomp")} </h1>
               <p className="text-xs font-mono text-muted-foreground mb-8">
-                Serial No:{' '}
+                 {t("serial_no_")} {' '}
                 <span className="text-primary font-semibold">{data.certificateNumber}</span>
               </p>
 
@@ -65,8 +65,7 @@ export default function CertificateVerifyPage() {
                   <User className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <span className="text-muted-foreground text-[10px] font-semibold block uppercase tracking-wide mb-0.5">
-                      Recipient Trainee
-                    </span>
+                       {t("recipient_trainee")} </span>
                     <span className="text-sm font-semibold text-foreground">{data.trainee?.email}</span>
                   </div>
                 </div>
@@ -75,8 +74,7 @@ export default function CertificateVerifyPage() {
                   <BookOpen className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <span className="text-muted-foreground text-[10px] font-semibold block uppercase tracking-wide mb-0.5">
-                      Certified Skill Course
-                    </span>
+                       {t("certified_skill_course")} </span>
                     <span className="text-sm font-semibold text-foreground">{data.course?.title}</span>
                   </div>
                 </div>
@@ -85,8 +83,7 @@ export default function CertificateVerifyPage() {
                   <Award className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <span className="text-muted-foreground text-[10px] font-semibold block uppercase tracking-wide mb-0.5">
-                      Instructing Trainer
-                    </span>
+                       {t("instructing_trainer")} </span>
                     <span className="text-sm font-semibold text-foreground">{data.trainer?.email}</span>
                   </div>
                 </div>
@@ -95,8 +92,7 @@ export default function CertificateVerifyPage() {
                   <Calendar className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div>
                     <span className="text-muted-foreground text-[10px] font-semibold block uppercase tracking-wide mb-0.5">
-                      Official Issue Date
-                    </span>
+                       {t("official_issue_date")} </span>
                     <span className="text-sm font-semibold text-foreground">
                       {new Date(data.issuedAt).toLocaleDateString()}
                     </span>
@@ -107,8 +103,7 @@ export default function CertificateVerifyPage() {
               {/* Verification footer */}
               <div className="mt-7 flex items-center justify-center gap-2 text-xs font-medium text-success">
                 <CheckCircle className="w-4 h-4" />
-                Cryptographically verified on the Capacity Connect Ledger
-              </div>
+                 {t("cryptographically_verified_on_")} </div>
             </div>
           </div>
 
@@ -120,7 +115,7 @@ export default function CertificateVerifyPage() {
               <div className="w-14 h-14 rounded-full bg-error/10 border border-error/30 flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-7 h-7 text-error" />
               </div>
-              <h2 className="text-xl font-semibold text-foreground mb-2">Verification Failed</h2>
+              <h2 className="text-xl font-semibold text-foreground mb-2"> {t("verification_failed")} </h2>
               <p className="text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
                 {data?.message || 'The certificate verification token is invalid or does not exist.'}
               </p>

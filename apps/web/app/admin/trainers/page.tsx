@@ -4,8 +4,10 @@ import React from 'react';
 import { Search } from 'lucide-react';
 
 import { api } from '@/lib/api-client';
+import { useTranslation } from "react-i18next";
 
 export default function TrainerManagementPage() {
+    const { t } = useTranslation();
   const [trainersData, setTrainers] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -18,10 +20,9 @@ export default function TrainerManagementPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Trainer Management</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground"> {t("trainer_management")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Verify expertise, review performance and manage trainer readiness.
-        </p>
+           {t("verify_expertise__review_perfo")} </p>
       </div>
 
       {/* Filter / Search */}
@@ -29,7 +30,7 @@ export default function TrainerManagementPage() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input 
           type="text" 
-          placeholder="Search trainer or subject" 
+          placeholder={t("search_trainer_or_subject")} 
           className="w-full pl-9 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
       </div>
@@ -53,23 +54,22 @@ export default function TrainerManagementPage() {
                     </div>
                   </div>
                   <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-2 py-1 rounded">
-                    Admin Verified
-                  </span>
+                     {t("admin_verified")} </span>
                 </div>
 
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-2 border-y border-border py-3 mb-4">
                   <div>
                     <div className="text-sm font-bold text-foreground">{trainer.rating}</div>
-                    <div className="text-[10px] text-muted-foreground">Rating</div>
+                    <div className="text-[10px] text-muted-foreground"> {t("rating")} </div>
                   </div>
                   <div>
                     <div className="text-sm font-bold text-foreground">{trainer.years}</div>
-                    <div className="text-[10px] text-muted-foreground">Years</div>
+                    <div className="text-[10px] text-muted-foreground"> {t("years")} </div>
                   </div>
                   <div>
                     <div className="text-sm font-bold text-foreground">{trainer.level}</div>
-                    <div className="text-[10px] text-muted-foreground">Level</div>
+                    <div className="text-[10px] text-muted-foreground"> {t("level")} </div>
                   </div>
                 </div>
 
@@ -89,18 +89,16 @@ export default function TrainerManagementPage() {
               {/* Action Buttons */}
               <div className="grid grid-cols-2 gap-3 mt-auto">
                 <button className="px-3 py-1.5 text-xs font-semibold border border-border rounded-lg text-foreground hover:bg-accent transition-colors">
-                  Review profile
-                </button>
+                   {t("review_profile")} </button>
                 <button className="px-3 py-1.5 text-xs font-semibold border border-destructive/30 rounded-lg text-destructive hover:bg-destructive/10 transition-colors">
-                  Remove verification
-                </button>
+                   {t("remove_verification")} </button>
               </div>
             </div>
           ))
         ) : (
           <div className="col-span-full surface-card p-12 rounded-xl border border-border flex flex-col items-center justify-center text-center">
-            <h3 className="text-sm font-semibold text-foreground mb-1">No trainers available</h3>
-            <p className="text-xs text-muted-foreground">No trainer records to display. Trainers will appear here once they have been verified.</p>
+            <h3 className="text-sm font-semibold text-foreground mb-1"> {t("no_trainers_available")} </h3>
+            <p className="text-xs text-muted-foreground"> {t("no_trainer_records_to_display_")} </p>
           </div>
         )}
       </div>

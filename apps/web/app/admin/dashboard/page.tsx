@@ -31,14 +31,16 @@ import {
 } from 'recharts';
 
 import { api } from '@/lib/api-client';
+import { useTranslation } from "react-i18next";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
+    const { t } = useTranslation();
   if (active && payload && payload.length) {
     return (
       <div className="surface-card text-foreground p-3 shadow-md z-50">
         <p className="text-sm font-semibold mb-1">{label}</p>
         <p className="text-sm" style={{ color: payload[0].color || 'hsl(var(--primary))' }}>
-          Value: {payload[0].value}
+           {t("value_")} {payload[0].value}
         </p>
       </div>
     );
@@ -47,6 +49,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function AdminDashboardPage() {
+    const { t } = useTranslation();
   const [metrics, setMetrics] = React.useState<any>(null);
   const [charts, setCharts] = React.useState<any>(null);
   const [pending, setPending] = React.useState<any>(null);
@@ -81,10 +84,9 @@ export default function AdminDashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Admin Dashboard</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground"> {t("admin_dashboard")} </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Organization-wide training, competency and governance overview.
-          </p>
+             {t("organization_wide_training__co")} </p>
         </div>
       </div>      {/* Primary KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -136,10 +138,10 @@ export default function AdminDashboardPage() {
         <div className="surface-card p-5 rounded-xl border border-border flex flex-col">
           <div className="mb-6 flex justify-between items-start">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Competency improvement</h3>
-              <p className="text-xs text-muted-foreground">Average verified score trend</p>
+              <h3 className="text-sm font-semibold text-foreground"> {t("competency_improvement")} </h3>
+              <p className="text-xs text-muted-foreground"> {t("average_verified_score_trend")} </p>
             </div>
-            <span className="text-xs font-semibold px-2 py-1 bg-emerald-500/10 text-emerald-500 rounded-md">+50 Pts</span>
+            <span className="text-xs font-semibold px-2 py-1 bg-emerald-500/10 text-emerald-500 rounded-md"> {t("_50_pts")} </span>
           </div>
           <div className="flex-1 min-h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -152,7 +154,7 @@ export default function AdminDashboardPage() {
                   <Line type="linear" dataKey="value" stroke="#3b82f6" strokeWidth={3} dot={{ r: 4, fill: 'hsl(var(--background))', stroke: '#3b82f6', strokeWidth: 2 }} activeDot={{ r: 6, fill: '#3b82f6', stroke: 'hsl(var(--background))', strokeWidth: 2 }} />
                 </LineChart>
               ) : (
-                <div className="flex h-full items-center justify-center text-muted-foreground text-sm">N/A (No data)</div>
+                <div className="flex h-full items-center justify-center text-muted-foreground text-sm"> {t("n_a__no_data_")} </div>
               )}
             </ResponsiveContainer>
           </div>
@@ -160,8 +162,8 @@ export default function AdminDashboardPage() {
 
         <div className="surface-card p-5 rounded-xl border border-border flex flex-col">
           <div className="mb-6">
-            <h3 className="text-sm font-semibold text-foreground">Department participation</h3>
-            <p className="text-xs text-muted-foreground">Active learners by training area</p>
+            <h3 className="text-sm font-semibold text-foreground"> {t("department_participation")} </h3>
+            <p className="text-xs text-muted-foreground"> {t("active_learners_by_training_ar")} </p>
           </div>
           <div className="flex-1 min-h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -174,7 +176,7 @@ export default function AdminDashboardPage() {
                   <Bar dataKey="value" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
                 </BarChart>
               ) : (
-                <div className="flex h-full items-center justify-center text-muted-foreground text-sm">N/A (No data)</div>
+                <div className="flex h-full items-center justify-center text-muted-foreground text-sm"> {t("n_a__no_data_")} </div>
               )}
             </ResponsiveContainer>
           </div>
@@ -184,8 +186,8 @@ export default function AdminDashboardPage() {
       {/* Bottom Lists Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="surface-card p-5 rounded-xl border border-border">
-          <h3 className="text-sm font-semibold text-foreground mb-1">Recent activity</h3>
-          <p className="text-xs text-muted-foreground mb-6">Latest workflow events</p>
+          <h3 className="text-sm font-semibold text-foreground mb-1"> {t("recent_activity")} </h3>
+          <p className="text-xs text-muted-foreground mb-6"> {t("latest_workflow_events")} </p>
           <div className="space-y-4">
             {recentActivityData.length > 0 ? recentActivityData.map((event, idx) => (
               <div key={idx} className="flex gap-3">
@@ -196,36 +198,36 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
             )) : (
-              <div className="text-sm text-muted-foreground">N/A (No recent activity)</div>
+              <div className="text-sm text-muted-foreground"> {t("n_a__no_recent_activity_")} </div>
             )}
           </div>
         </div>
 
         <div className="surface-card p-5 rounded-xl border border-border">
-          <h3 className="text-sm font-semibold text-foreground mb-1">Pending actions</h3>
-          <p className="text-xs text-muted-foreground mb-6">Basic reporting governance review</p>
+          <h3 className="text-sm font-semibold text-foreground mb-1"> {t("pending_actions")} </h3>
+          <p className="text-xs text-muted-foreground mb-6"> {t("basic_reporting_governance_rev")} </p>
           
           {pendingActionsData ? (
             <div className="space-y-3">
               <div className="flex justify-between items-center py-2 border-b border-border">
-                <span className="text-sm font-medium text-foreground">User registrations</span>
+                <span className="text-sm font-medium text-foreground"> {t("user_registrations")} </span>
                 <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">{pendingActionsData?.pendingUsers ?? 'N/A'}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-border">
-                <span className="text-sm font-medium text-foreground">Course proposals</span>
+                <span className="text-sm font-medium text-foreground"> {t("course_proposals")} </span>
                 <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">{pendingActionsData?.pendingCourses ?? 'N/A'}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-border">
-                <span className="text-sm font-medium text-foreground">Enrollment requests</span>
-                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500">N/A</span>
+                <span className="text-sm font-medium text-foreground"> {t("enrollment_requests")} </span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500"> {t("n_a")} </span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-border">
-                <span className="text-sm font-medium text-foreground">Unverified trainers</span>
+                <span className="text-sm font-medium text-foreground"> {t("unverified_trainers")} </span>
                 <span className="px-2 py-0.5 rounded text-xs font-semibold bg-accent text-muted-foreground">{pendingActionsData?.pendingTrainers ?? 'N/A'}</span>
               </div>
             </div>
           ) : (
-            <div className="text-sm text-muted-foreground">N/A (No pending actions)</div>
+            <div className="text-sm text-muted-foreground"> {t("n_a__no_pending_actions_")} </div>
           )}
         </div>
       </div>

@@ -15,12 +15,13 @@ import {
 import { Printer, Download } from 'lucide-react';
 
 const CustomTooltip = ({ active, payload, label }: any) => {
+    const { t } = useTranslation();
   if (active && payload && payload.length) {
     return (
       <div className="surface-card text-foreground p-3 shadow-md z-50">
         <p className="text-sm font-semibold mb-1">{label}</p>
         <p className="text-sm" style={{ color: payload[0].color || 'hsl(var(--primary))' }}>
-          Value: {payload[0].value}
+           {t("value_")} {payload[0].value}
         </p>
       </div>
     );
@@ -29,8 +30,10 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 import { api } from '@/lib/api-client';
+import { useTranslation } from "react-i18next";
 
 export default function ReportsAnalyticsPage() {
+    const { t } = useTranslation();
   const [charts, setCharts] = React.useState<any>(null);
   const [adminDash, setAdminDash] = React.useState<any>(null);
   const [assessments, setAssessments] = React.useState<any[]>([]);
@@ -67,18 +70,15 @@ export default function ReportsAnalyticsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Reports & Analytics</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground"> {t("reports___analytics")} </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Participation, completion, assessment improvement and competency trends.
-          </p>
+             {t("participation__completion__ass")} </p>
         </div>
         <div className="flex items-center gap-3">
           <button className="btn-secondary px-4 py-2 text-sm flex items-center gap-2">
-            <Printer className="w-4 h-4" /> Print / PDF
-          </button>
+            <Printer className="w-4 h-4" />  {t("print___pdf")} </button>
           <button className="btn-primary px-4 py-2 text-sm flex items-center gap-2">
-            <Download className="w-4 h-4" /> Export CSV
-          </button>
+            <Download className="w-4 h-4" />  {t("export_csv")} </button>
         </div>
       </div>
 
@@ -87,8 +87,8 @@ export default function ReportsAnalyticsPage() {
         {/* Participation Bar Chart */}
         <div className="surface-card p-5 rounded-xl border border-border flex flex-col">
           <div className="mb-6">
-            <h3 className="text-sm font-semibold text-foreground">Training participation</h3>
-            <p className="text-xs text-muted-foreground">Department distribution</p>
+            <h3 className="text-sm font-semibold text-foreground"> {t("training_participation")} </h3>
+            <p className="text-xs text-muted-foreground"> {t("department_distribution")} </p>
           </div>
           <div className="flex-1 min-h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -115,7 +115,7 @@ export default function ReportsAnalyticsPage() {
                   <Bar dataKey="value" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
                 </BarChart>
               ) : (
-                <div className="flex h-full items-center justify-center text-muted-foreground text-sm">N/A</div>
+                <div className="flex h-full items-center justify-center text-muted-foreground text-sm"> {t("n_a")} </div>
               )}
             </ResponsiveContainer>
           </div>
@@ -124,8 +124,8 @@ export default function ReportsAnalyticsPage() {
         {/* Competency Line Chart */}
         <div className="surface-card p-5 rounded-xl border border-border flex flex-col">
           <div className="mb-6">
-            <h3 className="text-sm font-semibold text-foreground">Competency improvement</h3>
-            <p className="text-xs text-muted-foreground">Verified learning trend</p>
+            <h3 className="text-sm font-semibold text-foreground"> {t("competency_improvement")} </h3>
+            <p className="text-xs text-muted-foreground"> {t("verified_learning_trend")} </p>
           </div>
           <div className="flex-1 min-h-[250px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -159,7 +159,7 @@ export default function ReportsAnalyticsPage() {
                   />
                 </LineChart>
               ) : (
-                <div className="flex h-full items-center justify-center text-muted-foreground text-sm">N/A</div>
+                <div className="flex h-full items-center justify-center text-muted-foreground text-sm"> {t("n_a")} </div>
               )}
             </ResponsiveContainer>
           </div>
@@ -182,8 +182,8 @@ export default function ReportsAnalyticsPage() {
       {/* Bottom Assessment Comparison */}
       <div className="surface-card p-5 rounded-xl border border-border">
         <div className="mb-6">
-          <h3 className="text-sm font-semibold text-foreground">Assessment comparison</h3>
-          <p className="text-xs text-muted-foreground">Pre-test versus post-test results</p>
+          <h3 className="text-sm font-semibold text-foreground"> {t("assessment_comparison")} </h3>
+          <p className="text-xs text-muted-foreground"> {t("pre_test_versus_post_test_resu")} </p>
         </div>
 
         <div className="space-y-5">
@@ -194,11 +194,11 @@ export default function ReportsAnalyticsPage() {
                 <div className="flex items-center gap-4 text-xs font-medium">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-                    <span className="text-muted-foreground">Pre-test {item.preTest}%</span>
+                    <span className="text-muted-foreground"> {t("pre_test")} {item.preTest}%</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    <span className="text-emerald-500">Post-test {item.postTest}%</span>
+                    <span className="text-emerald-500"> {t("post_test")} {item.postTest}%</span>
                   </div>
                 </div>
               </div>
@@ -225,7 +225,7 @@ export default function ReportsAnalyticsPage() {
               </div>
             </div>
           )) : (
-            <div className="text-sm text-muted-foreground">N/A</div>
+            <div className="text-sm text-muted-foreground"> {t("n_a")} </div>
           )}
         </div>
       </div>

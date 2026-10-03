@@ -5,6 +5,7 @@ import { Modal } from './Modal';
 import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { PlusCircle, Layers } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 interface AddModuleModalProps {
   courseId: string;
@@ -21,6 +22,7 @@ export function AddModuleModal({
   onClose,
   onSuccess,
 }: AddModuleModalProps) {
+    const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [sequenceOrder, setSequenceOrder] = useState(1);
   const [videoUrl, setVideoUrl] = useState('');
@@ -57,10 +59,10 @@ export function AddModuleModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add Syllabus Module">
+    <Modal isOpen={isOpen} onClose={onClose} title={t("add_syllabus_module")}>
       <div className="mb-4">
         <p className="text-xs text-muted-foreground">
-          Adding module to:{' '}
+           {t("adding_module_to_")} {' '}
           <span className="text-primary font-semibold">{courseTitle}</span>
         </p>
       </div>
@@ -69,14 +71,13 @@ export function AddModuleModal({
         {/* Module Title */}
         <div>
           <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-            Module Title
-          </label>
+             {t("module_title")} </label>
           <input
             type="text"
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. Module 1: Introduction to Microservices"
+            placeholder={t("e_g__module_1__introduction_to")}
             className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
           />
         </div>
@@ -84,8 +85,7 @@ export function AddModuleModal({
         {/* Sequence Order */}
         <div>
           <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-            Sequence Order
-          </label>
+             {t("sequence_order")} </label>
           <input
             type="number"
             required
@@ -95,20 +95,19 @@ export function AddModuleModal({
             className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
           />
           <p className="text-[11px] text-muted-foreground mt-1">
-            Determines the order this module appears in the course syllabus.
-          </p>
+             {t("determines_the_order_this_modu")} </p>
         </div>
 
         {/* Video URL */}
         <div>
           <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-            YouTube Video URL <span className="text-muted-foreground font-normal ml-1">(Optional)</span>
+             {t("youtube_video_url")} <span className="text-muted-foreground font-normal ml-1"> {t("_optional_")} </span>
           </label>
           <input
             type="url"
             value={videoUrl}
             onChange={(e) => setVideoUrl(e.target.value)}
-            placeholder="https://www.youtube.com/watch?v=..."
+            placeholder={t("https___www_youtube_com_watch_")}
             className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
           />
         </div>
@@ -116,13 +115,13 @@ export function AddModuleModal({
         {/* Document URL */}
         <div>
           <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-            Document Link (Google Drive / PDF) <span className="text-muted-foreground font-normal ml-1">(Optional)</span>
+             {t("document_link__google_drive___")} <span className="text-muted-foreground font-normal ml-1"> {t("_optional_")} </span>
           </label>
           <input
             type="url"
             value={documentUrl}
             onChange={(e) => setDocumentUrl(e.target.value)}
-            placeholder="https://docs.google.com/..."
+            placeholder={t("https___docs_google_com____")}
             className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
           />
         </div>
@@ -134,8 +133,7 @@ export function AddModuleModal({
             onClick={onClose}
             className="flex-1 py-2.5 rounded-md text-sm font-semibold text-muted-foreground border border-border hover:bg-card hover:text-foreground transition"
           >
-            Cancel
-          </button>
+             {t("cancel")} </button>
           <button
             type="submit"
             disabled={isSubmitting}

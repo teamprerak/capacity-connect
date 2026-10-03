@@ -4,8 +4,10 @@ import React from 'react';
 import { Target, AlertTriangle, ShieldCheck, TrendingUp, CheckCircle2 } from 'lucide-react';
 
 import { api } from '@/lib/api-client';
+import { useTranslation } from "react-i18next";
 
 export default function ReadinessCommandPage() {
+    const { t } = useTranslation();
   const [personnelReadiness, setPersonnel] = React.useState<any[]>([]);
   const [departmentHeatmap, setHeatmap] = React.useState<any[]>([]);
 
@@ -25,24 +27,22 @@ export default function ReadinessCommandPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Operational Readiness Command Center</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground"> {t("operational_readiness_command_")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Convert training records into a decision-ready view of who is actually prepared for operational responsibilities.
-        </p>
+           {t("convert_training_records_into_")} </p>
       </div>
 
       {/* Hero KPI Banner */}
       <div className="surface-card rounded-xl p-8 shadow-sm border border-border flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="max-w-3xl">
-          <h3 className="text-[10px] font-bold uppercase tracking-widest mb-2 text-primary">Key Performance Indicator</h3>
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-3 text-foreground">Operational Readiness Index (ORI)</h2>
+          <h3 className="text-[10px] font-bold uppercase tracking-widest mb-2 text-primary"> {t("key_performance_indicator")} </h3>
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-3 text-foreground"> {t("operational_readiness_index__o")} </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Readiness combines competency assessment, learning completion, post-test performance, trainer-verified evidence and scenario performance. No single course completion metric can mark a learner ready.
-          </p>
+             {t("readiness_combines_competency_")} </p>
         </div>
         <div className="bg-accent/50 border border-border rounded-xl p-6 text-center min-w-[200px] shrink-0">
           <div className="text-4xl sm:text-5xl font-bold mb-1 text-foreground">{isDataAvailable ? '13' : 'N/A'}</div>
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Organizational ORI</div>
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground"> {t("organizational_ori")} </div>
         </div>
       </div>
 
@@ -71,10 +71,10 @@ export default function ReadinessCommandPage() {
       <div className="surface-card rounded-xl border border-border overflow-hidden">
         <div className="p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-border">
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Personnel readiness radar</h3>
-            <p className="text-xs text-muted-foreground">Prioritized by operational readiness, not course attendance.</p>
+            <h3 className="text-sm font-semibold text-foreground"> {t("personnel_readiness_radar")} </h3>
+            <p className="text-xs text-muted-foreground"> {t("prioritized_by_operational_rea")} </p>
           </div>
-          <button className="text-xs font-semibold text-primary hover:underline">Use Prototype Index</button>
+          <button className="text-xs font-semibold text-primary hover:underline"> {t("use_prototype_index")} </button>
         </div>
 
         <div className="overflow-x-auto">
@@ -107,7 +107,7 @@ export default function ReadinessCommandPage() {
                     </td>
                     <td className="px-5 py-4 w-1/3 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-mono text-xs font-semibold mr-2">{person.score}/100</span>
+                        <span className="font-mono text-xs font-semibold mr-2">{person.score} {t("_100")} </span>
                         {['C', 'L', 'A', 'E', 'S'].map((letter, i) => (
                           <div key={i} className={`flex items-center justify-center px-1.5 py-0.5 rounded text-[9px] font-bold ${
                             person.score > 0 ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-accent text-muted-foreground border border-border'
@@ -124,8 +124,8 @@ export default function ReadinessCommandPage() {
           ) : (
             <div className="py-12 text-center flex flex-col items-center">
               <Target className="w-8 h-8 text-muted-foreground/50 mb-3" />
-              <p className="text-sm font-semibold text-foreground">No personnel data</p>
-              <p className="text-xs text-muted-foreground">N/A</p>
+              <p className="text-sm font-semibold text-foreground"> {t("no_personnel_data")} </p>
+              <p className="text-xs text-muted-foreground"> {t("n_a")} </p>
             </div>
           )}
         </div>
@@ -134,19 +134,19 @@ export default function ReadinessCommandPage() {
       {/* Department Heatmap */}
       <div className="surface-card rounded-xl border border-border overflow-hidden">
         <div className="p-5 border-b border-border">
-          <h3 className="text-sm font-semibold text-foreground">Department × competency heatmap</h3>
-          <p className="text-xs text-muted-foreground">Average assessed competency score. (If sub-metrics missing, it is not yet available - actionable data gap)</p>
+          <h3 className="text-sm font-semibold text-foreground"> {t("department___competency_heatma")} </h3>
+          <p className="text-xs text-muted-foreground"> {t("average_assessed_competency_sc")} </p>
         </div>
         <div className="overflow-x-auto">
           {isDataAvailable ? (
             <table className="w-full text-[11px] text-center whitespace-nowrap">
               <thead className="text-[10px] uppercase text-muted-foreground bg-accent/50">
                 <tr>
-                  <th className="px-4 py-3 text-left font-semibold">DEPARTMENT</th>
-                  <th className="px-4 py-3 font-semibold">NUMERICAL WEATHER PREDICTION</th>
-                  <th className="px-4 py-3 font-semibold">SATELLITE METEOROLOGY</th>
-                  <th className="px-4 py-3 font-semibold">OCEAN FORECASTING</th>
-                  <th className="px-4 py-3 font-semibold">HYDROMETEOROLOGY</th>
+                  <th className="px-4 py-3 text-left font-semibold"> {t("department")} </th>
+                  <th className="px-4 py-3 font-semibold"> {t("numerical_weather_prediction")} </th>
+                  <th className="px-4 py-3 font-semibold"> {t("satellite_meteorology")} </th>
+                  <th className="px-4 py-3 font-semibold"> {t("ocean_forecasting")} </th>
+                  <th className="px-4 py-3 font-semibold"> {t("hydrometeorology")} </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -156,7 +156,7 @@ export default function ReadinessCommandPage() {
                     {[row.nwp, row.satellite, row.ocean, row.hydro].map((val, i) => (
                       <td key={i} className="px-4 py-3">
                         {val === 'No data' ? (
-                          <span className="text-muted-foreground/60 bg-accent px-2 py-0.5 rounded">No data</span>
+                          <span className="text-muted-foreground/60 bg-accent px-2 py-0.5 rounded"> {t("no_data")} </span>
                         ) : (
                           <span className="text-destructive bg-destructive/10 px-2 py-0.5 rounded font-bold">{val}</span>
                         )}
@@ -168,8 +168,8 @@ export default function ReadinessCommandPage() {
             </table>
           ) : (
              <div className="py-12 text-center">
-              <p className="text-sm font-semibold text-foreground">No heatmap data</p>
-              <p className="text-xs text-muted-foreground">N/A</p>
+              <p className="text-sm font-semibold text-foreground"> {t("no_heatmap_data")} </p>
+              <p className="text-xs text-muted-foreground"> {t("n_a")} </p>
             </div>
           )}
         </div>
@@ -178,8 +178,8 @@ export default function ReadinessCommandPage() {
       {/* Governance Rules */}
       <div className="surface-card rounded-xl border border-border overflow-hidden">
         <div className="p-5 border-b border-border">
-          <h3 className="text-sm font-semibold text-foreground">Readiness governance rules</h3>
-          <p className="text-xs text-muted-foreground">Transparent conditions form secure escalations and verification available.</p>
+          <h3 className="text-sm font-semibold text-foreground"> {t("readiness_governance_rules")} </h3>
+          <p className="text-xs text-muted-foreground"> {t("transparent_conditions_form_se")} </p>
         </div>
         <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-accent/30">
           {[

@@ -4,8 +4,10 @@ import React from 'react';
 import { Database, ShieldAlert, AlertTriangle, Layers } from 'lucide-react';
 
 import { api } from '@/lib/api-client';
+import { useTranslation } from "react-i18next";
 
 export default function KnowledgeContinuityPage() {
+    const { t } = useTranslation();
   const [data, setData] = React.useState<any>(null);
 
   React.useEffect(() => {
@@ -19,10 +21,9 @@ export default function KnowledgeContinuityPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Knowledge Continuity Vault</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground"> {t("knowledge_continuity_vault")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Preserve hard-to-replace operational expertise before it is lost through transfer, retirement or role changes.
-        </p>
+           {t("preserve_hard_to_replace_opera")} </p>
       </div>
 
       {/* KPI Cards */}
@@ -47,13 +48,11 @@ export default function KnowledgeContinuityPage() {
 
       {/* Retention Engine Hero */}
       <div className="surface-card rounded-xl p-8 shadow-sm border border-border">
-        <h3 className="text-[10px] font-bold uppercase tracking-widest mb-3 opacity-90 text-primary">Knowledge Retention Engine</h3>
+        <h3 className="text-[10px] font-bold uppercase tracking-widest mb-3 opacity-90 text-primary"> {t("knowledge_retention_engine")} </h3>
         <p className="text-xl sm:text-2xl font-semibold mb-3 leading-tight text-foreground">
-          Training content tells people what to learn. The Vault preserves how experts actually work.
-        </p>
+           {t("training_content_tells_people_")} </p>
         <p className="text-sm opacity-90 max-w-4xl leading-relaxed text-muted-foreground">
-          Expert debriefs, case archives and operational playbooks become reusable institutional knowledge, tagged by criticality and succession risk.
-        </p>
+           {t("expert_debriefs__case_archives")} </p>
       </div>
 
       {/* Assets Grid */}
@@ -71,7 +70,7 @@ export default function KnowledgeContinuityPage() {
                   <span className={`text-[10px] font-bold uppercase tracking-widest ${
                     asset.risk === 'High' ? 'text-destructive' : asset.risk === 'Medium' ? 'text-amber-500' : 'text-emerald-500'
                   }`}>
-                    Succession Risk: {asset.risk}
+                     {t("succession_risk_")} {asset.risk}
                   </span>
                 </div>
                 
@@ -81,7 +80,7 @@ export default function KnowledgeContinuityPage() {
               </div>
               
               <div className="flex justify-between items-center text-[10px] text-muted-foreground border-t border-border pt-4">
-                <span>Captured by <strong className="text-foreground">{asset.author}</strong></span>
+                <span> {t("captured_by")} <strong className="text-foreground">{asset.author}</strong></span>
                 <span>{asset.date}</span>
               </div>
             </div>
@@ -89,8 +88,8 @@ export default function KnowledgeContinuityPage() {
         ) : (
           <div className="col-span-full surface-card p-12 rounded-xl border border-border flex flex-col items-center justify-center text-center">
             <Database className="w-8 h-8 text-muted-foreground/50 mb-3" />
-            <h3 className="text-sm font-semibold text-foreground mb-1">No Assets Captured</h3>
-            <p className="text-xs text-muted-foreground">The Knowledge Continuity Vault is currently empty. N/A</p>
+            <h3 className="text-sm font-semibold text-foreground mb-1"> {t("no_assets_captured")} </h3>
+            <p className="text-xs text-muted-foreground"> {t("the_knowledge_continuity_vault")} </p>
           </div>
         )}
       </div>

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Modal } from './Modal';
 import { KeyRound, Loader2, Eye, EyeOff } from 'lucide-react';
 import { api } from '@/lib/api-client';
+import { useTranslation } from "react-i18next";
 
 interface ChangePasswordModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface ChangePasswordModalProps {
 }
 
 export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProps) {
+    const { t } = useTranslation();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -74,11 +76,11 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Change Password">
+    <Modal isOpen={isOpen} onClose={handleClose} title={t("change_password")}>
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         <div className="flex items-center gap-3 text-muted-foreground mb-2">
           <KeyRound className="w-5 h-5 text-primary" />
-          <p className="text-sm">Enter your current password and choose a new one.</p>
+          <p className="text-sm"> {t("enter_your_current_password_an")} </p>
         </div>
 
         {error && (
@@ -95,7 +97,7 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
 
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">Current Password</label>
+            <label className="text-sm font-medium"> {t("current_password")} </label>
             <div className="relative">
               <input
                 type={showCurrent ? 'text' : 'password'}
@@ -116,7 +118,7 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">New Password</label>
+            <label className="text-sm font-medium"> {t("new_password")} </label>
             <div className="relative">
               <input
                 type={showNew ? 'text' : 'password'}
@@ -137,7 +139,7 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium">Confirm New Password</label>
+            <label className="text-sm font-medium"> {t("confirm_new_password")} </label>
             <div className="relative">
               <input
                 type={showConfirm ? 'text' : 'password'}
@@ -165,8 +167,7 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
             className="btn-secondary"
             disabled={isLoading}
           >
-            Cancel
-          </button>
+             {t("cancel")} </button>
           <button
             type="submit"
             className="btn-primary min-w-[120px]"

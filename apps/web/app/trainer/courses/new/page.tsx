@@ -6,6 +6,7 @@ import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { Sparkles, BookOpen, PlusCircle, ArrowLeft, Trash2, Video, FileText, LayoutTemplate } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from "react-i18next";
 
 type ModuleType = 'video' | 'text' | 'hybrid';
 
@@ -24,6 +25,7 @@ function generateTempId() {
 }
 
 export default function CourseBuilderPage() {
+    const { t } = useTranslation();
   const router = useRouter();
   const [categories, setCategories] = useState<any[]>([]);
   const [title, setTitle] = useState('');
@@ -165,17 +167,14 @@ export default function CourseBuilderPage() {
         href="/trainer"
         className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" /> Back to Trainer Studio
-      </Link>
+        <ArrowLeft className="w-4 h-4" />  {t("back_to_trainer_studio")} </Link>
 
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Author New Course Module
-          </h1>
+             {t("author_new_course_module")} </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Build structured capacity modules and submit for administrative review.
-          </p>
+             {t("build_structured_capacity_modu")} </p>
         </div>
 
         <button
@@ -192,14 +191,13 @@ export default function CourseBuilderPage() {
       <form onSubmit={handleSubmit} className="bg-card border border-border shadow-sm rounded-md p-8 border border-border space-y-6">
         <div>
           <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-            Course Title / Topic
-          </label>
+             {t("course_title___topic")} </label>
           <input
             type="text"
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. Cloud-Native Microservices Architecture with NestJS"
+            placeholder={t("e_g__cloud_native_microservice")}
             className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
         </div>
@@ -208,8 +206,7 @@ export default function CourseBuilderPage() {
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-                Category Domain
-              </label>
+                 {t("category_domain")} </label>
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
@@ -220,7 +217,7 @@ export default function CourseBuilderPage() {
                     {cat.name}
                   </option>
                 ))}
-                <option value="other">Other (Specify)</option>
+                <option value="other"> {t("other__specify_")} </option>
               </select>
             </div>
             {categoryId === 'other' && (
@@ -230,7 +227,7 @@ export default function CourseBuilderPage() {
                   required
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="New Category Name"
+                  placeholder={t("new_category_name")}
                   className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
               </div>
@@ -239,23 +236,21 @@ export default function CourseBuilderPage() {
 
           <div>
             <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-              Target Difficulty
-            </label>
+               {t("target_difficulty")} </label>
             <select
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
               className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             >
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
+              <option value="beginner"> {t("beginner")} </option>
+              <option value="intermediate"> {t("intermediate")} </option>
+              <option value="advanced"> {t("advanced")} </option>
             </select>
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-              Duration (Minutes)
-            </label>
+               {t("duration__minutes_")} </label>
             <input
               type="number"
               required
@@ -269,14 +264,13 @@ export default function CourseBuilderPage() {
 
         <div>
           <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-            Course Description & Learning Outcomes
-          </label>
+             {t("course_description___learning_")} </label>
           <textarea
             required
             rows={5}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Detailed overview of syllabus modules, skills covered, and industrial takeaways..."
+            placeholder={t("detailed_overview_of_syllabus_")}
             className="w-full px-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           ></textarea>
         </div>
@@ -285,28 +279,26 @@ export default function CourseBuilderPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              Course Modules <span className="text-muted-foreground font-normal normal-case">(optional — add now or later)</span>
+               {t("course_modules")} <span className="text-muted-foreground font-normal normal-case"> {t("_optional___add_now_or_later_")} </span>
             </label>
             <button
               type="button"
               onClick={addModule}
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
             >
-              <PlusCircle className="w-4 h-4" /> Add Module
-            </button>
+              <PlusCircle className="w-4 h-4" />  {t("add_module")} </button>
           </div>
 
           {modules.length === 0 && (
             <p className="text-xs text-muted-foreground italic">
-              No modules added yet. You can add them after creating the course too.
-            </p>
+               {t("no_modules_added_yet__you_can_")} </p>
           )}
 
           {modules.map((mod, idx) => (
             <div key={mod.id} className="border border-border rounded-lg p-4 space-y-3 bg-background">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase">
-                  Module {mod.sequenceOrder}
+                   {t("module")} {mod.sequenceOrder}
                 </span>
                 <button
                   type="button"
@@ -324,15 +316,14 @@ export default function CourseBuilderPage() {
                 required={false}
                 value={mod.title}
                 onChange={(e) => updateModule(mod.id, { title: e.target.value })}
-                placeholder="Module title"
+                placeholder={t("module_title")}
                 className="w-full px-3 py-2 rounded-md bg-card border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
 
               {/* Module Type Selector */}
               <div>
                 <label className="block text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">
-                  Content Type
-                </label>
+                   {t("content_type")} </label>
                 <div className="flex gap-2">
                   {(['video', 'text', 'hybrid'] as ModuleType[]).map((type) => (
                     <button
@@ -356,13 +347,12 @@ export default function CourseBuilderPage() {
               {(mod.moduleType === 'video' || mod.moduleType === 'hybrid') && (
                 <div>
                   <label className="block text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">
-                    Video URL
-                  </label>
+                     {t("video_url")} </label>
                   <input
                     type="url"
                     value={mod.videoUrl}
                     onChange={(e) => updateModule(mod.id, { videoUrl: e.target.value })}
-                    placeholder="https://..."
+                    placeholder={t("https______")}
                     className="w-full px-3 py-2 rounded-md bg-card border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
@@ -372,13 +362,12 @@ export default function CourseBuilderPage() {
               {(mod.moduleType === 'text' || mod.moduleType === 'hybrid') && (
                 <div>
                   <label className="block text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">
-                    Text Content
-                  </label>
+                     {t("text_content")} </label>
                   <textarea
                     rows={4}
                     value={mod.textContent}
                     onChange={(e) => updateModule(mod.id, { textContent: e.target.value })}
-                    placeholder="Write the module text content here..."
+                    placeholder={t("write_the_module_text_content_")}
                     className="w-full px-3 py-2 rounded-md bg-card border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
@@ -387,13 +376,13 @@ export default function CourseBuilderPage() {
               {/* Document URL */}
               <div>
                 <label className="block text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">
-                  Document URL <span className="font-normal normal-case">(optional)</span>
+                   {t("document_url")} <span className="font-normal normal-case"> {t("_optional_")} </span>
                 </label>
                 <input
                   type="url"
                   value={mod.documentUrl}
                   onChange={(e) => updateModule(mod.id, { documentUrl: e.target.value })}
-                  placeholder="https://..."
+                  placeholder={t("https______")}
                   className="w-full px-3 py-2 rounded-md bg-card border border-border text-foreground text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
               </div>

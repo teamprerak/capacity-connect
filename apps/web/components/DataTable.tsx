@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Inbox } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 interface Column<T> {
   header: string;
@@ -22,11 +23,12 @@ export function DataTable<T extends { id?: string | number }>({
   isLoading,
   emptyMessage = 'No records found',
 }: DataTableProps<T>) {
+    const { t } = useTranslation();
   if (isLoading) {
     return (
       <div className="bg-card border border-border shadow-sm rounded-lg p-8 flex flex-col items-center justify-center gap-3">
         <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-        <span className="text-sm font-medium text-muted-foreground">Loading data...</span>
+        <span className="text-sm font-medium text-muted-foreground"> {t("loading_data___")} </span>
       </div>
     );
   }

@@ -19,7 +19,7 @@ import { UpsertTraineeCompetencyDto } from './dto/upsert-trainee-competency.dto'
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { CreateCompetencyDto } from './dto/create-competency.dto';
 
-@Controller('api/v1')
+@Controller()
 export class CompetencyController {
   constructor(private readonly competencyService: CompetencyService) {}
 

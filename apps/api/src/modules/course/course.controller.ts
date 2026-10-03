@@ -27,7 +27,7 @@ import { EnrollCourseDto } from './dto/enroll-course.dto';
 import { UpdateProgressDto } from './dto/update-progress.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
-@Controller('api/v1')
+@Controller()
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 

@@ -23,7 +23,7 @@ import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { AddQuestionDto } from './dto/add-question.dto';
 import { SubmitAttemptDto } from './dto/submit-attempt.dto';
 
-@Controller('api/v1')
+@Controller()
 export class AssessmentController {
   constructor(private readonly assessmentService: AssessmentService) {}
 

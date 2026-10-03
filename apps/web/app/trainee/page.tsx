@@ -40,22 +40,22 @@ export default function TraineeDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Profile Strength Header Section */}
+      {/* Competency Index Profile Header Section */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-card border border-border p-6 rounded-xl shadow-sm">
         <div className="flex-1">
           <h1 className="text-2xl sm:text-3xl font-semibold text-foreground tracking-tight">
             Trainee Learning Workspace
           </h1>
           <p className="text-sm text-muted-foreground mt-2">
-            Monitor your skill gaps, active course progress, and certified accomplishments.
+            Monitor your individual skill gaps, track active course progress, and view your verified cryptographic accomplishments.
           </p>
           <div className="mt-4 inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary px-3 py-1.5 rounded-full text-sm font-medium">
             <Target className="w-4 h-4" />
-            Learning Goal: Aiming for Level {reqLvl} Competency
+            Learning Trajectory: Target Level {reqLvl} Competency
           </div>
         </div>
         
-        {/* Profile Strength Widget */}
+        {/* Competency Index Profile Widget */}
         <div className="flex items-center gap-4 bg-muted/30 p-4 rounded-lg border border-border/50">
           <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
             <svg className="w-full h-full transform -rotate-90">
@@ -86,9 +86,9 @@ export default function TraineeDashboard() {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">Profile Strength</h3>
+            <h3 className="font-semibold text-foreground">Competency Index Profile</h3>
             <p className="text-xs text-muted-foreground mt-1 max-w-[120px]">
-              Keep learning to reach your target competency level.
+              Keep learning to reach your target Current Competency Level.
             </p>
           </div>
         </div>
@@ -97,19 +97,19 @@ export default function TraineeDashboard() {
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <StatCard
-          title="Active Enrollments"
+          title="Active Module Enrollments"
           value={enrollments.length}
           subtitle="Courses in progress"
           icon={BookOpen}
         />
         <StatCard
-          title="Earned Certificates"
+          title="Cryptographic Certificates"
           value={completedCount}
-          subtitle="Verifiable credentials"
+          subtitle="Verifiable Digital Credentials"
           icon={Award}
         />
         <StatCard
-          title="Competency Level"
+          title="Current Competency Level"
           value={`Level ${currentLvl}`}
           subtitle="Average proficiency"
           icon={TrendingUp}
@@ -117,15 +117,15 @@ export default function TraineeDashboard() {
         />
       </div>
 
-      {/* Skill Gap / Target Assessment Banner — neutral surface, no gradient */}
+      {/* Skill Gap / Target Proficiency Trajectory Banner — neutral surface, no gradient */}
       <div className="surface-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
-            <BrainCircuit className="w-3.5 h-3.5" /> Skill Gap Target
+            <BrainCircuit className="w-3.5 h-3.5" /> Competency Gap Analytics
           </div>
-          <h3 className="text-lg font-semibold text-foreground">Target Assessment</h3>
+          <h3 className="text-lg font-semibold text-foreground">Target Proficiency Trajectory</h3>
           <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
-            Your current baseline is Level {currentLvl}. Completing recommended courses will bridge your overall gap to Level {reqLvl}.
+            Your currently assessed baseline is Level {currentLvl}. Completing the AI-recommended capacity modules will systematically bridge your operational gap to the target Level {reqLvl}.
           </p>
         </div>
         <Link
@@ -136,7 +136,7 @@ export default function TraineeDashboard() {
         </Link>
       </div>
 
-      {/* Active Enrollments Section */}
+      {/* Active Module Enrollments Section */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-foreground">My Active Courses</h2>
@@ -176,3 +176,5 @@ export default function TraineeDashboard() {
     </div>
   );
 }
+
+

@@ -36,22 +36,22 @@ export function Sidebar({ role }: SidebarProps) {
 
   const links = {
     trainee: [
-      { href: '/trainee', label: 'My Dashboard', icon: LayoutDashboard },
+      { href: '/trainee', label: 'Trainee Command Center', icon: LayoutDashboard },
       { href: '/trainee/courses', label: 'Course Catalog', icon: BookOpen },
-      { href: '/trainee/certificates', label: 'Certificate Vault', icon: Award },
-      { href: '/trainee/wizard', label: 'Match Your Trainer', icon: Sparkles },
+      { href: '/trainee/certificates', label: 'Cryptographic Certificate Vault', icon: Award },
+      { href: '/trainee/wizard', label: 'AI Mentor Matchmaking', icon: Sparkles },
       { href: '/profile', label: 'My Profile', icon: User },
     ],
     trainer: [
-      { href: '/trainer', label: 'Trainer Studio', icon: LayoutDashboard },
-      { href: '/trainer/courses/new', label: 'Course Builder', icon: PlusCircle },
-      { href: '/trainer/assessments/new', label: 'MCQ Authoring', icon: FileText },
+      { href: '/trainer', label: 'Trainer Command Center', icon: LayoutDashboard },
+      { href: '/trainer/courses/new', label: 'Capacity Module Architect', icon: PlusCircle },
+      { href: '/trainer/assessments/new', label: 'Assessment Engineering', icon: FileText },
       { href: '/profile', label: 'My Profile', icon: User },
-      { href: '/trainer/students', label: 'Student Approval', icon: Users },
+      { href: '/trainer/students', label: 'Trainee Governance', icon: Users },
     ],
     admin: [
       { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-      { href: '/admin/users', label: 'User Approval', icon: UserCheck },
+      { href: '/admin/users', label: 'Access Governance', icon: UserCheck },
       { href: '/admin/trainers', label: 'Trainer Management', icon: Users },
       { href: '/admin/courses', label: 'Course Management', icon: BookOpen },
       { href: '/admin/media', label: 'Media Governance', icon: Video },
@@ -127,3 +127,4 @@ export function Sidebar({ role }: SidebarProps) {
     </>
   );
 }
+

@@ -284,19 +284,19 @@ export default function TrainerDashboard() {
         <StatCard
           title={t("authored_courses")}
           value={courses.length}
-          subtitle="Capacity modules"
+          subtitle="Authored Capacity Modules"
           icon={BookOpen}
         />
         <StatCard
           title={t("active_students")}
           value={totalEnrollments}
-          subtitle="Enrolled trainees"
+          subtitle="Active Trainee Enrollments"
           icon={Users}
         />
         <StatCard
           title={t("published_courses")}
           value={publishedCount}
-          subtitle="Live in catalog"
+          subtitle="Published to Global Catalog"
           icon={CheckCircle2}
         />
         <StatCard
@@ -306,7 +306,7 @@ export default function TrainerDashboard() {
               ? `${Number(profile.trainerRatingAvg).toFixed(1)} / 5.0`
               : 'N/A'
           }
-          subtitle="Trainee satisfaction"
+          subtitle="Aggregate Trainee Satisfaction Score"
           icon={Sparkles}
         />
       </div>
@@ -412,3 +412,4 @@ export default function TrainerDashboard() {
     </div>
   );
 }
+

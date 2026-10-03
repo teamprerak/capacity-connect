@@ -116,9 +116,9 @@ export default function AdminDashboardPage() {
       {/* Secondary KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
-          { title: 'OPERATIONAL READINESS', val: isDataAvailable ? (metrics.operationalReadiness ?? 'N/A') : 'N/A', sub: 'Based on ORI calculation', icon: ShieldCheck },
-          { title: 'VERIFIED EVIDENCE', val: isDataAvailable ? (metrics.verifiedEvidence ?? 'N/A') : 'N/A', sub: 'Scenarios verified', icon: CheckCircle },
-          { title: 'KNOWLEDGE ASSETS', val: isDataAvailable ? (metrics.knowledgeAssets ?? 'N/A') : 'N/A', sub: 'Institutional memory', icon: Database },
+          { title: 'OPERATIONAL READINESS', val: isDataAvailable ? (metrics.operationalReadiness ?? 'N/A') : 'N/A', sub: 'Organizational Readiness Index (ORI) calculation', icon: ShieldCheck },
+          { title: 'VERIFIED SIMULATION SCENARIOS', val: isDataAvailable ? (metrics.verifiedEvidence ?? 'N/A') : 'N/A', sub: 'Simulation Scenarios Verified', icon: CheckCircle },
+          { title: 'KNOWLEDGE ASSETS', val: isDataAvailable ? (metrics.knowledgeAssets ?? 'N/A') : 'N/A', sub: 'Captured Institutional Knowledge Assets', icon: Database },
         ].map((kpi, idx) => (
           <div key={idx} className="surface-card p-5 rounded-xl border border-border flex items-start gap-4">
             <div className="p-2.5 bg-primary/10 rounded-lg text-primary mt-1">
@@ -234,3 +234,5 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
+

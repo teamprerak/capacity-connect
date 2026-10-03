@@ -6,8 +6,10 @@ import { api } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, RotateCcw, Trash2 } from 'lucide-react';
 import { RejectCourseModal } from '@/components/RejectCourseModal';
+import { useTranslation } from "react-i18next";
 
 export default function AdminCourseModerationPage() {
+    const { t } = useTranslation();
   const [courses, setCourses] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -66,7 +68,7 @@ export default function AdminCourseModerationPage() {
       accessor: (course: any) => (
         <div>
           <span className="font-bold text-foreground block">{course.title}</span>
-          <span className="text-[10px] text-muted-foreground font-mono">Slug: {course.slug}</span>
+          <span className="text-[10px] text-muted-foreground font-mono"> {t("slug_")} {course.slug}</span>
         </div>
       ),
     },
@@ -107,14 +109,12 @@ export default function AdminCourseModerationPage() {
                 onClick={() => handleApprove(course.id)}
                 className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200 transition-all flex items-center gap-1.5"
               >
-                <CheckCircle className="w-3.5 h-3.5" /> Approve
-              </button>
+                <CheckCircle className="w-3.5 h-3.5" />  {t("approve")} </button>
               <button
                 onClick={() => handleRejectClick(course.id, course.title)}
                 className="px-3 py-1.5 rounded-lg text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-all flex items-center gap-1.5"
               >
-                <XCircle className="w-3.5 h-3.5" /> Reject
-              </button>
+                <XCircle className="w-3.5 h-3.5" />  {t("reject")} </button>
             </>
           )}
 
@@ -123,17 +123,15 @@ export default function AdminCourseModerationPage() {
               onClick={() => handleRollbackClick(course.id, course.title)}
               className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200 hover:bg-amber-200 transition-all flex items-center gap-1.5"
             >
-              <RotateCcw className="w-3.5 h-3.5" /> Rollback
-            </button>
+              <RotateCcw className="w-3.5 h-3.5" />  {t("rollback")} </button>
           )}
 
           <button
             onClick={() => handleDelete(course.id)}
             className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-100 text-rose-500 border border-rose-200 hover:bg-rose-200 transition-all flex items-center gap-1.5"
-            title="Delete Course"
+            title={t("delete_course")}
           >
-            <Trash2 className="w-3.5 h-3.5" /> Delete
-          </button>
+            <Trash2 className="w-3.5 h-3.5" />  {t("delete")} </button>
         </div>
       ),
     },
@@ -143,11 +141,9 @@ export default function AdminCourseModerationPage() {
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-          Course Moderation Queue
-        </h1>
+           {t("course_moderation_queue")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Review courses submitted by trainers before publishing them to the enterprise catalog. Manage existing courses.
-        </p>
+           {t("review_courses_submitted_by_tr")} </p>
       </div>
 
       <DataTable

@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { Target, CheckCircle2, TrendingUp, Plus } from 'lucide-react';
 
 import { api } from '@/lib/api-client';
+import { useTranslation } from "react-i18next";
 
 export default function CompetenciesPage() {
+    const { t } = useTranslation();
   const [charts, setCharts] = React.useState<any>(null);
 
   React.useEffect(() => {
@@ -25,10 +27,9 @@ export default function CompetenciesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Competency Management</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground"> {t("competency_management")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Role requirements, current levels and organization-wide development gaps.
-        </p>
+           {t("role_requirements__current_lev")} </p>
       </div>
 
       {/* KPI Cards */}
@@ -53,22 +54,21 @@ export default function CompetenciesPage() {
       <div className="surface-card rounded-xl border border-border overflow-hidden">
         <div className="p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-border">
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Required competency framework</h3>
-            <p className="text-xs text-muted-foreground">Prototype role to competency matrix</p>
+            <h3 className="text-sm font-semibold text-foreground"> {t("required_competency_framework")} </h3>
+            <p className="text-xs text-muted-foreground"> {t("prototype_role_to_competency_m")} </p>
           </div>
           <button className="btn-primary px-4 py-2 text-sm flex items-center gap-2">
-            <Plus className="w-4 h-4" /> Add competency category
-          </button>
+            <Plus className="w-4 h-4" />  {t("add_competency_category")} </button>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
             <thead className="text-[10px] uppercase text-muted-foreground bg-accent/50">
               <tr>
-                <th className="px-5 py-3 font-semibold">JOB ROLE</th>
-                <th className="px-5 py-3 font-semibold">SUBJECT</th>
-                <th className="px-5 py-3 font-semibold">REQUIRED LEVEL</th>
-                <th className="px-5 py-3 font-semibold">COMPETENCIES</th>
+                <th className="px-5 py-3 font-semibold"> {t("job_role")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("subject")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("required_level")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("competencies")} </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -96,8 +96,7 @@ export default function CompetenciesPage() {
               ) : (
                 <tr>
                   <td colSpan={4} className="px-5 py-10 text-center text-muted-foreground">
-                    N/A (No competency frameworks defined)
-                  </td>
+                     {t("n_a__no_competency_frameworks_")} </td>
                 </tr>
               )}
             </tbody>
@@ -108,20 +107,20 @@ export default function CompetenciesPage() {
       {/* Recent competency gap results table */}
       <div className="surface-card rounded-xl border border-border overflow-hidden">
         <div className="p-5 border-b border-border">
-          <h3 className="text-sm font-semibold text-foreground">Recent competency gap results</h3>
-          <p className="text-xs text-muted-foreground">Latest trainee evaluations</p>
+          <h3 className="text-sm font-semibold text-foreground"> {t("recent_competency_gap_results")} </h3>
+          <p className="text-xs text-muted-foreground"> {t("latest_trainee_evaluations")} </p>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
             <thead className="text-[10px] uppercase text-muted-foreground bg-accent/50">
               <tr>
-                <th className="px-5 py-3 font-semibold">TRAINEE</th>
-                <th className="px-5 py-3 font-semibold">SUBJECT</th>
-                <th className="px-5 py-3 font-semibold">CURRENT</th>
-                <th className="px-5 py-3 font-semibold">REQUIRED</th>
-                <th className="px-5 py-3 font-semibold">SCORE</th>
-                <th className="px-5 py-3 font-semibold">MISSING COMPETENCIES</th>
+                <th className="px-5 py-3 font-semibold"> {t("trainee")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("subject")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("current")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("required")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("score")} </th>
+                <th className="px-5 py-3 font-semibold"> {t("missing_competencies")} </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -147,8 +146,7 @@ export default function CompetenciesPage() {
               ) : (
                 <tr>
                   <td colSpan={6} className="px-5 py-10 text-center text-muted-foreground">
-                    N/A (No evaluations recorded yet)
-                  </td>
+                     {t("n_a__no_evaluations_recorded_y")} </td>
                 </tr>
               )}
             </tbody>

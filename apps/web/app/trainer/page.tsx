@@ -24,6 +24,7 @@ import {
   RotateCcw,
   Trash2,
 } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 // ─── Status Badge ─────────────────────────────────────────────────────────────
 
@@ -79,6 +80,7 @@ interface CourseActionsProps {
 }
 
 function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, onEdit, onDelete }: CourseActionsProps) {
+    const { t } = useTranslation();
   const moduleCount: number = course._count?.modules ?? 0;
 
   return (
@@ -89,8 +91,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
             onClick={() => onEdit(course)}
             className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-muted-foreground border border-slate-200 hover:bg-slate-200 transition-all flex items-center gap-1.5"
           >
-            Edit Course
-          </button>
+             {t("edit_course")} </button>
         )}
 
         {course.status !== 'archived' && (
@@ -99,8 +100,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
             className="px-3 py-1.5 rounded-lg text-xs font-bold bg-primary/10 text-primary border border-primary/20 hover:bg-blue-500/20 transition-all flex items-center gap-1.5"
           >
             <Layers className="w-3.5 h-3.5" />
-            Add Module
-          </button>
+             {t("add_module")} </button>
         )}
 
         {course.status === 'draft' && (
@@ -111,15 +111,13 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
               className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200 transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <SendHorizonal className="w-3.5 h-3.5" />
-              Submit
-            </button>
+               {t("submit")} </button>
 
             {moduleCount === 0 && (
               <div className="absolute bottom-full right-0 mb-2 w-52 px-3 py-2 rounded-lg bg-background border border-border text-[11px] text-amber-700 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                 <div className="flex items-start gap-1.5">
                   <BadgeAlert className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-                  Add at least 1 module before submitting.
-                </div>
+                   {t("add_at_least_1_module_before_s")} </div>
               </div>
             )}
           </div>
@@ -131,8 +129,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
             className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200 hover:bg-rose-200 transition-all flex items-center gap-1.5"
           >
             <Archive className="w-3.5 h-3.5" />
-            Archive
-          </button>
+             {t("archive")} </button>
         )}
 
         {course.status === 'archived' && (
@@ -141,8 +138,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
             className="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-100 text-indigo-700 border border-indigo-200 hover:bg-indigo-200 transition-all flex items-center gap-1.5"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            Unarchive
-          </button>
+             {t("unarchive")} </button>
         )}
 
         <button
@@ -150,15 +146,13 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
           className="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-100 text-red-700 border border-red-200 hover:bg-red-200 transition-all flex items-center gap-1.5"
         >
           <Trash2 className="w-3.5 h-3.5" />
-          Delete
-        </button>
+           {t("delete")} </button>
       </div>
       
       {course.status === 'pending_approval' && (
         <div className="flex items-center gap-1.5 text-amber-700 text-xs font-semibold mt-1">
           <Clock className="w-4 h-4 animate-pulse" />
-          Under Review
-        </div>
+           {t("under_review")} </div>
       )}
     </div>
   );
@@ -167,6 +161,7 @@ function CourseActions({ course, onAddModule, onSubmit, onArchive, onUnarchive, 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function TrainerDashboard() {
+    const { t } = useTranslation();
   const [courses, setCourses] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -265,11 +260,9 @@ export default function TrainerDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Trainer Studio Console
-          </h1>
+             {t("trainer_studio_console")} </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Author courses, upload learning resources, build MCQ question banks, and monitor student metrics.
-          </p>
+             {t("author_courses__upload_learnin")} </p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -277,39 +270,37 @@ export default function TrainerDashboard() {
             href="/trainer/courses/new"
             className="px-4 py-2.5 rounded-md bg-primary hover:bg-blue-500 font-bold text-xs text-foreground shadow-sm shadow-blue-500/20 transition-all flex items-center gap-1.5"
           >
-            <PlusCircle className="w-4 h-4" /> Build Course
-          </Link>
+            <PlusCircle className="w-4 h-4" />  {t("build_course")} </Link>
           <Link
             href="/trainer/assessments/new"
             className="px-4 py-2.5 rounded-md bg-purple-600 hover:bg-purple-500 font-bold text-xs text-foreground shadow-sm shadow-purple-500/20 transition-all flex items-center gap-1.5"
           >
-            <FileText className="w-4 h-4" /> Author Assessment
-          </Link>
+            <FileText className="w-4 h-4" />  {t("author_assessment")} </Link>
         </div>
       </div>
 
       {/* ── Stats Overview ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
-          title="Authored Courses"
+          title={t("authored_courses")}
           value={courses.length}
           subtitle="Capacity modules"
           icon={BookOpen}
         />
         <StatCard
-          title="Active Students"
+          title={t("active_students")}
           value={totalEnrollments}
           subtitle="Enrolled trainees"
           icon={Users}
         />
         <StatCard
-          title="Published Courses"
+          title={t("published_courses")}
           value={publishedCount}
           subtitle="Live in catalog"
           icon={CheckCircle2}
         />
         <StatCard
-          title="Average Rating"
+          title={t("average_rating")}
           value={
             profile?.trainerRatingAvg
               ? `${Number(profile.trainerRatingAvg).toFixed(1)} / 5.0`
@@ -325,16 +316,15 @@ export default function TrainerDashboard() {
         <div className="flex items-center gap-3 px-5 py-3.5 rounded-lg bg-amber-100 border border-amber-200 text-amber-700 text-sm font-medium">
           <Clock className="w-5 h-5 shrink-0 animate-pulse" />
           <span>
-            You have{' '}
+             {t("you_have")} {' '}
             <strong>{pendingCount}</strong>{' '}
-            {pendingCount === 1 ? 'course' : 'courses'} awaiting administrative review.
-          </span>
+            {pendingCount === 1 ? 'course' : 'courses'}  {t("awaiting_administrative_review")} </span>
         </div>
       )}
 
       {/* ── Courses List ── */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-foreground">Authored Course Modules</h2>
+        <h2 className="text-xl font-bold text-foreground"> {t("authored_course_modules")} </h2>
 
         {isLoading ? (
           <div className="grid grid-cols-1 gap-4">
@@ -368,11 +358,9 @@ export default function TrainerDashboard() {
                       <span className="font-semibold text-emerald-700">
                         {course._count?.enrollments ?? 0}
                       </span>{' '}
-                      Enrolled
-                    </span>
+                       {t("enrolled")} </span>
                     <span className="text-xs text-muted-foreground">
-                      {course.durationMinutes} min
-                    </span>
+                      {course.durationMinutes}  {t("min")} </span>
                   </div>
                 </div>
 
@@ -393,10 +381,9 @@ export default function TrainerDashboard() {
           </div>
         ) : (
           <div className="bg-card border border-border shadow-sm p-8 rounded-lg text-center text-muted-foreground text-sm">
-            You haven't authored any courses yet.{' '}
+             {t("you_haven_t_authored_any_cours")} {' '}
             <Link href="/trainer/courses/new" className="text-primary hover:underline font-semibold">
-              Build your first course
-            </Link>
+               {t("build_your_first_course")} </Link>
             .
           </div>
         )}

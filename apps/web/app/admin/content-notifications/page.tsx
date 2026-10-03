@@ -5,8 +5,10 @@ import React from 'react';
 import { api } from '@/lib/api-client';
 
 import { Trash2 } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 
 export default function ContentNotificationsPage() {
+    const { t } = useTranslation();
   const [publishedContent, setPublished] = React.useState<any[]>([]);
   
   const [title, setTitle] = React.useState('');
@@ -56,23 +58,22 @@ export default function ContentNotificationsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Content & Notifications</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground"> {t("content___notifications")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Publish announcements, achievements, new courses, resources and deadlines.
-        </p>
+           {t("publish_announcements__achieve")} </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         {/* Left Column - Publish Form */}
         <div className="surface-card p-6 rounded-xl border border-border">
           <div className="mb-6">
-            <h2 className="text-base font-semibold text-foreground">Publish update</h2>
-            <p className="text-xs text-muted-foreground">Visible to selected audience</p>
+            <h2 className="text-base font-semibold text-foreground"> {t("publish_update")} </h2>
+            <p className="text-xs text-muted-foreground"> {t("visible_to_selected_audience")} </p>
           </div>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Title</label>
+              <label className="text-xs font-medium text-foreground"> {t("title")} </label>
               <input 
                 type="text" 
                 value={title}
@@ -83,7 +84,7 @@ export default function ContentNotificationsPage() {
             </div>
             
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Message</label>
+              <label className="text-xs font-medium text-foreground"> {t("message")} </label>
               <textarea 
                 rows={4}
                 value={message}
@@ -95,28 +96,28 @@ export default function ContentNotificationsPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Type</label>
+                <label className="text-xs font-medium text-foreground"> {t("type")} </label>
                 <select 
                   value={type}
                   onChange={(e) => setType(e.target.value)}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
-                  <option value="announcement">announcement</option>
-                  <option value="course">course</option>
-                  <option value="deadline">deadline</option>
-                  <option value="achievement">achievement</option>
+                  <option value="announcement"> {t("announcement")} </option>
+                  <option value="course"> {t("course")} </option>
+                  <option value="deadline"> {t("deadline")} </option>
+                  <option value="achievement"> {t("achievement")} </option>
                 </select>
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Audience</label>
+                <label className="text-xs font-medium text-foreground"> {t("audience")} </label>
                 <select 
                   value={audience}
                   onChange={(e) => setAudience(e.target.value)}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
-                  <option value="all">all</option>
-                  <option value="trainees">trainees</option>
-                  <option value="trainers">trainers</option>
+                  <option value="all"> {t("all")} </option>
+                  <option value="trainees"> {t("trainees")} </option>
+                  <option value="trainers"> {t("trainers")} </option>
                 </select>
               </div>
             </div>
@@ -130,8 +131,8 @@ export default function ContentNotificationsPage() {
         {/* Right Column - Published Content List */}
         <div className="surface-card p-6 rounded-xl border border-border">
           <div className="mb-6">
-            <h2 className="text-base font-semibold text-foreground">Published content</h2>
-            <p className="text-xs text-muted-foreground">Newest first</p>
+            <h2 className="text-base font-semibold text-foreground"> {t("published_content")} </h2>
+            <p className="text-xs text-muted-foreground"> {t("newest_first")} </p>
           </div>
 
           <div className="space-y-4">
@@ -155,7 +156,7 @@ export default function ContentNotificationsPage() {
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="opacity-0 group-hover:opacity-100 p-1.5 text-muted-foreground hover:text-error transition-all rounded-md hover:bg-error/10"
-                      title="Delete announcement"
+                      title={t("delete_announcement")}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -164,8 +165,7 @@ export default function ContentNotificationsPage() {
               </div>
             )) : (
               <div className="text-center py-10 text-sm text-muted-foreground">
-                N/A (No updates published yet)
-              </div>
+                 {t("n_a__no_updates_published_yet_")} </div>
             )}
           </div>
         </div>

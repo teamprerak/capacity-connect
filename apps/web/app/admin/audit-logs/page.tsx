@@ -5,8 +5,10 @@ import { DataTable } from '@/components/DataTable';
 import { api } from '@/lib/api-client';
 import { ShieldCheck, Calendar, Globe, Code, Search } from 'lucide-react';
 import { Modal } from '@/components/Modal';
+import { useTranslation } from "react-i18next";
 
 export default function AdminAuditLogsPage() {
+    const { t } = useTranslation();
   const [logs, setLogs] = useState<any[]>([]);
   const [selectedMeta, setSelectedMeta] = useState<any | null>(null);
   const [search, setSearch] = useState('');
@@ -74,8 +76,7 @@ export default function AdminAuditLogsPage() {
           onClick={() => setSelectedMeta(log.metadata)}
           className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-card text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
         >
-          <Code className="w-3.5 h-3.5 text-muted-foreground" /> View JSON
-        </button>
+          <Code className="w-3.5 h-3.5 text-muted-foreground" />  {t("view_json")} </button>
       ),
     },
   ];
@@ -84,11 +85,9 @@ export default function AdminAuditLogsPage() {
     <div className="space-y-8 animate-in fade-in duration-300">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-          Audit Log Stream
-        </h1>
+           {t("audit_log_stream")} </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Immutable audit trails recording user actions, status modifications, and course approvals.
-        </p>
+           {t("immutable_audit_trails_recordi")} </p>
       </div>
 
       <div className="bg-card border border-border shadow-sm rounded-lg p-4 border border-border">
@@ -97,7 +96,7 @@ export default function AdminAuditLogsPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search action, actor email, or entity..."
+            placeholder={t("search_action__actor_email__or")}
             className="w-full pl-10 pr-4 py-2.5 rounded-md bg-background border border-border text-foreground text-sm focus:border-blue-500"
           />
           <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-3.5" />
@@ -109,7 +108,7 @@ export default function AdminAuditLogsPage() {
       <Modal
         isOpen={!!selectedMeta}
         onClose={() => setSelectedMeta(null)}
-        title="Audit Event Metadata Inspector"
+        title={t("audit_event_metadata_inspector")}
       >
         <pre className="p-4 rounded-md bg-background border border-border text-xs font-mono text-emerald-700 overflow-x-auto">
           {JSON.stringify(selectedMeta, null, 2)}

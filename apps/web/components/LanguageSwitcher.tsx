@@ -30,12 +30,36 @@ const LANGUAGES = [
   { code: 'ur', name: 'Urdu', native: 'اردو' }
 ];
 
+// Helper to manage google translate cookies
+function setGoogTransCookie(code: string) {
+  document.cookie = `googtrans=/en/${code}; path=/; domain=${window.location.hostname}`;
+  document.cookie = `googtrans=/en/${code}; path=/`;
+}
+function clearGoogTransCookie() {
+  document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
+  document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+}
+function getGoogTransLang() {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z-]+)/);
+  return match ? match[1] : null;
+}
+
 export function LanguageSwitcher() {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [activeLang, setActiveLang] = useState('en');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Initial sync
+    const googLang = getGoogTransLang();
+    if (googLang && googLang !== 'en') {
+      setActiveLang(googLang);
+    } else {
+      setActiveLang(i18n.language ? i18n.language.split('-')[0] : 'en');
+    }
+
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -43,14 +67,32 @@ export function LanguageSwitcher() {
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [i18n.language]);
 
   const changeLanguage = (code: string) => {
-    i18n.changeLanguage(code);
     setIsOpen(false);
+    
+    if (code === 'en' || code === 'hi') {
+      // Use native react-i18next translation
+      i18n.changeLanguage(code);
+      clearGoogTransCookie();
+      setActiveLang(code);
+      // Reload if we were previously using Google Translate to clear its DOM changes
+      if (getGoogTransLang()) {
+        window.location.reload();
+      }
+    } else {
+      // Ensure native DOM is english before translating
+      if (i18n.language !== 'en') {
+        i18n.changeLanguage('en');
+      }
+      setGoogTransCookie(code);
+      setActiveLang(code);
+      window.location.reload();
+    }
   };
 
-  const currentLangCode = i18n.language ? i18n.language.split('-')[0].toUpperCase() : 'EN';
+  const currentLangCode = activeLang.toUpperCase();
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -74,7 +116,7 @@ export function LanguageSwitcher() {
           </div>
           <ul className="max-h-80 overflow-y-auto py-1" role="menu">
             {LANGUAGES.map((lang) => {
-              const isActive = i18n.language?.startsWith(lang.code);
+              const isActive = activeLang === lang.code;
               return (
                 <li key={lang.code} role="none">
                   <button

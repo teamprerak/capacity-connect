@@ -25,6 +25,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </I18nProvider>
           </AuthProvider>
         </ThemeProvider>
+        
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false
+              }, 'google_translate_element');
+            }
+          `
+        }}></script>
       </body>
     </html>
   );

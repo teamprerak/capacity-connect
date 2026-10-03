@@ -209,7 +209,16 @@ export class CertificateService {
     return this.prisma.certificate.findMany({
       where: { traineeId: profile.id },
       include: {
-        course: { select: { id: true, title: true, slug: true, thumbnailUrl: true } },
+        course: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            thumbnailUrl: true,
+            durationMinutes: true,
+            category: { select: { name: true } },
+          },
+        },
         trainer: {
           select: {
             id: true,

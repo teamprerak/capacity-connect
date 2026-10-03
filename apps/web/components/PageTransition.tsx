@@ -22,11 +22,6 @@ export function PageTransition({ children, className = "" }: { children: React.R
   }
 
   // Use a custom cubic-bezier curve for premium enterprise feel
-  const transition = {
-    duration,
-    ease: [0.22, 1, 0.36, 1],
-  };
-
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -34,7 +29,7 @@ export function PageTransition({ children, className = "" }: { children: React.R
         initial={{ opacity: 0, y: yOffset }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -4 }}
-        transition={transition}
+        transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
         className={`w-full h-full flex flex-col flex-1 ${className}`}
       >
         {children}

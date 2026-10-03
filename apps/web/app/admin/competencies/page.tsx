@@ -73,7 +73,7 @@ export default function CompetenciesPage() {
             </thead>
             <tbody className="divide-y divide-border">
               {frameworkData.length > 0 ? (
-                frameworkData.map((row: any, i) => (
+                frameworkData.map((row: any, i: number) => (
                   <tr key={i} className="hover:bg-accent/30 transition-colors">
                     <td className="px-5 py-4 font-medium text-foreground">{row.jobRole}</td>
                     <td className="px-5 py-4 text-muted-foreground">{row.subject}</td>

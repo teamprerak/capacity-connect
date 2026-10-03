@@ -13,6 +13,7 @@ export default function CertificateVaultPage() {
     const { t } = useTranslation();
   const [certificates, setCertificates] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
   useEffect(() => {
     api
@@ -23,11 +24,12 @@ export default function CertificateVaultPage() {
   }, []);
 
   const handleDownloadPDF = async (certId: string, certNumber: string) => {
+    setDownloadingId(certId);
     const element = document.getElementById(`certificate-${certId}`);
     if (!element) return;
 
     try {
-      const canvas = await html2canvas(element, { scale: 2 });
+      const canvas = await html2canvas(element, { scale: 2, useCORS: true, allowTaint: true });
       const imgData = canvas.toDataURL('image/png');
       
       const pdf = new jsPDF({
@@ -42,6 +44,8 @@ export default function CertificateVaultPage() {
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save(`certificate-${certNumber}.pdf`);
     } catch (error) {
+      alert("Failed to download certificate. Check console for details.");
+
       console.error('Error generating PDF', error);
     }
   };
@@ -114,10 +118,11 @@ export default function CertificateVaultPage() {
                   
                   <button
                     onClick={() => handleDownloadPDF(cert.id, cert.certificateNumber)}
-                    className="px-3 py-2 rounded-md bg-emerald-500 text-white hover:bg-emerald-600 transition-colors flex items-center gap-2"
+                    disabled={downloadingId === cert.id}
+                      className={`px-3 py-2 rounded-md transition-colors flex items-center gap-2 ${downloadingId === cert.id ? "bg-emerald-500/50 cursor-not-allowed" : "bg-emerald-500 hover:bg-emerald-600"} text-white`}
                   >
-                    <Download className="w-4 h-4" />
-                    <span> {t("download_pdf")} </span>
+                    {downloadingId === cert.id ? <Spinner className="w-4 h-4 text-white" /> : <Download className="w-4 h-4" />}
+                    <span>{downloadingId === cert.id ? "Generating..." : t("download_pdf")}</span>
                   </button>
                 </div>
               </div>
@@ -131,3 +136,4 @@ export default function CertificateVaultPage() {
     </div>
   );
 }
+

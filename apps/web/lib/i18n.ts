@@ -4,11 +4,9 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 // Import translations
 import enTranslations from '../public/locales/en/common.json';
-import hiTranslations from '../public/locales/hi/common.json';
 
 const resources = {
   en: { common: enTranslations },
-  hi: { common: hiTranslations },
 };
 
 i18n

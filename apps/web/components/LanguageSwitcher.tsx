@@ -46,7 +46,7 @@ function getGoogTransLang() {
 }
 
 export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [activeLang, setActiveLang] = useState('en');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -72,30 +72,40 @@ export function LanguageSwitcher() {
   const changeLanguage = (code: string) => {
     setIsOpen(false);
     
-    if (code === 'en' || code === 'hi') {
-      // Use native react-i18next translation
+    if (code === 'en') {
       i18n.changeLanguage(code);
       clearGoogTransCookie();
       setActiveLang(code);
-      // Reload if we were previously using Google Translate to clear its DOM changes
-      if (getGoogTransLang()) {
+      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+      if (select) {
+        select.value = 'en';
+        select.dispatchEvent(new Event('change'));
+      } else if (getGoogTransLang()) {
         window.location.reload();
       }
     } else {
-      // Ensure native DOM is english before translating
       if (i18n.language !== 'en') {
         i18n.changeLanguage('en');
       }
       setGoogTransCookie(code);
       setActiveLang(code);
-      window.location.reload();
+      
+      // Attempt instant translation without reload
+      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+      if (select) {
+        select.value = code;
+        select.dispatchEvent(new Event('change'));
+      } else {
+        window.location.reload();
+      }
     }
   };
 
-  const currentLangCode = activeLang.toUpperCase();
+  const currentLang = LANGUAGES.find(l => l.code === activeLang) || LANGUAGES[0];
+  const currentLangCode = currentLang.code.toUpperCase();
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative notranslate" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1.5 px-2 py-1.5 rounded-md hover:bg-accent transition-colors border border-transparent hover:border-border"
@@ -105,16 +115,17 @@ export function LanguageSwitcher() {
       >
         <Globe className="w-4 h-4 text-primary" />
         <span className="text-xs font-medium text-foreground hidden sm:inline-block uppercase">
-          {currentLangCode} ▾
+          {currentLangCode}
         </span>
+        <span className="text-[10px] ml-0.5 text-muted-foreground">▾</span>
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-background border border-border rounded-md shadow-lg z-50 overflow-hidden">
-          <div className="px-3 py-2 border-b border-border bg-muted/30">
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Language</span>
+        <div className="absolute right-0 mt-2 w-56 max-h-[80vh] overflow-y-auto bg-popover text-popover-foreground rounded-md border border-border shadow-md z-50">
+          <div className="px-3 py-2 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+             {t("language", "Language")} 
           </div>
-          <ul className="max-h-80 overflow-y-auto py-1" role="menu">
+          <ul className="py-1" role="menu">
             {LANGUAGES.map((lang) => {
               const isActive = activeLang === lang.code;
               return (
@@ -122,11 +133,11 @@ export function LanguageSwitcher() {
                   <button
                     role="menuitem"
                     onClick={() => changeLanguage(lang.code)}
-                    className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between hover:bg-accent transition-colors ${isActive ? 'bg-accent/50 text-primary font-medium' : 'text-foreground'}`}
+                    className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between hover:bg-accent transition-colors ${isActive ? 'bg-accent/50 font-medium' : ''}`}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-4 flex justify-center">
-                        {isActive && <Check className="w-4 h-4" />}
+                      <span className="w-4 flex justify-center flex-shrink-0">
+                        {isActive && <Check className="w-4 h-4 text-primary" />}
                       </span>
                       <span>{lang.name}</span>
                     </div>

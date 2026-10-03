@@ -76,13 +76,10 @@ export function LanguageSwitcher() {
       i18n.changeLanguage(code);
       clearGoogTransCookie();
       setActiveLang(code);
-      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-      if (select) {
-        select.value = 'en';
-        select.dispatchEvent(new Event('change'));
-      } else if (getGoogTransLang()) {
-        window.location.reload();
-      }
+      
+      // When switching back to the base language, we must reload the page 
+      // to completely flush Google Translate's DOM mutations.
+      window.location.reload();
     } else {
       if (i18n.language !== 'en') {
         i18n.changeLanguage('en');
@@ -121,8 +118,8 @@ export function LanguageSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 max-h-[80vh] overflow-y-auto bg-popover text-popover-foreground rounded-md border border-border shadow-md z-50">
-          <div className="px-3 py-2 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+        <div className="absolute right-0 mt-2 w-56 max-h-[80vh] overflow-y-auto bg-background text-foreground rounded-md border border-border shadow-lg z-50">
+          <div className="px-3 py-2 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-muted/30">
              {t("language", "Language")} 
           </div>
           <ul className="py-1" role="menu">
@@ -133,7 +130,7 @@ export function LanguageSwitcher() {
                   <button
                     role="menuitem"
                     onClick={() => changeLanguage(lang.code)}
-                    className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between hover:bg-accent transition-colors ${isActive ? 'bg-accent/50 font-medium' : ''}`}
+                    className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between hover:bg-accent transition-colors ${isActive ? 'bg-accent/50 text-primary font-medium' : ''}`}
                   >
                     <div className="flex items-center gap-2">
                       <span className="w-4 flex justify-center flex-shrink-0">

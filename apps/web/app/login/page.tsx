@@ -10,6 +10,7 @@ import {
   Sparkles, Eye, EyeOff, ArrowLeft 
 } from 'lucide-react';
 import { CapabilityNetwork } from '@/components/CapabilityNetwork';
+import { PageTransition } from '@/components/PageTransition';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -53,7 +54,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-background overflow-hidden">
+    <PageTransition className="min-h-screen w-full flex flex-col md:flex-row bg-background overflow-hidden">
       {/* LEFT PANE - Branding / Info */}
       <div className="w-full md:w-1/2 bg-[#0B3B59] text-white p-8 md:p-16 flex flex-col justify-center relative min-h-[40vh] md:min-h-screen">
         {/* Very subtle background depth */}
@@ -246,6 +247,6 @@ export default function LoginPage() {
           </form>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

@@ -3,6 +3,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import { I18nProvider } from "@/lib/i18n-provider";
 import OnboardingGuard from "@/components/OnboardingGuard";
+import { GlobalNavbar } from "@/components/GlobalNavbar";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <AuthProvider>
             <I18nProvider>
+              <GlobalNavbar />
               <OnboardingGuard>
                 {children}
               </OnboardingGuard>

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import Link from 'next/link';
-import { Navbar } from '@/components/Navbar';
+import { PageTransition } from '@/components/PageTransition';
 import {
   Sparkles,
   Award,
@@ -80,9 +80,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground overflow-x-hidden">
-      <Navbar />
-
+    <PageTransition className="flex flex-col bg-background text-foreground overflow-x-hidden min-h-[calc(100vh-3.5rem)]">
       {/* Hero Section */}
       <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10 relative">
@@ -315,8 +313,6 @@ export default function LandingPage() {
 
       {/* Footer */}
       <Footer />
-
-      {/* Removed AuthModal as we use /login now */}
-    </div>
+    </PageTransition>
   );
 }

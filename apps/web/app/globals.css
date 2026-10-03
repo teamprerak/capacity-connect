@@ -146,38 +146,10 @@
 /* ─── Utility classes ───────────────────────────────────────────────────── */
 
 /* Primary solid button */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
-  border-radius: var(--radius-md);
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: opacity 150ms ease;
-}
-.btn-primary:hover { opacity: 0.88; }
-.btn-primary:active { opacity: 0.78; }
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.625rem 1.25rem; border-radius: var(--radius-md); background-color: var(--primary); color: var(--primary-foreground); font-size: 0.875rem; font-weight: 600; transition: all 180ms ease; transform: translateY(0); } .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); } .btn-primary:active { opacity: 0.85; transform: translateY(0); box-shadow: none; }
 
 /* Secondary outlined */
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background-color: var(--card);
-  color: var(--foreground);
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 150ms ease;
-}
-.btn-secondary:hover { background-color: var(--muted); }
+.btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.625rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border); background-color: var(--card); color: var(--foreground); font-size: 0.875rem; font-weight: 500; transition: all 180ms ease; transform: translateY(0); } .btn-secondary:hover { background-color: var(--muted); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); } .btn-secondary:active { transform: translateY(0); box-shadow: none; }
 
 /* Ghost */
 .btn-ghost {
@@ -199,12 +171,7 @@
 }
 
 /* Card */
-.surface-card {
-  background-color: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
+.surface-card { background-color: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: transform 200ms ease, box-shadow 200ms ease; } a.surface-card:hover, button.surface-card:hover, .surface-card.clickable:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
 
 /* Neutral badge — use for all non-status labels */
 .badge-neutral {
@@ -396,3 +363,6 @@ font {
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
+
+

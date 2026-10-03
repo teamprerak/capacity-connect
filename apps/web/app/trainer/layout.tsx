@@ -1,18 +1,21 @@
 'use client';
 
 import React from 'react';
-import { Navbar } from '@/components/Navbar';
 import { Sidebar } from '@/components/Sidebar';
 import { RouteGuard } from '@/components/RouteGuard';
+import { PageTransition } from '@/components/PageTransition';
 
 export default function TrainerLayout({ children }: { children: React.ReactNode }) {
   return (
     <RouteGuard allowedRoles={['trainer', 'admin']}>
       <div className="min-h-screen flex flex-col">
-        <Navbar />
         <div className="flex flex-1 max-w-7xl mx-auto w-full">
           <Sidebar role="trainer" />
-          <main className="flex-1 p-6 lg:p-8 overflow-y-auto">{children}</main>
+          <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </main>
         </div>
       </div>
     </RouteGuard>

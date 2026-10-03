@@ -347,20 +347,39 @@
 
 
 /* Google Translate Overrides */
-.goog-te-banner-frame, iframe.goog-te-banner-frame, .goog-te-gadget-icon {
+.goog-te-banner-frame, 
+iframe.goog-te-banner-frame, 
+.goog-te-gadget-icon,
+.goog-te-gadget-simple,
+iframe[id=":1.container"],
+iframe[src*="translate.googleapis.com"] {
   display: none !important;
   visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  border: none !important;
+  position: absolute !important;
+  top: -9999px !important;
 }
-iframe[id=":1.container"] {
-  display: none !important;
-}
+
 body {
-    top: 0 !important;
+  top: 0 !important;
+  position: static !important;
 }
-body, html {
+html {
   top: 0px !important;
   position: static !important;
 }
+
+/* Hide the main skiptranslate container usually attached to the body */
+body > .skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+}
+
 .goog-tooltip {
   display: none !important;
 }

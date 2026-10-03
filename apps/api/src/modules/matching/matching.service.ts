@@ -75,7 +75,16 @@ export class MatchingService {
 
     // Fetch all verified trainers with their expertise & availability
     const trainers = await this.prisma.trainerProfile.findMany({
-      where: { verificationStatus: VerificationStatus.verified },
+      where: {
+        verificationStatus: VerificationStatus.verified,
+        user: {
+          userRoles: {
+            some: {
+              role: { name: 'trainer' }
+            }
+          }
+        }
+      },
       include: {
         user: { select: { id: true, email: true } },
         expertise: { include: { skill: true } },
@@ -200,7 +209,16 @@ export class MatchingService {
     }
 
     const trainers = await this.prisma.trainerProfile.findMany({
-      where: { verificationStatus: VerificationStatus.verified },
+      where: {
+        verificationStatus: VerificationStatus.verified,
+        user: {
+          userRoles: {
+            some: {
+              role: { name: 'trainer' }
+            }
+          }
+        }
+      },
       include: {
         user: { select: { id: true, email: true } },
         expertise: { include: { skill: true } },

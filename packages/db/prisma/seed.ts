@@ -37,6 +37,7 @@ async function main() {
   console.log('🌱 Starting Capacity Connect Phase 3 Database Seeding (MoES Edition)...');
 
   // ── 1. Clean Database ──────────────────────────────────────────────────────
+  // C-2 FIX: Added all missing deleteMany() calls in correct FK dependency order
   console.log('🧹 Cleaning existing data...');
   await prisma.competencyEvidence.deleteMany();
   await prisma.certificateVerification.deleteMany();
@@ -49,6 +50,10 @@ async function main() {
   await prisma.assessment.deleteMany();
   await prisma.courseProgress.deleteMany();
   await prisma.enrollment.deleteMany();
+  await prisma.feedback.deleteMany();                    // C-2 FIX: was missing
+  await prisma.questionnaireResponse.deleteMany();       // C-2 FIX: was missing
+  await prisma.questionnaireQuestion.deleteMany();       // C-2 FIX: was missing
+  await prisma.questionnaire.deleteMany();               // C-2 FIX: was missing
   await prisma.courseModule.deleteMany();
   await prisma.coursePrerequisite.deleteMany();
   await prisma.courseSkill.deleteMany();
@@ -56,19 +61,26 @@ async function main() {
   await prisma.courseCategory.deleteMany();
   await prisma.trainerAvailability.deleteMany();
   await prisma.trainerExpertise.deleteMany();
+  await prisma.rating.deleteMany();                      // C-2 FIX: was missing
   await prisma.skillGapAnalysis.deleteMany();
   await prisma.traineeCompetency.deleteMany();
   await prisma.competencySkill.deleteMany();
   await prisma.competency.deleteMany();
+  await prisma.knowledgeHubItem.deleteMany();            // C-2 FIX: was missing
   await prisma.skill.deleteMany();
   await prisma.proficiencyLevel.deleteMany();
   await prisma.qualification.deleteMany();
   await prisma.workExperience.deleteMany();
   await prisma.interest.deleteMany();
   await prisma.externalCertificate.deleteMany();
+  await prisma.learningPathItem.deleteMany();            // C-2 FIX: was missing
+  await prisma.learningPath.deleteMany();                // C-2 FIX: was missing
+  await prisma.achievement.deleteMany();                 // C-2 FIX: was missing
   await prisma.traineeProfile.deleteMany();
   await prisma.trainerProfile.deleteMany();
   await prisma.department.deleteMany();
+  await prisma.notification.deleteMany();                // C-2 FIX: was missing
+  await prisma.announcement.deleteMany();                // C-2 FIX: was missing
   await prisma.auditLog.deleteMany();
   await prisma.refreshToken.deleteMany();
   await prisma.userRole.deleteMany();

@@ -3,18 +3,22 @@
 import React, { useState } from 'react';
 import { Target, CheckCircle2, TrendingUp, Plus } from 'lucide-react';
 
-// Replace with actual database fetching when API is ready
-const fetchFrameworkData = () => [];
-const fetchGapResults = () => [];
+import { api } from '@/lib/api-client';
 
 export default function CompetenciesPage() {
-  const frameworkData = fetchFrameworkData();
-  const gapResults = fetchGapResults();
+  const [charts, setCharts] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    api.get('/analytics/dashboard-charts').then(setCharts).catch(() => null);
+  }, []);
+
+  const frameworkData = charts?.competencyData || [];
+  const gapResults: any[] = []; // Currently no endpoint for recent gap results
 
   const metrics = [
     { title: 'ROLE MAPPINGS', value: frameworkData.length > 0 ? frameworkData.length : 'N/A', icon: Target },
     { title: 'RECORDED CHECKS', value: gapResults.length > 0 ? gapResults.length : 'N/A', icon: CheckCircle2 },
-    { title: 'ADVANCED TARGETS', value: frameworkData.length > 0 ? '4' : 'N/A', icon: TrendingUp },
+    { title: 'ADVANCED TARGETS', value: frameworkData.length > 0 ? `${frameworkData.filter((f: any) => f.requiredLevel > 3).length}` : 'N/A', icon: TrendingUp },
   ];
 
   return (

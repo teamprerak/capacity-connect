@@ -26,7 +26,7 @@ class IssueCertificateDto {
   enrollmentId: string;
 }
 
-@Controller('api/v1/certificates')
+@Controller('certificates')
 export class CertificateController {
   constructor(private readonly certificateService: CertificateService) {}
 
@@ -44,20 +44,21 @@ export class CertificateController {
 
   /**
    * Issue a certificate for a completed enrollment.
-   * Admin or the trainee who owns the enrollment may call this.
+   * C-1 FIX: Restricted to admin role only. Service also validates caller authorization.
    */
   @Post('issue')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @HttpCode(HttpStatus.CREATED)
   issueCertificate(
     @Body() dto: IssueCertificateDto,
-    @CurrentUser('id') userId: string,
+    @CurrentUser() user: any,
     @Req() req: Request,
   ): Promise<any> {
     const baseUrl =
       process.env.API_BASE_URL ??
       `${req.protocol}://${req.get('host')}`;
-    return this.certificateService.issueCertificate(dto.enrollmentId, baseUrl, userId, extractIp(req));
+    return this.certificateService.issueCertificate(dto.enrollmentId, baseUrl, user.id, extractIp(req));
   }
 
   @Get('me')

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api-client';
+import { toast } from 'sonner';
 import OnboardingQuiz from './OnboardingQuiz';
 
 export default function OnboardingGuard({ children }: { children: React.ReactNode }) {
@@ -57,11 +58,11 @@ export default function OnboardingGuard({ children }: { children: React.ReactNod
   const handleSubmit = async (answers: Record<string, any>) => {
     setIsSubmitting(true);
     try {
-      await api.post('/onboarding/submit', answers);
+      await api.post('/onboarding/submit', { answers });
       setNeedsOnboarding(false);
     } catch (error) {
       console.error('Failed to submit onboarding', error);
-      alert('Failed to submit. Please try again.');
+      toast.error('Failed to submit. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

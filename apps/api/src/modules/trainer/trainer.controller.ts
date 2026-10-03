@@ -8,7 +8,7 @@ import { UpdateTrainerProfileDto } from './dto/update-trainer-profile.dto';
 import { CreateAvailabilityDto } from './dto/create-availability.dto';
 import { CreateExpertiseDto } from './dto/create-expertise.dto';
 
-@Controller('api/v1/trainer')
+@Controller('trainer')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class TrainerController {
   constructor(private readonly trainerService: TrainerService) {}

@@ -8,7 +8,6 @@ interface StatCardProps {
   value: string | number;
   subtitle?: string;
   icon: LucideIcon;
-  color?: 'blue' | 'purple' | 'emerald' | 'amber' | 'rose';
   trend?: string;
 }
 
@@ -17,10 +16,8 @@ export function StatCard({
   value,
   subtitle,
   icon: Icon,
-  color = 'blue',
   trend,
 }: StatCardProps) {
-  // All icon containers use one neutral style — color prop kept for API compatibility
   return (
     <div className="surface-card p-5 flex flex-col justify-between hover:shadow-md transition-shadow duration-150">
       <div className="flex items-center justify-between mb-4">

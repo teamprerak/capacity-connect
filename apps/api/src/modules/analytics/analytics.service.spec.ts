@@ -10,14 +10,15 @@ describe('AnalyticsService', () => {
 
   beforeEach(async () => {
     const mockPrisma: any = {
-      traineeProfile: { count: jest.fn(), findUnique: jest.fn() },
+      traineeProfile: { count: jest.fn(), findUnique: jest.fn(), findMany: jest.fn().mockResolvedValue([]) },
       trainerProfile: { count: jest.fn() },
       course: { count: jest.fn(), findMany: jest.fn() },
       enrollment: { count: jest.fn() },
       certificate: { count: jest.fn(), findMany: jest.fn() },
       skillGapAnalysis: { groupBy: jest.fn() },
-      traineeCompetency: { findMany: jest.fn() },
-      $queryRaw: jest.fn(),
+      traineeCompetency: { findMany: jest.fn(), count: jest.fn().mockResolvedValue(10) },
+      knowledgeHubItem: { count: jest.fn().mockResolvedValue(10) },
+      $queryRaw: jest.fn().mockResolvedValue([{ verifiedEvidence: 10, operationalReadiness: 20 }]),
     };
 
     const module: TestingModule = await Test.createTestingModule({

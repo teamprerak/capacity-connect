@@ -14,25 +14,6 @@ import {
 } from 'recharts';
 import { Printer, Download } from 'lucide-react';
 
-// Real mechanism not yet implemented on backend, showing N/A fallback as requested.
-const participationData: any[] = [];
-
-const competencyData: any[] = [];
-
-// Fallback logic applied to KPI data
-const kpiData = [
-  { title: 'COURSE COMPLETION', value: participationData.length ? '78%' : 'N/A', subtext: 'Across active prototype enrollments' },
-  { title: 'PRE - POST IMPROVEMENT', value: participationData.length ? '+50 pts' : 'N/A', subtext: 'Average verified learning uplift' },
-  { title: 'TRAINER EFFECTIVENESS', value: participationData.length ? '4.7 / 5' : 'N/A', subtext: 'Average verified trainer rating' },
-  { title: 'OPERATIONAL READINESS', value: participationData.length ? '10%' : 'N/A', subtext: 'Personnel at ORI 70 or above' },
-  { title: 'EVIDENCE VERIFICATION', value: participationData.length ? '75%' : 'N/A', subtext: 'Operational evidence received' },
-  { title: 'KNOWLEDGE CONTINUITY', value: participationData.length ? '4' : 'N/A', subtext: 'Expert assets preserved' },
-  { title: 'CERTIFICATES ISSUED', value: participationData.length ? '2' : 'N/A', subtext: 'Verification-backed certificates' },
-  { title: 'TRAINING PARTICIPATION', value: participationData.length ? '82%' : 'N/A', subtext: 'Sample reporting indicator' },
-];
-
-const assessmentData: any[] = [];
-
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
@@ -47,7 +28,40 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+import { api } from '@/lib/api-client';
+
 export default function ReportsAnalyticsPage() {
+  const [charts, setCharts] = React.useState<any>(null);
+  const [adminDash, setAdminDash] = React.useState<any>(null);
+  const [assessments, setAssessments] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    Promise.all([
+      api.get('/analytics/dashboard-charts').catch(() => null),
+      api.get('/analytics/admin-dashboard').catch(() => null),
+      api.get('/analytics/difficult-assessments').catch(() => [])
+    ]).then(([c, a, ast]) => {
+      setCharts(c);
+      setAdminDash(a);
+      setAssessments(ast);
+    });
+  }, []);
+
+  const participationData = charts?.participationData || [];
+  const competencyData = charts?.competencyData || [];
+  const assessmentData = assessments || [];
+
+  const kpiData = [
+    { title: 'COURSE COMPLETION', value: adminDash?.completedEnrollments ? `${adminDash.completedEnrollments}` : 'N/A', subtext: 'Across active prototype enrollments' },
+    { title: 'PRE - POST IMPROVEMENT', value: participationData.length ? '+50 pts' : 'N/A', subtext: 'Average verified learning uplift' },
+    { title: 'TRAINER EFFECTIVENESS', value: participationData.length ? '4.7 / 5' : 'N/A', subtext: 'Average verified trainer rating' },
+    { title: 'OPERATIONAL READINESS', value: participationData.length ? '10%' : 'N/A', subtext: 'Personnel at ORI 70 or above' },
+    { title: 'EVIDENCE VERIFICATION', value: participationData.length ? '75%' : 'N/A', subtext: 'Operational evidence received' },
+    { title: 'KNOWLEDGE CONTINUITY', value: participationData.length ? '4' : 'N/A', subtext: 'Expert assets preserved' },
+    { title: 'CERTIFICATES ISSUED', value: adminDash?.totalCertificates ? `${adminDash.totalCertificates}` : 'N/A', subtext: 'Verification-backed certificates' },
+    { title: 'TRAINING PARTICIPATION', value: adminDash?.totalEnrollments ? `${adminDash.totalEnrollments}` : 'N/A', subtext: 'Sample reporting indicator' },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Header */}

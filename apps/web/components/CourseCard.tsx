@@ -50,7 +50,7 @@ export function CourseCard({
       <div className="mt-5 pt-4 border-t border-border flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
           <Clock className="w-3.5 h-3.5 shrink-0" />
-          <span>{Math.round(durationMinutes / 60)} hrs</span>
+          <span>{Math.floor(durationMinutes / 60)}h {durationMinutes % 60 > 0 ? `${durationMinutes % 60}m` : ''}</span>
         </div>
 
         {/* Solid primary for all CTAs — no gradient */}

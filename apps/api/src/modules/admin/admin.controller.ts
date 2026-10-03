@@ -13,7 +13,7 @@ import { UpdateTrainerVerificationDto } from './dto/update-trainer-verification.
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('admin')
-@Controller('api/v1/admin')
+@Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
@@ -65,6 +65,11 @@ export class AdminController {
   @Get('media-governance')
   getMediaGovernance(): Promise<any> {
     return this.adminService.getMediaGovernance();
+  }
+
+  @Delete('media-governance/:id')
+  deleteMediaGovernance(@Param('id') id: string): Promise<void> {
+    return this.adminService.deleteMediaGovernance(id);
   }
 
   @Get('announcements')

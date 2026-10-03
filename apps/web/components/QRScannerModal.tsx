@@ -85,6 +85,7 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
       } catch (err) {
         console.error('Error stopping QR scanner:', err);
       }
+      html5QrCodeRef.current = null;
     }
     setIsCameraActive(false);
     setIsStartingCamera(false);
@@ -159,7 +160,7 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
 
       let scanner = html5QrCodeRef.current;
       if (!scanner) {
-        scanner = new Html5Qrcode('reader');
+        scanner = new Html5Qrcode('reader-hidden');
         html5QrCodeRef.current = scanner;
       }
 
@@ -465,7 +466,7 @@ export function QRScannerModal({ isOpen, onClose }: QRScannerModalProps) {
       )}
 
       {/* Hidden container for reader instance if not mounted */}
-      {scanMode !== 'camera' && <div id="reader" className="hidden"></div>}
+      {scanMode !== 'camera' && scanMode === 'upload' && <div id="reader-hidden" className="hidden"></div>}
 
       {/* Verification Result Display */}
       {result && (

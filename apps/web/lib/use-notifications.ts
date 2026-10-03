@@ -49,12 +49,12 @@ export function useNotifications() {
       esRef.current = null;
     }
 
-    // SSE doesn't support custom headers natively in browsers.
-    // We pass the token as a query param (server validates it as a JWT).
-    // Use the correct api/v1 path if NEXT_PUBLIC_API_URL doesn't include it, or just use the same base as api-client
+    // SSE doesn't support custom headers natively in browsers, but it DOES support cookies.
+    // We remove the token from the query parameter (which is a security risk as URLs are logged)
+    // and rely on the HttpOnly cookie that is automatically sent via withCredentials.
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
-    const url = `${baseUrl}/notifications/stream?token=${encodeURIComponent(token)}`;
-    const es = new EventSource(url);
+    const url = `${baseUrl}/notifications/stream`;
+    const es = new EventSource(url, { withCredentials: true });
     esRef.current = es;
 
     es.addEventListener('notification', (e: MessageEvent) => {
@@ -105,7 +105,7 @@ export function useNotifications() {
     try {
       await api.patch(`/notifications/${id}/read`);
       setNotifications((prev) => {
-        const updated = prev.filter((n) => n.id !== id);
+        const updated = prev.map((n) => (n.id === id ? { ...n, read: true } : n));
         setUnreadCount(updated.filter((n) => !n.read).length);
         return updated;
       });

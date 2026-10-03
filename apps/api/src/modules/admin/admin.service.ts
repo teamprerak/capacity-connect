@@ -309,6 +309,7 @@ export class AdminService {
 
   async getMediaGovernance(): Promise<any> {
     const items = await this.prisma.knowledgeHubItem.findMany({
+      where: { deletedAt: null },
       include: { uploadedBy: true }
     });
     
@@ -324,6 +325,18 @@ export class AdminService {
       mediaLang: 'English',
       status: 'Published'
     }));
+  }
+
+  async deleteMediaGovernance(id: string): Promise<void> {
+    const item = await this.prisma.knowledgeHubItem.findUnique({
+      where: { id },
+    });
+    if (!item) throw new NotFoundException('Item not found');
+
+    await this.prisma.knowledgeHubItem.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
   }
 
   async getAnnouncements(): Promise<any> {

@@ -53,12 +53,12 @@ export class AssessmentController {
   @Roles('trainer', 'admin')
   @HttpCode(HttpStatus.CREATED)
   addQuestion(
-    @CurrentUser('id') userId: string,
+    @CurrentUser() user: any,
     @Param('id', ParseUUIDPipe) assessmentId: string,
     @Body() dto: AddQuestionDto,
     @Req() req: Request,
   ): Promise<any> {
-    return this.assessmentService.addQuestion(userId, assessmentId, dto, extractIp(req));
+    return this.assessmentService.addQuestion(user, assessmentId, dto, extractIp(req));
   }
 
   @Delete('assessments/:id/questions/:questionId')
@@ -66,11 +66,11 @@ export class AssessmentController {
   @Roles('trainer', 'admin')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteQuestion(
-    @CurrentUser('id') userId: string,
+    @CurrentUser() user: any,
     @Param('id', ParseUUIDPipe) assessmentId: string,
     @Param('questionId', ParseUUIDPipe) questionId: string,
   ): Promise<any> {
-    return this.assessmentService.deleteQuestion(userId, assessmentId, questionId);
+    return this.assessmentService.deleteQuestion(user, assessmentId, questionId);
   }
 
   // ─── Attempt Endpoints (Trainee) ──────────────────────────────────────────────

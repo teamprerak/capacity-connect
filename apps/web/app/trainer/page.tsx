@@ -295,21 +295,18 @@ export default function TrainerDashboard() {
           value={courses.length}
           subtitle="Capacity modules"
           icon={BookOpen}
-          color="purple"
         />
         <StatCard
           title="Active Students"
           value={totalEnrollments}
           subtitle="Enrolled trainees"
           icon={Users}
-          color="blue"
         />
         <StatCard
           title="Published Courses"
           value={publishedCount}
           subtitle="Live in catalog"
           icon={CheckCircle2}
-          color="emerald"
         />
         <StatCard
           title="Average Rating"
@@ -320,7 +317,6 @@ export default function TrainerDashboard() {
           }
           subtitle="Trainee satisfaction"
           icon={Sparkles}
-          color="amber"
         />
       </div>
 

@@ -32,8 +32,8 @@ export default function CourseDetailPage() {
       toast.success('Successfully enrolled in course!');
       router.push(`/trainee/courses/${id}/learn`);
     } catch (err: any) {
-      // BUG-08: ApiError has .data not .response?.data (that's an Axios convention, not fetch)
-      toast.error(err.data?.message || err.message || 'Enrollment failed');
+      // H-1 FIX: api-client uses fetch + ApiError, not Axios. Error message is on err.message.
+      toast.error(err.message || 'Enrollment failed');
     } finally {
       setIsEnrolling(false);
     }
@@ -87,7 +87,7 @@ export default function CourseDetailPage() {
         <div className="flex flex-wrap gap-5 pt-4 border-t border-border text-xs font-medium text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5" />
-            <span>Duration: {Math.round(course.durationMinutes / 60)} hrs</span>
+            <span>Duration: {Math.floor(course.durationMinutes / 60)}h {course.durationMinutes % 60 > 0 ? `${course.durationMinutes % 60}m` : ''}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <User className="w-3.5 h-3.5" />

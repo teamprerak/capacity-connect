@@ -21,16 +21,9 @@ export function Navbar() {
   const searchParams = useSearchParams();
   const [scrolled, setScrolled] = useState(false);
 
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isQROpen, setIsQROpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
-
-  useEffect(() => {
-    if (searchParams.get('auth') === 'true') {
-      setIsAuthOpen(true);
-    }
-  }, [searchParams]);
 
   // Detect scroll to switch between glass-clear and glass-frosted
   useEffect(() => {
@@ -72,9 +65,11 @@ export function Navbar() {
             <Link href="/" className="px-3 py-1.5 rounded-md hover:text-foreground hover:bg-accent transition-all duration-150">
               Overview
             </Link>
-            <Link href="/trainee/courses" className="px-3 py-1.5 rounded-md hover:text-foreground hover:bg-accent transition-all duration-150 flex items-center gap-1.5">
-              <BookOpen className="w-3.5 h-3.5" /> Courses
-            </Link>
+            {user?.roles.includes('trainee') && (
+              <Link href="/trainee/courses" className="px-3 py-1.5 rounded-md hover:text-foreground hover:bg-accent transition-all duration-150 flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5" /> Courses
+              </Link>
+            )}
             <Link href="/about" className="px-3 py-1.5 rounded-md hover:text-foreground hover:bg-accent transition-all duration-150">
               About
             </Link>
@@ -130,14 +125,16 @@ export function Navbar() {
                     <span className="hidden sm:inline">Studio</span>
                   </Link>
                 )}
-                <Link
-                  href="/trainee"
-                  className="btn-ghost text-xs px-2.5 py-1.5 flex items-center gap-1.5"
-                  title="My Portal"
-                >
-                  <User className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Portal</span>
-                </Link>
+                {user.roles.includes('trainee') && (
+                  <Link
+                    href="/trainee"
+                    className="btn-ghost text-xs px-2.5 py-1.5 flex items-center gap-1.5"
+                    title="My Portal"
+                  >
+                    <User className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Portal</span>
+                  </Link>
+                )}
 
                 <button
                   onClick={() => setIsChangePasswordOpen(true)}

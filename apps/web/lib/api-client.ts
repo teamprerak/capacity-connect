@@ -113,12 +113,15 @@ export async function apiRequest<T = any>(
     throw new ApiError(response.status, errorMessage, errorData);
   }
 
-  if (response.status === 204) return {} as T;
+  if (response.status === 204) return null as unknown as T;
 
+  const text = await response.text();
+  if (!text) return null as unknown as T;
+  
   try {
-    return await response.json();
-  } catch {
-    return {} as T;
+    return JSON.parse(text);
+  } catch (err) {
+    throw new ApiError(response.status, 'Invalid JSON response from server', text);
   }
 }
 

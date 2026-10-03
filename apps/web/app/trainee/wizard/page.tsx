@@ -111,10 +111,13 @@ export default function MatchWizardPage() {
     setIsAssessmentSubmitting(true);
     try {
       // Convert answers format
-      const formattedAnswers = Object.entries(assessmentAnswers).map(([questionId, selectedOptionId]) => ({
-        questionId,
-        selectedOptionId
-      }));
+      const formattedAnswers = Object.entries(assessmentAnswers).map(([qId, oId]) => {
+        return {
+          questionId: qId,
+          selectedOptionIds: [oId as string]
+        };
+      });
+      console.log('Submitting answers:', formattedAnswers);
 
       const res = await api.post(`/assessments/${activeAssessment.id}/attempts/${assessmentAttemptId}/submit`, {
         answers: formattedAnswers

@@ -38,6 +38,13 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
       return;
     }
 
+    // H-6 FIX: Mirror backend complexity rules from RegisterDto / ChangePasswordDto
+    const complexityRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,72}$/;
+    if (!complexityRegex.test(newPassword)) {
+      setError('New password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character');
+      return;
+    }
+
     try {
       setIsLoading(true);
       const res = await api.post('/auth/change-password', { currentPassword, newPassword });
@@ -50,7 +57,8 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
         setSuccess('');
       }, 2000);
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Failed to change password');
+      // H-1 FIX: api-client uses fetch + ApiError, not Axios. Error message is on err.message.
+      setError(err.message || 'Failed to change password');
     } finally {
       setIsLoading(false);
     }

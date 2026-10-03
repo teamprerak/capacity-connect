@@ -8,9 +8,23 @@ import { api } from '@/lib/api-client';
 export default function MediaGovernancePage() {
   const [mediaData, setMediaData] = React.useState<any[]>([]);
 
-  React.useEffect(() => {
+  const fetchMedia = () => {
     api.get('/admin/media-governance').then(setMediaData).catch(() => []);
+  };
+
+  React.useEffect(() => {
+    fetchMedia();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this resource?')) return;
+    try {
+      await api.delete(`/admin/media-governance/${id}`);
+      fetchMedia();
+    } catch (error) {
+      alert('Failed to delete resource');
+    }
+  };
 
   const isDataAvailable = mediaData.length > 0;
   return (
@@ -77,7 +91,10 @@ export default function MediaGovernancePage() {
                       </span>
                     </td>
                     <td className="px-5 py-4 text-right">
-                      <button className="px-3 py-1.5 text-xs font-medium border border-border rounded-md hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors">
+                      <button
+                        onClick={() => handleDelete(row.id)}
+                        className="px-3 py-1.5 text-xs font-medium border border-border rounded-md hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors"
+                      >
                         Delete
                       </button>
                     </td>

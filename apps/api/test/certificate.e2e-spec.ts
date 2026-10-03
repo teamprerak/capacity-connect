@@ -155,7 +155,8 @@ describe('Certificate Flow (e2e)', () => {
 
   it('Step 2: Admin issues certificate for completed enrollment', async () => {
     const res = await request(app.getHttpServer())
-      .post(`/api/v1/certificates/issue/${enrollmentId}`)
+      .post(`/api/v1/certificates/issue`)
+      .send({ enrollmentId })
       .set('Cookie', adminCookie)
       .expect(201);
 

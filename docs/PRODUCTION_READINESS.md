@@ -131,13 +131,13 @@ npx prisma db seed
 
 | Entity | Count | Details |
 |---|---|---|
-| Departments | 4 | Engineering, Finance, Human Resources, Operations |
+| Departments | 6 | INCOIS, IMD, IITM, NCMRWF, NCPOR, NIOT (MoES Framework) |
 | Admin | 1 | `admin@capacityconnect.org` |
-| Trainers (Verified) | 5 | Various departments & specializations |
-| Trainees | 15 | Diverse qualifications & competency baselines |
-| Competencies | 10+ | Cloud Architecture, Cyber Defense, Full-Stack Dev, etc. |
-| Courses | 8 | Multi-module, published, with MCQ question banks |
-| Certificates | 5+ | Verifiable with QR tokens |
+| Trainers (Verified) | 8 | MoES domain specializations (Seismology, Oceanography, etc.) |
+| Trainees | 24+ | Demo trainee and generic trainees |
+| Competencies | 15+ | MoES Competency Framework skills and levels |
+| Courses | 24 | Multi-module, published, with pre/post-test assessments |
+| Certificates | Varied | Verifiable with QR tokens |
 | Audit Logs | Varied | Initial system events |
 
 ---
@@ -279,11 +279,10 @@ npx turbo type-check test
 | Role | Email | Password |
 |---|---|---|
 | Admin | `admin@capacityconnect.org` | `Password123!` |
-| Trainer 1 | `alice.trainer@capacityconnect.org` | `Password123!` |
-| Trainer 2 | `bob.trainer@capacityconnect.org` | `Password123!` |
-| Trainer 3 | `carol.trainer@capacityconnect.org` | `Password123!` |
-| Trainee 1 | `john.trainee@capacityconnect.org` | `Password123!` |
-| Trainee 2 | `jane.trainee@capacityconnect.org` | `Password123!` |
+| Trainer (Seismology) | `trainer.seismo@capacityconnect.org` | `Password123!` |
+| Trainer (Oceanography)| `trainer.ocean@capacityconnect.org` | `Password123!` |
+| Demo Trainee | `demo.trainee@capacityconnect.org` | `Password123!` |
+| Generic Trainee | `trainee1@capacityconnect.org` | `Password123!` |
 
 > Full seeded user list printed in console output when running `npx prisma db seed`.
 

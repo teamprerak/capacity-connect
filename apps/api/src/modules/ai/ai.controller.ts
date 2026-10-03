@@ -9,7 +9,7 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { ExplainSkillGapDto, RecommendTrainersDto, DraftCourseOutlineDto } from './dto/ai-request.dto';
 
-@Controller('api/v1/ai')
+@Controller('ai')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Throttle({ ai: { limit: 10, ttl: 60000 } })
 export class AiController {

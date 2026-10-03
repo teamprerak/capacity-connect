@@ -101,21 +101,18 @@ export default function TraineeDashboard() {
           value={enrollments.length}
           subtitle="Courses in progress"
           icon={BookOpen}
-          color="blue"
         />
         <StatCard
           title="Earned Certificates"
           value={completedCount}
           subtitle="Verifiable credentials"
           icon={Award}
-          color="emerald"
         />
         <StatCard
           title="Competency Level"
           value={`Level ${currentLvl}`}
           subtitle="Average proficiency"
           icon={TrendingUp}
-          color="purple"
           trend={`Target Level ${reqLvl}`}
         />
       </div>

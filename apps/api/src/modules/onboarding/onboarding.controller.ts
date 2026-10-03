@@ -2,8 +2,9 @@ import { Controller, Post, Get, Body, UseGuards, Param } from '@nestjs/common';
 import { OnboardingService } from './onboarding.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { SubmitOnboardingDto } from './dto/submit-onboarding.dto';
 
-@Controller('api/v1/onboarding')
+@Controller('onboarding')
 @UseGuards(JwtAuthGuard)
 export class OnboardingController {
   constructor(private readonly onboardingService: OnboardingService) {}
@@ -21,8 +22,8 @@ export class OnboardingController {
   @Post('submit')
   async submitOnboarding(
     @CurrentUser('id') userId: string,
-    @Body() onboardingData: any,
+    @Body() dto: SubmitOnboardingDto,
   ) {
-    return this.onboardingService.submitOnboarding(userId, onboardingData);
+    return this.onboardingService.submitOnboarding(userId, dto.answers);
   }
 }

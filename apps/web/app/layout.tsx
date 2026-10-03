@@ -36,6 +36,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 includedLanguages: 'en,hi',
                 autoDisplay: false
               }, 'google_translate_element');
+              
+              // Actively hide the translate bar
+              var hideTranslateBar = function() {
+                var elements = document.querySelectorAll('.goog-te-banner-frame, iframe.goog-te-banner-frame, .skiptranslate > iframe');
+                for (var i = 0; i < elements.length; i++) {
+                  elements[i].style.display = 'none';
+                  elements[i].style.setProperty('display', 'none', 'important');
+                }
+                document.body.style.top = '0px';
+                document.body.style.setProperty('top', '0px', 'important');
+              };
+              
+              var observer = new MutationObserver(hideTranslateBar);
+              observer.observe(document.body, { childList: true, subtree: true });
+              setTimeout(hideTranslateBar, 100);
+              setTimeout(hideTranslateBar, 500);
+              setTimeout(hideTranslateBar, 1500);
             }
           `}
         </Script>

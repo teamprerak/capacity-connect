@@ -88,13 +88,13 @@ export class AssessmentService {
   // ─── Question Management (Trainer) ────────────────────────────────────────────
 
   async addQuestion(
-    trainerUserId: string,
+    user: any,
     assessmentId: string,
     dto: AddQuestionDto,
     ipAddress: string | null = null,
   ): Promise<any> {
     const assessment = await this._requireAssessment(assessmentId);
-    await this._assertAssessmentOwner(trainerUserId, assessment);
+    await this._assertAssessmentOwner(user.id, assessment, user.roles);
 
     const correctCount = dto.options.filter((o) => o.isCorrect).length;
     if (dto.questionType === 'single_mcq' || dto.questionType === 'true_false') {
@@ -131,7 +131,7 @@ export class AssessmentService {
       });
 
       await this.auditService.log({
-        actorUserId: trainerUserId,
+        actorUserId: user.id,
         action: 'assessment.question_added',
         entityType: 'AssessmentQuestion',
         entityId: question.id,
@@ -145,12 +145,12 @@ export class AssessmentService {
   }
 
   async deleteQuestion(
-    trainerUserId: string,
+    user: any,
     assessmentId: string,
     questionId: string,
   ): Promise<any> {
     const assessment = await this._requireAssessment(assessmentId);
-    await this._assertAssessmentOwner(trainerUserId, assessment);
+    await this._assertAssessmentOwner(user.id, assessment, user.roles);
 
     const question = await this.prisma.assessmentQuestion.findFirst({
       where: { id: questionId, assessmentId },

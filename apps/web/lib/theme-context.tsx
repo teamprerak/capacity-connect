@@ -7,7 +7,6 @@ type Theme = 'light' | 'dark';
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
-  isPortal: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -15,10 +14,6 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light');
   const [mounted, setMounted] = useState(false);
-
-  // NOTE: isPortal is kept in context for backward compatibility with Sidebar/Navbar
-  // but theme now applies globally regardless of route.
-  const isPortal = false; // always expose theme toggle everywhere
 
   useEffect(() => {
     setMounted(true);
@@ -36,7 +31,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isPortal: true }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {/* Hide until mounted to avoid flash of wrong theme */}
       <div style={!mounted ? { visibility: 'hidden' } : undefined}>
         {children}

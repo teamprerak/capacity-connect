@@ -4,6 +4,8 @@ import { AssessmentService } from './assessment.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../../common/services/audit.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { EvidenceService } from '../competency/evidence.service';
+import { MatchingService } from '../matching/matching.service';
 
 describe('AssessmentService', () => {
   let service: AssessmentService;
@@ -38,6 +40,8 @@ describe('AssessmentService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: AuditService, useValue: mockAuditService },
         { provide: NotificationsService, useValue: mockNotificationsService },
+        { provide: EvidenceService, useValue: {} },
+        { provide: MatchingService, useValue: {} },
       ],
     }).compile();
 

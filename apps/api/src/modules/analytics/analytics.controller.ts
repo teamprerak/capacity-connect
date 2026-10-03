@@ -5,7 +5,7 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
-@Controller('api/v1/analytics')
+@Controller('analytics')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}

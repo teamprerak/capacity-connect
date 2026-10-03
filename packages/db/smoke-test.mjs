@@ -1,1 +1,4 @@
-import { PrismaClient } from './generated/client/index.js'; const prisma = new PrismaClient({ datasources: { db: { url: 'postgresql://ccuser:ccpassword@localhost:5433/capacityconnect' } } }); async function main() { await prisma.user.findMany(); console.log('Smoke test passed! DB connected and query successful.'); } main().catch(e = console.error(e); process.exit(1); }).finally(() = 
+import { PrismaClient } from './generated/client/index.js'; 
+const prisma = new PrismaClient({ datasources: { db: { url: 'postgresql://ccuser:ccpassword@localhost:5433/capacityconnect' } } }); 
+async function main() { await prisma.user.findMany(); console.log('Smoke test passed! DB connected and query successful.'); } 
+main().catch(e => { console.error(e); process.exit(1); }).finally(async () => { await prisma.$disconnect(); });

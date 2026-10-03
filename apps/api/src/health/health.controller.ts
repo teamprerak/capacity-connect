@@ -7,7 +7,7 @@ import { PrismaService } from '../modules/prisma/prisma.service';
  * Returns a lightweight response so the orchestrator can determine
  * whether the API + database are reachable without triggering auth.
  */
-@Controller('api/v1/health')
+@Controller('health')
 export class HealthController {
   constructor(private readonly prisma: PrismaService) {}
 

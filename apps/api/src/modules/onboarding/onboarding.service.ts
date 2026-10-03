@@ -21,10 +21,12 @@ export class OnboardingService {
       data: { onboardingCompleted: true, onboardingData },
     });
 
-    // 2. After commit, process QUIZ_INFERRED evidence (non-blocking)
-    this._processQuizEvidence(userId, onboardingData).catch((err) =>
-      console.error('[Onboarding] Evidence processing failed:', err),
-    );
+    // 2. Process QUIZ_INFERRED evidence (awaiting to avoid floating promise)
+    try {
+      await this._processQuizEvidence(userId, onboardingData);
+    } catch (err) {
+      console.error('[Onboarding] Evidence processing failed:', err);
+    }
 
     return updatedUser;
   }

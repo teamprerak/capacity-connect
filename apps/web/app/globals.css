@@ -391,3 +391,8 @@ body > .skiptranslate {
   border: none !important;
   box-shadow: none !important;
 }
+/* Google Translate wraps text in font tags and applies inline background colors on hover */
+font {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

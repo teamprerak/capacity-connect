@@ -219,7 +219,7 @@ export default function AssessmentAuthoringPage() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3.5 rounded-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-foreground shadow-xl shadow-purple-500/25 hover:opacity-90 transition-all flex items-center justify-center gap-2 mt-6"
+          className="w-full py-3.5 rounded-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-xl shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 mt-6"
         >
           <FileText className="w-5 h-5" />
           {isSubmitting ? 'Saving Assessment...' : 'Save Assessment & Publish Question'}
@@ -228,3 +228,4 @@ export default function AssessmentAuthoringPage() {
     </div>
   );
 }
+

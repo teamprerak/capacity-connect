@@ -273,7 +273,7 @@ export default function TrainerDashboard() {
             <PlusCircle className="w-4 h-4" />  {t("build_course")} </Link>
           <Link
             href="/trainer/assessments/new"
-            className="px-4 py-2.5 rounded-md bg-purple-600 hover:bg-purple-500 font-bold text-xs text-foreground shadow-sm shadow-purple-500/20 transition-all flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-md bg-primary hover:bg-blue-500 font-bold text-xs text-foreground shadow-sm shadow-blue-500/20 transition-all flex items-center gap-1.5"
           >
             <FileText className="w-4 h-4" />  {t("author_assessment")} </Link>
         </div>
@@ -412,4 +412,5 @@ export default function TrainerDashboard() {
     </div>
   );
 }
+
 

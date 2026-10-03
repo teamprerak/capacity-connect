@@ -5,7 +5,7 @@ import { api } from '@/lib/api-client';
 import { Award, ExternalLink, Calendar, Download } from 'lucide-react';
 import { Spinner } from '@/components/Spinner';
 import { QRCodeSVG } from 'qrcode.react';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 import { useTranslation } from "react-i18next";
 
@@ -29,8 +29,8 @@ export default function CertificateVaultPage() {
     if (!element) return;
 
     try {
-      const canvas = await html2canvas(element, { scale: 2, useCORS: true, allowTaint: true });
-      const imgData = canvas.toDataURL('image/png');
+      // removed html2canvas
+      const imgData = await toPng(element, { quality: 1, pixelRatio: 2 });
       
       const pdf = new jsPDF({
         orientation: 'landscape',
@@ -39,7 +39,7 @@ export default function CertificateVaultPage() {
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pdfHeight = (element.offsetHeight * pdfWidth) / element.offsetWidth;
       
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save(`certificate-${certNumber}.pdf`);

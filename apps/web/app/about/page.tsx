@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import {
   Layers,
@@ -23,8 +22,6 @@ import {
 export default function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <Navbar />
-
       <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
         {/* Navigation Breadcrumb */}
         <div className="mb-6">

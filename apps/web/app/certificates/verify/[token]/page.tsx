@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { api } from '@/lib/api-client';
-import { Navbar } from '@/components/Navbar';
 import { ShieldCheck, AlertTriangle, Calendar, User, BookOpen, Award, CheckCircle } from 'lucide-react';
 import { useTranslation } from "react-i18next";
 
@@ -27,8 +26,6 @@ export default function CertificateVerifyPage() {
   return (
     /* Page bg uses theme background — no hardcoded dark */
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <Navbar />
-
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-16 flex flex-col items-center justify-center">
         {isLoading ? (
           <div className="surface-card p-12 flex flex-col items-center justify-center text-center gap-4 w-full">
